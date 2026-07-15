@@ -567,6 +567,47 @@
     });
   }
 
+  // ---------- 마이페이지: 커버 메시 그라디언트 위에 Mypage ↔ 마이페이지 타이핑 효과 ----------
+  function initMypageTypingEffect() {
+    var textEl = document.querySelector("[data-mypage-typing-text]");
+    if (!textEl) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      textEl.textContent = "마이페이지";
+      return;
+    }
+
+    var words = ["Mypage", "마이페이지"];
+    var wordIndex = 0;
+    var charIndex = 0;
+    var deleting = false;
+
+    function tick() {
+      var current = words[wordIndex];
+      if (!deleting) {
+        charIndex += 1;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(tick, 1200);
+          return;
+        }
+        setTimeout(tick, 120);
+      } else {
+        charIndex -= 1;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          setTimeout(tick, 400);
+          return;
+        }
+        setTimeout(tick, 60);
+      }
+    }
+    tick();
+  }
+
   function initDropdownAccordion() {
     document.querySelectorAll(".drawer__group[data-dropdown]").forEach(function (group) {
       var trigger = group.querySelector("[data-dropdown-trigger]");
@@ -1074,6 +1115,7 @@
     initMypagePaymentDefault();
     initMypageWordWrap();
     initMypageInfoToggle();
+    initMypageTypingEffect();
   });
 
   // ---------- mesh-gradient-shader: React useEffect/useRef 껍데기를 벗기고 WebGL 로직만 그대로 포팅 ----------

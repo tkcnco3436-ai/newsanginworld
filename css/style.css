@@ -1762,6 +1762,35 @@ main { padding-top: 66px; }
   .mypage-cover { height: 280px; }
 }
 .mypage-cover__mesh { width: 100%; height: 100%; display: block; }
+.mypage-cover__typing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: var(--weight-bold);
+  color: #000;
+  white-space: nowrap;
+  z-index: 1;
+}
+.mypage-cover__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: #000;
+  vertical-align: -0.15em;
+  animation: mypageCaretBlink 800ms step-end infinite;
+}
+@keyframes mypageCaretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mypage-cover__caret { animation: none; }
+}
 
 /* ---------- 프로필바: 아바타만 커버 위로 겹치고, 이름/이메일/버튼은 커버 아래에 위치 ---------- */
 .mypage-profile-bar {
