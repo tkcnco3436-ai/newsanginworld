@@ -1,0 +1,224 @@
+/*
+ * 로그인/회원가입 전용 스타일
+ * 원본 참고: 21st.dev "@easemize/sign-in" — 왼쪽 히어로 이미지(하단 테스트모니얼 오버레이) + 오른쪽 폼 카드,
+ * "Continue with Google" 소셜 로그인 포함. 실제 소스는 비공개 SPA라 구조 설명만 보고 vanilla로 재구성함.
+ * 실사진 대신 실제 보유 제품 영상을 히어로 배경으로 씀, 색은 LDSG(LINE) 토큰 그대로 사용.
+ */
+
+.auth-shell { display: flex; flex-direction: column; min-height: 100vh; }
+@media (min-width: 1024px) { .auth-shell { flex-direction: row; } }
+
+/* ---------- 왼쪽: 영상 배경 + 하단 테스트모니얼 오버레이 ---------- */
+.auth-shell__media {
+  position: relative;
+  width: 100%;
+  min-height: 34vh;
+  overflow: hidden;
+  background: var(--grey-900);
+  flex: none;
+}
+@media (min-width: 1024px) { .auth-shell__media { width: 55%; min-height: 100vh; } }
+.auth-shell__media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.auth-shell__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.15) 45%, transparent 72%);
+}
+.auth-shell__logo {
+  position: absolute;
+  top: var(--space-24);
+  left: var(--space-24);
+  z-index: 2;
+  color: var(--white-100);
+  font-size: 16px;
+  font-weight: var(--weight-bold);
+}
+
+.auth-quote { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: var(--space-32); color: var(--white-100); }
+.auth-quote__text {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: var(--weight-medium);
+  margin: 0 0 var(--space-16);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 320ms ease-out, transform 320ms ease-out;
+}
+.auth-quote__text.is-visible { opacity: 1; transform: none; }
+.auth-quote__who { display: flex; align-items: center; gap: var(--space-12); margin-bottom: var(--space-16); }
+.auth-quote__avatar {
+  width: 40px; height: 40px; border-radius: var(--radius-full);
+  background: var(--linegreen); color: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--weight-bold); flex: none;
+}
+.auth-quote__name { font-size: 14px; font-weight: var(--weight-bold); }
+.auth-quote__role { font-size: 12px; color: rgba(255, 255, 255, 0.7); }
+.auth-quote__dots { display: flex; gap: var(--space-6); }
+.auth-quote__dot {
+  width: 6px; height: 6px; border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.35);
+  transition: background var(--motion-fast), width var(--motion-fast);
+}
+.auth-quote__dot.is-active { background: var(--white-100); width: 18px; border-radius: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .auth-quote__text { transition: none; }
+}
+
+/* ---------- 오른쪽: 폼 ---------- */
+.auth-shell__form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-40) var(--space-24);
+  background: var(--bg-surface);
+}
+.auth-card { width: 100%; max-width: 380px; }
+.auth-card__logo {
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  font-weight: var(--weight-bold);
+  color: var(--txt-darkest);
+  margin-bottom: var(--space-24);
+}
+.auth-card__title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: var(--weight-bold);
+  text-align: center;
+  color: var(--txt-darkest);
+  margin: 0 0 var(--space-8);
+}
+.auth-card__desc {
+  font-size: 14px;
+  color: var(--txt-lighter);
+  text-align: center;
+  margin: 0 0 var(--space-24);
+}
+
+/* ---------- 폼 필드 (text-input, outlined) ---------- */
+.form-field { margin-bottom: var(--space-16); }
+.form-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+  color: var(--txt-darkest);
+  margin-bottom: var(--space-6);
+}
+.form-field__row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); }
+.form-field__row label { margin-bottom: 0; }
+.form-field__link { font-size: 12px; font-weight: var(--weight-medium); color: var(--txt-link); }
+.form-field__link:hover { opacity: var(--opacity-hover); }
+.form-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-16);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-4);
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--bg-surface);
+  color: var(--txt-darkest);
+  transition: border-color var(--motion-fast);
+}
+.form-input:focus { outline: none; border-color: var(--border-active); }
+.form-input::placeholder { color: var(--grey-300); }
+.form-help { font-size: 12px; color: var(--txt-lighter); margin-top: var(--space-4); }
+
+/* ---------- 소셜 로그인 ---------- */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin: var(--space-20) 0;
+  color: var(--txt-lighter);
+  font-size: 12px;
+}
+.auth-divider::before, .auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-neutral);
+}
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-10);
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-8);
+  background: var(--bg-surface);
+  color: var(--txt-darkest);
+  font-weight: var(--weight-medium);
+  font-size: 14px;
+  transition: opacity var(--motion-fast);
+}
+.btn-google:hover { opacity: var(--opacity-hover); }
+.btn-google:active { opacity: var(--opacity-pressed); }
+
+.auth-card__foot {
+  text-align: center;
+  font-size: 13px;
+  color: var(--txt-lighter);
+  margin-top: var(--space-24);
+}
+.auth-card__foot a { color: var(--txt-link); font-weight: var(--weight-medium); }
+.auth-card__foot a:hover { opacity: var(--opacity-hover); }
+
+/* ---------- 위저드 (회원가입) ---------- */
+.wizard-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-24);
+}
+.wizard-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--border-secondary);
+  transition: width var(--motion-fast), background var(--motion-fast), border-radius var(--motion-fast);
+}
+.wizard-dot.is-active { width: 20px; border-radius: 4px; background: var(--txt-darkest); }
+.wizard-dot.is-done { background: var(--linegreen); }
+
+.wizard-step { display: none; }
+.wizard-step.is-active { display: block; }
+
+.wizard-actions { display: flex; gap: var(--space-8); margin-top: var(--space-24); }
+.wizard-actions .btn-outline,
+.wizard-actions .btn-cta { height: 48px; }
+.wizard-actions .btn-outline { flex: 1; }
+.wizard-actions .btn-cta { flex: 2; width: auto; justify-content: center; }
+
+.check-list { display: flex; flex-direction: column; gap: var(--space-12); margin: 0 0 var(--space-8); }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-10);
+  padding: var(--space-12);
+  border: 1px solid var(--border-neutral);
+  border-radius: var(--radius-8);
+  cursor: pointer;
+}
+.check-item input { margin-top: 3px; accent-color: var(--txt-darkest); width: 16px; height: 16px; flex: none; }
+.check-item__label { font-size: 13px; font-weight: var(--weight-medium); color: var(--txt-darkest); }
+.check-item__label em { font-style: normal; color: var(--txt-link); }
+.check-item__desc { font-size: 12px; color: var(--txt-lighter); margin-top: 2px; }
+
+.wizard-summary { border-top: 1px solid var(--border-neutral); padding-top: var(--space-16); margin-top: var(--space-8); }
+.wizard-summary__row { display: flex; justify-content: space-between; font-size: 13px; padding: var(--space-6) 0; }
+.wizard-summary__row span:first-child { color: var(--txt-lighter); }
+.wizard-summary__row span:last-child { color: var(--txt-darkest); font-weight: var(--weight-medium); }

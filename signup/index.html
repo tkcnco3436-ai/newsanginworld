@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>회원가입 | 상인월드</title>
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+<div class="auth-shell">
+  <div class="auth-shell__media">
+    <video src="../image/stu-vd-mo.webm" muted loop playsinline autoplay></video>
+    <a class="auth-shell__logo" href="../">상인월드</a>
+    <div class="auth-quote" data-auth-quote></div>
+  </div>
+
+  <div class="auth-shell__form">
+    <div class="auth-card">
+      <a class="auth-card__logo" href="../">상인월드</a>
+      <h1 class="auth-card__title">무료로 시작하기</h1>
+      <p class="auth-card__desc">3단계면 가입이 끝나요.</p>
+
+      <div class="wizard-indicator">
+        <span class="wizard-dot is-active"></span>
+        <span class="wizard-dot"></span>
+        <span class="wizard-dot"></span>
+      </div>
+
+      <form data-wizard>
+        <div class="wizard-step is-active">
+          <div class="form-field">
+            <label for="email">이메일</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-field">
+            <label for="password">비밀번호</label>
+            <input class="form-input" type="password" id="password" name="password" placeholder="8자 이상" minlength="8" required>
+          </div>
+          <div class="form-field">
+            <label for="password2">비밀번호 확인</label>
+            <input class="form-input" type="password" id="password2" name="password2" placeholder="비밀번호 다시 입력" minlength="8" required>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn-cta" type="button" data-wizard-next style="width:100%;justify-content:center;">다음</button>
+          </div>
+        </div>
+
+        <div class="wizard-step">
+          <div class="form-field">
+            <label for="bizName">상호명</label>
+            <input class="form-input" type="text" id="bizName" name="bizName" placeholder="예: 상인월드 분식" required>
+          </div>
+          <div class="form-field">
+            <label for="bizType">업종</label>
+            <input class="form-input" type="text" id="bizType" name="bizType" placeholder="예: 요식업, 뷰티, 리테일" required>
+          </div>
+          <div class="form-field">
+            <label for="phone">연락처</label>
+            <input class="form-input" type="tel" id="phone" name="phone" placeholder="010-0000-0000" required>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn-outline" type="button" data-wizard-prev>이전</button>
+            <button class="btn-cta" type="button" data-wizard-next>다음</button>
+          </div>
+        </div>
+
+        <div class="wizard-step">
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" required>
+              <span>
+                <span class="check-item__label"><em>(필수)</em> 이용약관 동의</span>
+                <span class="check-item__desc">서비스 이용을 위한 필수 약관이에요.</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" required>
+              <span>
+                <span class="check-item__label"><em>(필수)</em> 개인정보 수집·이용 동의</span>
+                <span class="check-item__desc">회원가입 및 서비스 제공을 위해 필요해요.</span>
+              </span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox">
+              <span>
+                <span class="check-item__label">(선택) 마케팅 정보 수신 동의</span>
+                <span class="check-item__desc">신규 기능과 프로모션 소식을 받아보세요.</span>
+              </span>
+            </label>
+          </div>
+          <div class="wizard-summary" data-wizard-summary></div>
+          <div class="wizard-actions">
+            <button class="btn-outline" type="button" data-wizard-prev>이전</button>
+            <button class="btn-cta" type="submit">가입 완료</button>
+          </div>
+        </div>
+      </form>
+
+      <p class="auth-card__foot">이미 계정이 있으신가요? <a href="../login/">로그인</a></p>
+    </div>
+  </div>
+</div>
+<script src="../js/auth.js"></script>
+</body>
+</html>
