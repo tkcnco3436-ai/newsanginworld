@@ -106,6 +106,7 @@
           <span class="mypage-info-row__label">구독 크레딧</span>
           <span class="mypage-info-row__value">
             0 크레딧
+            <button type="button" class="mypage-info-icon" data-mypage-info-toggle aria-label="설명 보기"><i data-lucide="info" width="14" height="14"></i></button>
             <span class="mypage-info-row__desc">구독 중인 플랜이 없어요. 아직 구독 중인 플랜이 없어요.</span>
           </span>
         </div>
@@ -114,6 +115,7 @@
           <span class="mypage-info-row__label">충전 크레딧</span>
           <span class="mypage-info-row__value">
             10,898 크레딧
+            <button type="button" class="mypage-info-icon" data-mypage-info-toggle aria-label="설명 보기"><i data-lucide="info" width="14" height="14"></i></button>
             <span class="mypage-info-row__desc">추가 구매 크레딧 · 만료 없음</span>
           </span>
         </div>
@@ -129,6 +131,7 @@
           <span class="mypage-info-row__label">상태</span>
           <span class="mypage-info-row__value">
             구독 중인 플랜이 없어요
+            <button type="button" class="mypage-info-icon" data-mypage-info-toggle aria-label="설명 보기"><i data-lucide="info" width="14" height="14"></i></button>
             <span class="mypage-info-row__desc">구독을 시작하고 매월 300 크레딧과 멤버십 전용 혜택을 받아보세요.</span>
           </span>
         </div>
@@ -141,15 +144,13 @@
           <button class="mypage-action" type="button" data-mypage-card-add-open><i data-lucide="plus" width="14" height="14"></i>추가</button>
         </div>
         <div data-mypage-payment-list>
-        <div class="mypage-info-row" data-mypage-card-label="신한카드 **** **** **** 1231">
+        <div class="mypage-info-row mypage-payment-item" data-mypage-card-label="신한카드 **** **** **** 1231">
           <span class="mypage-info-row__icon"><img src="image/shinhan.svg" alt="신한카드" width="16" height="16"></span>
           <span class="mypage-info-row__label">신한카드</span>
-          <span class="mypage-info-row__value">
-            **** **** **** 1231
-            <span class="mypage-payment-actions">
-              <span class="mypage-payment-default-label">기본</span>
-              <button class="mypage-btn-ghost" type="button">삭제</button>
-            </span>
+          <span class="mypage-info-row__value">**** **** **** 1231</span>
+          <span class="mypage-payment-actions">
+            <span class="mypage-payment-default-label">기본</span>
+            <button class="mypage-btn-ghost" type="button">삭제</button>
           </span>
         </div>
         </div>
@@ -162,14 +163,17 @@
   </div>
 </main>
 
+<div class="mypage-info-modal" data-mypage-info-modal>
+  <p class="mypage-info-modal__text" data-mypage-info-modal-text></p>
+</div>
+
 <div class="mypage-delete-overlay" data-mypage-delete-overlay>
   <div class="mypage-delete-sheet">
     <span class="mypage-delete-sheet__handle"></span>
     <span class="mypage-delete-sheet__icon"><i data-lucide="trash-2" width="20" height="20"></i></span>
     <p class="mypage-delete-overlay__title">카드를 삭제하시겠습니까?</p>
     <p class="mypage-delete-overlay__card" data-mypage-delete-card-label>신한카드 **** 1231</p>
-    <p class="mypage-delete-overlay__warning" data-mypage-delete-last-warning>마지막 카드입니다. 삭제하면 자동결제가 불가능합니다.</p>
-    <p class="mypage-delete-overlay__desc">삭제 후에는 복구할 수 없습니다.</p>
+    <p class="mypage-delete-overlay__desc"><span class="mypage-delete-overlay__warning" data-mypage-delete-last-warning>마지막 카드입니다. 삭제하면 자동결제가 불가능합니다. </span>삭제 후에는 복구할 수 없습니다.</p>
     <button type="button" class="mypage-btn-danger-pill" data-mypage-delete-confirm>삭제하기</button>
     <button type="button" class="mypage-delete-sheet__close" data-mypage-delete-cancel>취소하기</button>
   </div>
@@ -177,80 +181,79 @@
 
 <div class="mypage-card-overlay" data-mypage-card-overlay>
   <div class="mypage-card-overlay__modal">
-    <p class="mypage-card-overlay__title">결제 수단 추가</p>
+    <span class="mypage-card-overlay__handle"></span>
+    <p class="mypage-wizard-step-label" data-mypage-wizard-step-label>1 / 3</p>
+    <p class="mypage-card-overlay__title" data-mypage-wizard-title>카드사를 선택하세요</p>
 
-    <div class="mypage-form-field">
-      <span class="mypage-form-field__label">카드사</span>
-      <div class="mypage-issuer-picker" data-mypage-issuer-picker>
-        <button type="button" class="mypage-issuer-picker__trigger" data-mypage-issuer-trigger aria-haspopup="true" aria-expanded="false">
-          <span data-mypage-issuer-trigger-label class="mypage-issuer-picker__placeholder">카드사를 선택하세요</span>
-          <i data-lucide="chevron-down" width="16" height="16"></i>
-        </button>
-        <div class="mypage-issuer-menu" data-mypage-issuer-menu>
-          <button type="button" data-issuer-name="신한카드" data-issuer-logo="shinhan.svg"><img src="image/shinhan.svg" alt="">신한카드</button>
-          <button type="button" data-issuer-name="KB국민카드" data-issuer-logo="kb.svg"><img src="image/kb.svg" alt="">KB국민카드</button>
-          <button type="button" data-issuer-name="현대카드" data-issuer-logo="hyundaicard.svg"><img src="image/hyundaicard.svg" alt="">현대카드</button>
-          <button type="button" data-issuer-name="롯데카드" data-issuer-logo="lottecard.svg"><img src="image/lottecard.svg" alt="">롯데카드</button>
-          <button type="button" data-issuer-name="우리카드" data-issuer-logo="wooribank.svg"><img src="image/wooribank.svg" alt="">우리카드</button>
-          <button type="button" data-issuer-name="하나카드" data-issuer-logo="hana.svg"><img src="image/hana.svg" alt="">하나카드</button>
-          <button type="button" data-issuer-name="NH농협카드" data-issuer-logo="nh.svg"><img src="image/nh.svg" alt="">NH농협카드</button>
-          <button type="button" data-issuer-name="BC카드" data-issuer-logo="bc.svg"><img src="image/bc.svg" alt="">BC카드</button>
-        </div>
+    <div class="mypage-wizard-step is-active" data-mypage-wizard-step="1">
+      <div class="mypage-issuer-grid">
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="신한카드" data-issuer-logo="shinhan.svg"><img src="image/shinhan.svg" alt=""><span>신한카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="KB국민카드" data-issuer-logo="kb.svg"><img src="image/kb.svg" alt=""><span>KB국민카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="현대카드" data-issuer-logo="hyundaicard.svg"><img src="image/hyundaicard.svg" alt=""><span>현대카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="롯데카드" data-issuer-logo="lottecard.svg"><img src="image/lottecard.svg" alt=""><span>롯데카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="우리카드" data-issuer-logo="wooribank.svg"><img src="image/wooribank.svg" alt=""><span>우리카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="하나카드" data-issuer-logo="hana.svg"><img src="image/hana.svg" alt=""><span>하나카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="NH농협카드" data-issuer-logo="nh.svg"><img src="image/nh.svg" alt=""><span>NH농협카드</span></button>
+        <button type="button" class="mypage-issuer-tile" data-issuer-name="BC카드" data-issuer-logo="bc.svg"><img src="image/bc.svg" alt=""><span>BC카드</span></button>
       </div>
     </div>
 
-    <label class="mypage-form-field">
-      <span class="mypage-form-field__label">카드번호</span>
-      <div class="mypage-form-card-number">
-        <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num1">
-        <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num2">
-        <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num3">
-        <input type="password" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num4">
-      </div>
-    </label>
-
-    <div class="mypage-form-row">
+    <div class="mypage-wizard-step" data-mypage-wizard-step="2">
       <label class="mypage-form-field">
-        <span class="mypage-form-field__label">유효기간</span>
-        <div class="mypage-form-expiry">
-          <input type="text" inputmode="numeric" maxlength="2" placeholder="MM" data-mypage-card-field="mm">
-          <span>/</span>
-          <input type="text" inputmode="numeric" maxlength="2" placeholder="YY" data-mypage-card-field="yy">
+        <span class="mypage-form-field__label">카드번호</span>
+        <div class="mypage-form-card-number">
+          <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num1">
+          <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num2">
+          <input type="text" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num3">
+          <input type="password" inputmode="numeric" maxlength="4" placeholder="0000" data-mypage-card-field="num4">
         </div>
       </label>
+
+      <div class="mypage-form-row">
+        <label class="mypage-form-field">
+          <span class="mypage-form-field__label">유효기간</span>
+          <div class="mypage-form-expiry">
+            <input type="text" inputmode="numeric" maxlength="2" placeholder="MM" data-mypage-card-field="mm">
+            <span>/</span>
+            <input type="text" inputmode="numeric" maxlength="2" placeholder="YY" data-mypage-card-field="yy">
+          </div>
+        </label>
+        <label class="mypage-form-field">
+          <span class="mypage-form-field__label">CVC</span>
+          <input type="password" inputmode="numeric" maxlength="3" placeholder="000" class="mypage-form-input" data-mypage-card-field="cvc">
+        </label>
+      </div>
+
       <label class="mypage-form-field">
-        <span class="mypage-form-field__label">CVC</span>
-        <input type="password" inputmode="numeric" maxlength="3" placeholder="000" class="mypage-form-input" data-mypage-card-field="cvc">
+        <span class="mypage-form-field__label">카드 비밀번호 앞 2자리</span>
+        <input type="password" inputmode="numeric" maxlength="2" placeholder="●●" class="mypage-form-input mypage-form-input--sm" data-mypage-card-field="pw">
       </label>
     </div>
 
-    <label class="mypage-form-field">
-      <span class="mypage-form-field__label">카드 비밀번호 앞 2자리</span>
-      <input type="password" inputmode="numeric" maxlength="2" placeholder="●●" class="mypage-form-input mypage-form-input--sm" data-mypage-card-field="pw">
-    </label>
-
-    <div class="mypage-consent">
-      <label class="mypage-consent__row mypage-consent__row--all">
-        <input type="checkbox" data-mypage-consent-all>
-        <span>전체 동의</span>
-      </label>
-      <label class="mypage-consent__row">
-        <input type="checkbox" data-mypage-consent-item>
-        <span>개인(신용)정보 수집 이용동의</span>
-      </label>
-      <label class="mypage-consent__row">
-        <input type="checkbox" data-mypage-consent-item>
-        <span>개인(신용)정보 제공 동의</span>
-      </label>
-      <label class="mypage-consent__row">
-        <input type="checkbox" data-mypage-consent-item>
-        <span>고유식별정보 처리 동의</span>
-      </label>
+    <div class="mypage-wizard-step" data-mypage-wizard-step="3">
+      <div class="mypage-consent">
+        <label class="mypage-consent__row mypage-consent__row--all">
+          <input type="checkbox" data-mypage-consent-all>
+          <span>전체 동의</span>
+        </label>
+        <label class="mypage-consent__row">
+          <input type="checkbox" data-mypage-consent-item>
+          <span>개인(신용)정보 수집 이용동의</span>
+        </label>
+        <label class="mypage-consent__row">
+          <input type="checkbox" data-mypage-consent-item>
+          <span>개인(신용)정보 제공 동의</span>
+        </label>
+        <label class="mypage-consent__row">
+          <input type="checkbox" data-mypage-consent-item>
+          <span>고유식별정보 처리 동의</span>
+        </label>
+      </div>
     </div>
 
     <div class="mypage-card-overlay__actions">
-      <button type="button" class="mypage-btn-outline" data-mypage-card-cancel>취소</button>
-      <button type="button" class="mypage-btn-primary" data-mypage-card-submit disabled>등록하기</button>
+      <button type="button" class="mypage-btn-outline" data-mypage-wizard-left>취소</button>
+      <button type="button" class="mypage-btn-primary" data-mypage-wizard-right disabled>다음</button>
     </div>
   </div>
 </div>

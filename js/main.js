@@ -268,17 +268,17 @@
   function initMypageCardAdd() {
     var openBtn = document.querySelector("[data-mypage-card-add-open]");
     var overlay = document.querySelector("[data-mypage-card-overlay]");
-    var cancelBtn = document.querySelector("[data-mypage-card-cancel]");
-    var submitBtn = document.querySelector("[data-mypage-card-submit]");
+    var paymentList = document.querySelector("[data-mypage-payment-list]");
+    var stepLabel = document.querySelector("[data-mypage-wizard-step-label]");
+    var stepTitle = document.querySelector("[data-mypage-wizard-title]");
+    var steps = document.querySelectorAll("[data-mypage-wizard-step]");
+    var leftBtn = document.querySelector("[data-mypage-wizard-left]");
+    var rightBtn = document.querySelector("[data-mypage-wizard-right]");
+    var issuerTiles = document.querySelectorAll(".mypage-issuer-tile");
     var consentAll = document.querySelector("[data-mypage-consent-all]");
     var consentItems = document.querySelectorAll("[data-mypage-consent-item]");
-    var paymentList = document.querySelector("[data-mypage-payment-list]");
-    var issuerPicker = document.querySelector("[data-mypage-issuer-picker]");
-    var issuerTrigger = document.querySelector("[data-mypage-issuer-trigger]");
-    var issuerTriggerLabel = document.querySelector("[data-mypage-issuer-trigger-label]");
-    var issuerMenu = document.querySelector("[data-mypage-issuer-menu]");
-    if (!openBtn || !overlay || !cancelBtn || !submitBtn || !consentAll || !consentItems.length || !paymentList ||
-        !issuerPicker || !issuerTrigger || !issuerTriggerLabel || !issuerMenu) return;
+    if (!openBtn || !overlay || !paymentList || !stepLabel || !stepTitle || !steps.length || !leftBtn || !rightBtn ||
+        !issuerTiles.length || !consentAll || !consentItems.length) return;
 
     var num1 = overlay.querySelector('[data-mypage-card-field="num1"]');
     var num2 = overlay.querySelector('[data-mypage-card-field="num2"]');
@@ -293,67 +293,67 @@
     var numericFields = [num1, num2, num3, num4, mm, yy, cvc, pw];
     var issuerValue = "";
     var issuerLogo = "";
-    var placeholderHTML = issuerTriggerLabel.innerHTML;
+    var currentStep = 1;
+    var TOTAL_STEPS = 3;
+    var STEP_TITLES = { 1: "카드사를 선택하세요", 2: "카드 정보를 입력하세요", 3: "약관에 동의해주세요" };
 
-    function updateSubmitState() {
-      var requiredFilled = issuerValue !== "" &&
-        num1.value.length === 4 && num2.value.length === 4 && num3.value.length === 4 && num4.value.length === 4 &&
-        mm.value.length === 2 && yy.value.length === 2 && cvc.value.length === 3 && pw.value.length === 2;
-      var allConsent = Array.prototype.every.call(consentItems, function (item) { return item.checked; });
-      submitBtn.disabled = !(requiredFilled && allConsent);
+    function isStepValid(step) {
+      if (step === 1) return issuerValue !== "";
+      if (step === 2) {
+        return num1.value.length === 4 && num2.value.length === 4 && num3.value.length === 4 && num4.value.length === 4 &&
+          mm.value.length === 2 && yy.value.length === 2 && cvc.value.length === 3 && pw.value.length === 2;
+      }
+      return Array.prototype.every.call(consentItems, function (item) { return item.checked; });
+    }
+
+    function render() {
+      stepLabel.textContent = currentStep + " / " + TOTAL_STEPS;
+      stepTitle.textContent = STEP_TITLES[currentStep];
+      steps.forEach(function (panel) {
+        panel.classList.toggle("is-active", Number(panel.getAttribute("data-mypage-wizard-step")) === currentStep);
+      });
+      leftBtn.textContent = currentStep === 1 ? "취소" : "이전";
+      rightBtn.textContent = currentStep === TOTAL_STEPS ? "등록하기" : "다음";
+      rightBtn.disabled = !isStepValid(currentStep);
     }
 
     numericFields.forEach(function (field) {
       field.addEventListener("input", function () {
         field.value = field.value.replace(/\D/g, "").slice(0, field.maxLength);
-        updateSubmitState();
+        render();
       });
     });
 
-    function closeIssuerMenu() {
-      issuerMenu.classList.remove("is-open");
-      issuerTrigger.setAttribute("aria-expanded", "false");
-    }
-    issuerTrigger.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var willOpen = !issuerMenu.classList.contains("is-open");
-      issuerMenu.classList.toggle("is-open", willOpen);
-      issuerTrigger.setAttribute("aria-expanded", String(willOpen));
-    });
-    Array.prototype.forEach.call(issuerMenu.querySelectorAll("[data-issuer-name]"), function (item) {
-      item.addEventListener("click", function () {
-        issuerValue = item.getAttribute("data-issuer-name");
-        issuerLogo = item.getAttribute("data-issuer-logo");
-        issuerTriggerLabel.innerHTML =
-          '<span class="mypage-issuer-picker__label"><img src="image/' + issuerLogo + '" alt="">' + issuerValue + '</span>';
-        closeIssuerMenu();
-        updateSubmitState();
+    issuerTiles.forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        issuerValue = tile.getAttribute("data-issuer-name");
+        issuerLogo = tile.getAttribute("data-issuer-logo");
+        issuerTiles.forEach(function (t) { t.classList.remove("is-selected"); });
+        tile.classList.add("is-selected");
+        render();
       });
-    });
-    document.addEventListener("click", function (e) {
-      if (!issuerPicker.contains(e.target)) closeIssuerMenu();
     });
 
     consentAll.addEventListener("change", function () {
       Array.prototype.forEach.call(consentItems, function (item) { item.checked = consentAll.checked; });
-      updateSubmitState();
+      render();
     });
     Array.prototype.forEach.call(consentItems, function (item) {
       item.addEventListener("change", function () {
         consentAll.checked = Array.prototype.every.call(consentItems, function (i) { return i.checked; });
-        updateSubmitState();
+        render();
       });
     });
 
     function resetForm() {
       issuerValue = "";
       issuerLogo = "";
-      issuerTriggerLabel.innerHTML = placeholderHTML;
-      closeIssuerMenu();
+      issuerTiles.forEach(function (t) { t.classList.remove("is-selected"); });
       numericFields.forEach(function (field) { field.value = ""; });
       consentAll.checked = false;
       Array.prototype.forEach.call(consentItems, function (item) { item.checked = false; });
-      updateSubmitState();
+      currentStep = 1;
+      render();
     }
 
     function open() {
@@ -364,8 +364,24 @@
       overlay.classList.remove("is-open");
     }
 
+    function addPaymentRow() {
+      var maskedNum = "**** **** **** " + num4.value;
+      var label = issuerValue + " " + maskedNum;
+      var row = document.createElement("div");
+      row.className = "mypage-info-row mypage-payment-item";
+      row.setAttribute("data-mypage-card-label", label);
+      row.innerHTML =
+        '<span class="mypage-info-row__icon"><img src="image/' + issuerLogo + '" alt="' + issuerValue + '" width="16" height="16"></span>' +
+        '<span class="mypage-info-row__label">' + issuerValue + '</span>' +
+        '<span class="mypage-info-row__value">' + maskedNum + '</span>' +
+        '<span class="mypage-payment-actions">' +
+        '<button class="mypage-btn-ghost" type="button" data-mypage-card-set-default>기본 설정</button>' +
+        '<button class="mypage-btn-ghost" type="button">삭제</button>' +
+        '</span>';
+      paymentList.appendChild(row);
+    }
+
     openBtn.addEventListener("click", open);
-    cancelBtn.addEventListener("click", close);
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) close();
     });
@@ -373,22 +389,19 @@
       if (e.key === "Escape" && overlay.classList.contains("is-open")) close();
     });
 
-    submitBtn.addEventListener("click", function () {
-      if (submitBtn.disabled) return;
-      var maskedNum = "**** **** **** " + num4.value;
-      var label = issuerValue + " " + maskedNum;
-      var row = document.createElement("div");
-      row.className = "mypage-info-row";
-      row.setAttribute("data-mypage-card-label", label);
-      row.innerHTML =
-        '<span class="mypage-info-row__icon"><img src="image/' + issuerLogo + '" alt="' + issuerValue + '" width="16" height="16"></span>' +
-        '<span class="mypage-info-row__label">' + issuerValue + '</span>' +
-        '<span class="mypage-info-row__value">' + maskedNum +
-        '<span class="mypage-payment-actions">' +
-        '<button class="mypage-btn-ghost" type="button" data-mypage-card-set-default>기본 설정</button>' +
-        '<button class="mypage-btn-ghost" type="button">삭제</button>' +
-        '</span></span>';
-      paymentList.appendChild(row);
+    leftBtn.addEventListener("click", function () {
+      if (currentStep === 1) { close(); return; }
+      currentStep -= 1;
+      render();
+    });
+    rightBtn.addEventListener("click", function () {
+      if (rightBtn.disabled) return;
+      if (currentStep < TOTAL_STEPS) {
+        currentStep += 1;
+        render();
+        return;
+      }
+      addPaymentRow();
       close();
     });
   }
@@ -471,6 +484,86 @@
       if (currentDefaultRow && currentDefaultRow !== row) setSlot(currentDefaultRow, false);
       setSlot(row, true);
       paymentList.insertBefore(row, paymentList.firstChild);
+    });
+  }
+
+  // ---------- 마이페이지: 모바일에서 긴 문장을 4단어씩 끊어 줄바꿈 ----------
+  function initMypageWordWrap() {
+    var targets = document.querySelectorAll(".mypage-crop-modal__hint, .mypage-subscribe__desc, .mypage-info-row__desc");
+    if (!targets.length) return;
+    var mq = window.matchMedia("(max-width: 767px)");
+
+    function apply() {
+      targets.forEach(function (el) {
+        if (el.dataset.originalText === undefined) el.dataset.originalText = el.textContent;
+        if (mq.matches) {
+          var words = el.dataset.originalText.trim().split(/\s+/);
+          var lines = [];
+          for (var i = 0; i < words.length; i += 6) {
+            lines.push(words.slice(i, i + 6).join(" "));
+          }
+          el.innerHTML = lines.join("<br>");
+        } else {
+          el.textContent = el.dataset.originalText;
+        }
+      });
+    }
+    apply();
+    if (mq.addEventListener) mq.addEventListener("change", apply);
+    else mq.addListener(apply);
+  }
+
+  // ---------- 마이페이지: 모바일에서 인포 아이콘 클릭 시 그 위치에 말풍선 툴팁으로 설명 문구 표시 ----------
+  function initMypageInfoToggle() {
+    var toggles = document.querySelectorAll("[data-mypage-info-toggle]");
+    var bubble = document.querySelector("[data-mypage-info-modal]");
+    var bubbleText = document.querySelector("[data-mypage-info-modal-text]");
+    if (!toggles.length || !bubble || !bubbleText) return;
+
+    var currentBtn = null;
+    var hideTimer = null;
+
+    function close() {
+      bubble.classList.remove("is-open");
+      currentBtn = null;
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    }
+
+    function positionNear(btn) {
+      var rect = btn.getBoundingClientRect();
+      var bubbleWidth = bubble.offsetWidth || 220;
+      var top = rect.bottom + 10;
+      var left = rect.left + rect.width / 2 - bubbleWidth / 2;
+      left = Math.max(12, Math.min(left, window.innerWidth - bubbleWidth - 12));
+      var tailLeft = rect.left + rect.width / 2 - left;
+      bubble.style.top = top + "px";
+      bubble.style.left = left + "px";
+      bubble.style.setProperty("--mypage-info-tail-left", tailLeft + "px");
+    }
+
+    toggles.forEach(function (btn) {
+      var desc = btn.parentElement.querySelector(".mypage-info-row__desc");
+      if (!desc) return;
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (currentBtn === btn && bubble.classList.contains("is-open")) { close(); return; }
+        currentBtn = btn;
+        bubbleText.textContent = desc.dataset.originalText || desc.textContent;
+        bubble.classList.add("is-open");
+        positionNear(btn);
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(close, 2000);
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (bubble.classList.contains("is-open") && !bubble.contains(e.target)) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && bubble.classList.contains("is-open")) close();
+    });
+    window.addEventListener("resize", function () {
+      if (bubble.classList.contains("is-open") && currentBtn) positionNear(currentBtn);
     });
   }
 
@@ -979,6 +1072,8 @@
     initMypageCardAdd();
     initMypagePaymentDelete();
     initMypagePaymentDefault();
+    initMypageWordWrap();
+    initMypageInfoToggle();
   });
 
   // ---------- mesh-gradient-shader: React useEffect/useRef 껍데기를 벗기고 WebGL 로직만 그대로 포팅 ----------
