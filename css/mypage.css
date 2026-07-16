@@ -182,9 +182,7 @@
   margin-bottom: var(--space-6);
 }
 
-.mypage-card-overlay__actions { display: flex; gap: var(--space-8); margin-top: var(--space-32); }
-.mypage-card-overlay__actions .mypage-btn-outline,
-.mypage-card-overlay__actions .mypage-btn-primary { flex: 1; width: auto; height: 44px; }
+/* .mypage-card-overlay__actions 는 mypage-common.css로 이동(edit.html도 재사용하는 공용 레이어) */
 
 /* ---------- 결제 수단 삭제 확인 팝업: 하단 바텀시트 구조(토스 스마트패스 참고) ---------- */
 .mypage-delete-overlay {
@@ -218,6 +216,8 @@
   .mypage-delete-sheet { max-width: 390px; border-radius: var(--radius-16); padding: var(--space-24); }
   .mypage-delete-sheet__handle { display: none; }
 }
+/* 모달 색 ≤3 규칙: 흰(bg)+회색+검정만. 파괴 신호는 제목·버튼(검정)과 카피가 담당하고
+   아이콘은 중립 회색으로 둠(레드핑크 제거로 색 4→3) */
 .mypage-delete-sheet__icon {
   display: flex;
   align-items: center;
@@ -225,8 +225,8 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--fill-accent-pink);
-  color: var(--red-400);
+  background: var(--grey-100);
+  color: var(--grey-900);
   margin-bottom: var(--space-16);
 }
 .mypage-delete-overlay__title { font-size: 19px; font-weight: var(--weight-bold); color: #000; line-height: 1.35; margin: 0 0 var(--space-12); }
@@ -355,8 +355,8 @@
   font-weight: var(--weight-medium);
   color: var(--txt-darkest);
 }
-.mypage-info-row__value strong { font-size: 20px; font-weight: var(--weight-bold); color: #F93322; }
-.mypage-credit-unit { color: #F93322; }
+.mypage-info-row__value strong { font-size: 20px; font-weight: var(--weight-bold); color: var(--ink-primary); }
+.mypage-credit-unit { color: var(--ink-primary); }
 .mypage-info-row__desc { flex-basis: 100%; font-size: 12px; font-weight: var(--weight-regular); color: var(--txt-faint); }
 .mypage-info-icon {
   display: none;

@@ -1,692 +1,414 @@
 ---
-name: 쏘카
-design_system_name: SOCAR Frame 2.0
-slug: socar
-category: mobility
-last_updated: "2026-06-02"
-created_at: "2026-05-22"
-sources:
-  - https://socarframe.socar.kr/
-  - https://socar.kr/
-  - https://socarframe.socar.kr/development/components/Alert
-  - https://socarframe.socar.kr/development/foundation/Colors
-  - https://socarframe.socar.kr/development/components
-  - https://socarframe.socar.kr/development/foundation/Spacing
-  - https://socarframe.socar.kr/development/foundation/Icons
-  - https://socarframe.socar.kr/development/foundation/Typography
-  - https://socarframe.socar.kr/development/principle
-  - https://socarframe.socar.kr/ux-principles/overview
-  - https://socarframe.socar.kr/ux-principles
-  - https://socarframe.socar.kr/ux-principles/wow-moment
-  - https://socarframe.socar.kr/development/foundation
-  - https://socarframe.socar.kr/development/components/Buttons/ActionButton
-  - https://socarframe.socar.kr/development/components/Buttons/IconButton
-  - https://socarframe.socar.kr/development/components/Buttons/TextButton
-  - https://socarframe.socar.kr/development/components/Accordion
-  - https://socarframe.socar.kr/development/components/SegmentedControl
-  - https://socarframe.socar.kr/development/components/Chip
-  - https://socarframe.socar.kr/development/components/Checkbox
-  - https://socarframe.socar.kr/development/components/Radio
-  - https://socarframe.socar.kr/development/components/SelectionBox
-  - https://socarframe.socar.kr/development/components/Skeleton
-  - https://socarframe.socar.kr/development/components/Input
-  - https://socarframe.socar.kr/development/components/TextArea
-  - https://socarframe.socar.kr/development/components/Tab
-  - https://socarframe.socar.kr/development/components/TopAppBar
-  - https://socarframe.socar.kr/development/components/DatePicker
-  - https://socarframe.socar.kr/development/components/TimePicker
-  - https://socarframe.socar.kr/development/components/BottomSheet
-  - https://socarframe.socar.kr/development/components/Snackbar
-  - https://socarframe.socar.kr/development/components/Pattern/Carousel
-  - https://socarframe.socar.kr/development/components/Tips/AccentTip
-  - https://socarframe.socar.kr/development/components/Tips/InfoTip
-  - https://socarframe.socar.kr/development/components/Haptic
-  - https://socarframe.socar.kr/ux-principles/release-checklist
-  - https://socarframe.socar.kr/ux-principles/trade-off-rules
+name: 상인월드
+design_system_name: 상인월드 디자인 시스템
+slug: sanginworld
+category: ai-saas
+last_updated: "2026-07-16"
+created_at: "2026-07-16"
+implementation:
+  stack: 순수 HTML + CSS + JS (프레임워크 없음)
+  css_layers: [tokens.css, common.css, "{group}-common.css", "{page}.css"]
+  icons: Lucide (unpkg CDN, data-lucide)
+  fonts: Pretendard
+  authoritative_tokens: ../css/tokens.css
 related_services: []
 lang: ko
-logo: https://getdesign.kr/logos/socar.png
+logo: image/logo.svg
 ---
 
-# SOCAR Frame 2.0 — design.md
+# 상인월드 — design.md
+
+> 이 문서는 상인월드 화면(`index.html` / `mypage.html` / `edit.html` 등)에 실제 구현된 디자인 값을 정리한 레퍼런스다. **색·간격·라운드·그림자·모션의 정본(authoritative source)은 `../css/tokens.css`이며, 아래 값이 코드와 어긋나면 tokens.css를 신뢰한다.** 컴포넌트 스펙은 vanilla HTML/CSS/JS 구현 기준이다.
+>
+> **시각 언어 원칙:** 이 시스템의 시각 언어는 단일 채도 브랜드 컬러 + Pretendard 위계 + 미세 elevation + 1px 헤어라인 + `:active` 92% scale press feedback으로 요약된다. 제품 UI 텍스트·네이밍은 전부 상인월드로 정의한다.
 
 ## Brand & Style
 
-SOCAR Frame 2.0(쏘카프레임 2.0)는 쏘카의 디자인 시스템이며, 브랜드명(쏘카 / SOCAR)과 디자인 시스템명은 별개의 이름이다 [src:9][src:5]. 쏘카는 한국 최대 카셰어링 서비스이며, 전국의 쏘카존(공용 차량 거점)을 기반으로 단기·왕복 차량 대여를 제공하는 한국형 모빌리티 플랫폼이다 [src:1][src:2]. 소비자용 카셰어링 제품과 SOCAR Business 라인을 함께 운영하며, 두 서비스는 토큰 세트에 `{colors.service-socar}`와 `{colors.service-business}` 색으로 각각 기록되어 있다 [src:4].
+상인월드는 **소상공인(상인)을 위한 AI 영상·콘텐츠 생성 SaaS**다. 핵심 약속은 "사진 한 장이면 충분해요 — AI가 대본부터 편집까지 자동으로"이며, 사용 흐름은 **사진 업로드 → AI 생성 → 결과 확인 → 다운로드** 4단계다. 사장님이 촬영·편집 지식 없이 매장 사진 한 장으로 홍보 영상을 만드는 것이 제품의 본질이다. 모빌리티·차량공유와는 무관하다.
 
-시스템의 핵심 가치는 "가장 쏘카다운, 가장 효율적인"이며, UX 원칙은 "복잡함을 덜어내고 본질에 집중합니다 — 더 뺄 것이 없을 때까지 덜어냅니다"로 요약된다 [src:9][src:11]. 디자인 원칙 문서는 점진적 개선을 표방해(Legacy & Consistency) 시각 언어를 절제된 방향으로 고정한다 [src:9]. 시각 톤은 차갑고 차분하며 신뢰 지향적이다 — 채도 높은 파랑(`{colors.primary-regular}`)과 푸른 기가 도는 회색 램프가 밝은 표면 위에 놓이는 구조이며, 장식보다 정보 위계가 앞선다 [src:1][src:4].
+시각 톤은 절제되고 신뢰 지향적이다 — 밝은 회색 표면(`--bg-page` #F2F2F2, 마이페이지 #F9FAFF) 위에 흰 카드가 놓이고, 단일 브랜드 레드(`--ink-primary` #E81411)가 액션·강조를 담당한다. 위계는 색이 아니라 **크기와 굵기**로 만든다 — Heading 700 / Title 600 / Body 400, 숫자는 bold·단위 라벨은 regular로 분리한다(예: **10,908** 크레딧). 표면은 플랫 필이고, 깊이는 강한 그림자가 아니라 1px 헤어라인 + 미세 그림자로 만든다.
 
-브랜드 단서는 두 픽셀로 압축된다 — 흰 배경 위의 단일 브랜드 블루(`{colors.primary-regular}`)와 옅게 푸른 회색 워시다 [src:4]. 그라데이션·텍스처·손그림·반복 패턴은 어디에도 없고, 표면은 전부 플랫 필이다 [src:5][src:9]. 위계는 색이 아니라 크기와 굵기로 만든다 — Heading 700 / Title 600 / Body 400이며, 숫자는 bold로, 그 단위 라벨은 regular로 렌더한다(예: **11,900** 원 /시간), 이 규칙이 화면을 한눈에 읽히게 하는 핵심이다 [src:8][src:5]. 아이콘은 이모지가 아니라 커스텀 `icon-*-fill` / `icon-*-line` 폰트(약 150 글리프, 2 weight)에서 가져오며, 코드화된 "이모지 금지" 규칙이 문서·예시 전반에 일관되게 적용된다 [src:7].
+단, 랜딩(`index.html`)은 예외적으로 **표현적(expressive)** 이다 — 히어로에 WebGL 메시 그라디언트 셰이더, 다크 shader feature 카드(블러 radial-gradient blob), 3D 부채꼴 포트폴리오 스택, 로고 마퀴, 챗버블 타이핑 애니메이션 등 마케팅 연출이 얹힌다. 반면 서비스 내부 화면(`mypage.html` / `edit.html`)은 절제된 폼·카드·모달 위주다. **이 이중 톤(마케팅=표현적 / 서비스=절제)** 을 유지한다.
 
-주 사용자는 스마트폰 앱으로 가까운 쏘카존에서 차를 빌리는 한국 이용자이며, 야외·한 손 조작 환경에 노출된다 [src:10][src:11]. 릴리스 체크리스트가 "한 손 조작이 가능합니까?", "야외 환경에서도 핵심 정보가 식별됩니까?"를 게이트로 둘 만큼, 이 시스템은 화면 UI가 아니라 이동 경험 전체를 설계 대상으로 본다("Move Better, Design Better") [src:10][src:11]. 원칙 간 트레이드오프 우선순위도 명시되어 있다 — Safety > Essentials > Confidence > Quality > Consistency > Innovation이며, "Wow Moment"는 깜짝 연출이 아니라 차분한 확신과 무마찰로 정의된다 [src:11][src:12].
+아이콘은 **Lucide**(`data-lucide`, unpkg CDN)를 1차로 쓴다. 이모지·유니코드 의사 아이콘(`►`·`→`·`★`)으로 대체하지 않는다.
 
-**SOCAR Frame 2.0은 라이트 모드 전용이다.** 공개된 다크 팔레트가 없으며, 모든 표면 토큰은 밝은 배경(`background-regular`, 본문 흰색)을 전제로 한다 [src:1][src:4]. 다운스트림에서 다크 테마가 필요하다면 별도 제품 근거 위에서 정의해야 하며, 이 문서는 다크 토큰을 추정하지 않는다.
+**라이트 모드 전용이다.** 다크 테마 토글이나 `prefers-color-scheme` 분기는 없다. 검정 표면(footer, 포트폴리오 섹션, shader 카드, info 툴팁, 사용자 챗버블)은 다크 테마가 아니라 국소적 디자인 선택이다.
 
 ## Colors
 
-SOCAR Frame 2.0은 공식 Colors 페이지에 전체 토큰 세트를 게시하며, 색상 클래스는 `tw-{bg|text|border|fill}-{name}-{step}` 패턴을 따른다 [src:4][src:1]. 아래 값은 공개된 hex 토큰을 ko-design-md 표준에 맞게 OKLCH로 변환한 것이며, **라이트 모드 전용으로 다크 변형은 존재하지 않는다** [src:4][src:1].
+색 정본은 `../css/tokens.css`다. 아래는 실제 정의된 토큰 요약이며, OKLCH가 아니라 **hex 원본**을 그대로 쓴다.
 
 ```yaml
-# Brand / primary (action) — DOWNSTREAM OVERRIDE #3: 컬러 축이 세 번째로 바뀜.
-# #1(최초): SOCAR 블루(257) hue 회전 → #FF6560(코랄).
-# #2: "Virtualshield" 브랜드 이미지 기준 → Virtual Red #FB0023.
-# #3(현재, 2026-07-15): 또 다른 브랜드 가이드 이미지 기준 → Red #E81411 + 프레스 단계 Dark Red #490B00.
-# 이번 이미지는 스와치별 HEX 라벨이 옆의 RGB 값과 안 맞아서(오탈자로 보임) RGB 기준으로 근사함.
-# 정확한 hex/OKLCH 값의 원본(authoritative source)은 이 문서가 아니라 ../css/tokens.css다 — 아래
-# oklch 근사치는 참고용이고, 실제 렌더링 값은 tokens.css의 hex를 신뢰할 것.
-primary-regular: oklch(0.540 0.220 25)    # ≈ #E81411 (Red)
-primary-strong: oklch(0.400 0.170 25)     # ≈ #A31009, 중간 스텝
-primary-heavy: oklch(0.220 0.120 25)      # ≈ #490B00 (Dark Red 스와치), pressed
-service-business: oklch(0.220 0.120 25)   # (unused in this deployment)
+# ---------- Brand (레드 축) ----------
+ink-primary:        "#E81411"   # 메인 브랜드 레드 — 액션/링크/포커스/강조
+ink-primary-active: "#490B00"   # Dark Red — press/강조 단계
+blue-500(alias):    "#A31009"   # primary-strong — regular와 heavy 사이 중간 스텝
+black:              "#000000"   # 순흑 — 마이페이지 primary/danger 버튼, footer, 사용자 챗버블
+# 호환 별칭: --linegreen/--blue-400/--border-active/--txt-link = --ink-primary
 
-# Red ramp (brand axis; named steps used by components — renamed from blue-* to red-*)
-red-50: oklch(0.962 0.022 25)
-red-100: oklch(0.917 0.040 25)
-red-200: oklch(0.789 0.111 25)   # input focus border
-red-500: oklch(0.540 0.220 25)   # = primary-regular ≈ #E81411
+# ---------- Neutral 그레이 램프 (틴트 없는 순중립) ----------
+grey-25:  "#FCFCFC"   grey-50:  "#F2F2F2"   grey-100: "#E6E6E6"
+grey-200: "#D8D8D8"   grey-300: "#CFCFCF"   grey-400: "#B0B0B0"
+grey-500: "#8F8F8F"   grey-600: "#737373"   grey-700: "#595959"
+grey-800: "#4A4A4A"   grey-900: "#3F3E3E"   # Dark Grey — text-strong
 
-# Neutral grays (faintly blue-tinted ramp)
-gray-50: oklch(0.984 0.002 286)
-gray-100: oklch(0.967 0.004 271)
-gray-200: oklch(0.927 0.009 264)
-gray-300: oklch(0.851 0.018 264)
-gray-400: oklch(0.781 0.027 267)
-gray-500: oklch(0.687 0.035 265)
-gray-600: oklch(0.519 0.039 263)
-gray-700: oklch(0.405 0.036 264)
-gray-800: oklch(0.331 0.034 264)
-gray-900: oklch(0.268 0.030 263)
-gray-1000: oklch(0.211 0.026 261)
+# ---------- 시맨틱 — 텍스트 ----------
+txt-darkest/txt-cto: "#3F3E3E"   # grey-900 — 제목/강한 본문
+txt-dark:            "#595959"   # 본문 기본
+txt-lighter:         "#737373"   # 보조
+txt-faint:           "#6E6E6E"   # 3차 — 흰 배경 대비 ≥4.5:1(WCAG AA). 작은 본문엔 쓰지 않음
+txt-link:            "#E81411"
+txt-on-dark:         "#FFFFFF"   txt-on-dark-lighter: "#B0B0B0"
 
-# Semantic — text
-text-strong: oklch(0.211 0.026 261)    # gray-1000
-text-primary: oklch(0.331 0.034 264)   # gray-800, default body text
-text-secondary: oklch(0.519 0.039 263) # gray-600
-text-tertiary: oklch(0.687 0.035 265)  # gray-500
-text-disabled: oklch(0.781 0.027 267)  # gray-400
+# ---------- 시맨틱 — 표면/구조 ----------
+bg-page:    "#F2F2F2"   bg-surface: "#FFFFFF"   bg-subtle: "#FCFCFC"   bg-dark: "#3F3E3E"
+border-neutral/secondary: "#D8D8D8"   border-active: "#E81411"   border-on-dark: "rgba(255,255,255,.12)"
+# 마이페이지 스코프는 --border-neutral/--border-secondary를 국소적으로 #F3F4FA로 덮음(더 옅은 보더)
 
-# Semantic — surface / structure
-background-regular: oklch(0.967 0.004 271)  # app-surface wash
-border-regular: oklch(0.927 0.009 264)
-border-weak: oklch(0.967 0.004 271)
-divider-regular: oklch(0.927 0.009 264)
-divider-weak: oklch(0.967 0.004 271)
-white: oklch(1.000 0.000 0)                 # body background
-black: oklch(0.000 0.000 0)
+# ---------- 시맨틱 — 오버레이(반투명) ----------
+opacity-black-80: "rgba(0,0,0,.80)"   opacity-black-40: "rgba(0,0,0,.44)"   # 모달/시트 딤
+opacity-black-5:  "rgba(0,0,0,.06)"   # press 리플
+black-85/60/40:   "rgba(0,0,0,.85/.60/.40)"   black-8: "#E6E6E6"
+white-90/60/12:   "rgba(255,255,255,.90/.60/.12)"
 
-# Semantic — overlay (translucent)
-dimmed-regular: oklch(0.211 0.026 261 / 0.44)      # modal/sheet dim
-pressed-regular: oklch(0.211 0.026 261 / 0.06)     # press-ripple
-pressed-dark-regular: oklch(0.000 0.000 0 / 0.08)  # press-ripple on dark fill
+# ---------- 시맨틱 — 상태 ----------
+green(positive):  "#A6E3BC / #3DAA5C / #3DAA5C"   # --green-300/400/500
+orange(caution):  "#F6DD8E / #EFC22A / #D9A600"   # --orange-300/400/500
+red(negative):    "#F8B9B4 / #F49992"             # --red-300/400
+fill-accent-blue/orange/green/purple/pink: "#FBE1E0 / #FCF3D9 / #E4F5EA / #EDECFE / #FDEBEA"  # 틴트 필
 
-# Semantic — status (weak / regular / strong)
-information-weak: oklch(0.962 0.022 248)
-information-regular: oklch(0.620 0.219 257)
-information-strong: oklch(0.586 0.236 261)
-positive-weak: oklch(0.974 0.043 158)
-positive-regular: oklch(0.745 0.176 162)
-positive-strong: oklch(0.706 0.165 163)
-caution-weak: oklch(0.978 0.030 92)
-caution-regular: oklch(0.741 0.166 56)
-caution-strong: oklch(0.712 0.166 53)
-negative-weak: oklch(0.957 0.025 14)
-negative-regular: oklch(0.649 0.219 19)
-negative-strong: oklch(0.594 0.249 21)
-notification-red: oklch(0.649 0.219 19)  # badge / notification dot
-
-# Semantic — accent (one representative step per hue)
-accent-red: oklch(0.649 0.219 19)
-accent-orange: oklch(0.741 0.166 56)
-accent-green: oklch(0.745 0.176 162)
-accent-lightblue: oklch(0.681 0.156 232)
-accent-purple: oklch(0.617 0.214 295)
-accent-redorange: oklch(0.683 0.205 41)
-accent-indigo: oklch(0.572 0.234 268)
-accent-magenta: oklch(0.640 0.245 7)
-accent-lime: oklch(0.794 0.214 130)
-accent-cyan: oklch(0.733 0.137 207)
-
-# Semantic — domain-specific (mobility)
-location-rental: oklch(0.540 0.220 25)   # pickup marker (= primary-regular, Red)
-location-return: oklch(0.487 0.260 268)  # return marker / indigo-700
+# ---------- 장식 (그라디언트 orb / 셰이더) ----------
+gradient-mint/peach/lavender/sky/rose: "#3DAA5C / #C77FC4 / #A9A4FA / #3D57FF / #B39DF5"
 ```
 
-**다운스트림 재정의 #3 (2026-07-15): 색상 축이 세 번째로 바뀌었다.** #1은 SOCAR 블루→코랄(#FF6560), #2는 "Virtualshield" 브랜드 이미지 기준 Virtual Red(#FB0023)였고, 지금 #3은 또 다른 브랜드 가이드 이미지 기준 **Red `#E81411`**(`{colors.primary-regular}`) + 프레스 단계 **Dark Red `#490B00`**이다. 이 이미지는 Black `#000000`/Dark Grey `#3F3E3E`/Grey `#CFCFCF`/White 4점을 뉴트럴 기준으로 제공해서 그레이 램프를 다시 보간했다. `{colors.primary-regular}`는 여전히 유일한 브랜드 색이고 strong/heavy는 press·강한 CTA 용도일 뿐 장식에 쓰지 않는다는 원본 규칙은 그대로 유지한다 [src:4][src:9]. **이번 이미지는 caution/negative 시맨틱 색을 제공하지 않아서 그 둘은 #2 재정의 값을 그대로 유지했고**, 대신 이 이미지가 준 Green(양성)·Blue·Light Purple 3색만 `--green-*`/`--gradient-sky`/`--gradient-lavender`에 근사 매핑했다 — 나머지 `--gradient-peach`/`--gradient-rose`(Plum/Soft purple)도 #2 값을 그대로 유지. **단, 원본 이미지의 스와치별 HEX 라벨이 옆에 적힌 RGB 값과 안 맞아서(예: 빨강 스와치인데 HEX가 어두운 갈색 계열로 적혀있음) RGB 쪽을 기준으로 근사했다 — 정확한 원본 hex가 아니다.** accent 10종 범주형 램프, 모빌리티 도메인 토큰(`{colors.location-rental}`/`{colors.location-return}`) 등 구조 자체는 이전과 동일, hue만 새 브랜드에 맞게 다시 조정됐다 [src:4][src:2]. 이번 교체도 "메시드 그라디언트 히어로"는 명시적으로 제외 대상이라 손대지 않았다.
+**주의 — 토큰 밖 하드코딩 색 (Known Gaps에도 기재).** 코드에 tokens.css 밖 색 리터럴이 몇 개 있다:
+
+| 색 | 위치 | 용도 |
+|---|---|---|
+| `#d4ff3f` | index.css `.studio-showcase__all` | 네온 라임 pill (마케팅 액센트) |
+| `#F9FAFF` | edit.css / mypage.css body 배경 | 마이페이지 계열 페이지 배경(옅은 블루틴트 화이트) |
+| `#F3F4FA` | mypage-common.css 보더/아바타 트랙 | 마이페이지 스코프 보더 |
+| `#5869f7` | common.js / mypage.css | WebGL 캔버스 폴백 배경(인디고) |
+| `rgba(58,15,31)` 등 4색 | index.css shader-feature-card | wine/teal/olive/purple 다크 카드 |
+
+브랜드 레드는 **#E81411** 하나다. 새 UI에서 액션·강조는 `--ink-primary`를 쓰고, 위 하드코딩 색을 임의로 늘리지 않는다. (크레딧 숫자는 과거 `#F93322`였으나 `--ink-primary`로 통일 완료.)
 
 ## Typography
 
-SOCAR Frame 2.0은 **Pretendard Variable** 단일 패밀리로 일원화한다 — 다른 서체와의 페어링 없이 하드 룰로 고정되어 있고, 토큰 CSS는 jsDelivr 웹폰트(`pretendard@v1.3.9`)로 weight 400/500/600/700을 로드하며 한글 글리프 보강을 위해 `Apple SD Gothic Neo`, `Noto Sans KR`를 폴백 스택에 둔다 [src:8][src:4].
+**Pretendard** 단일 패밀리로 일원화한다. weight는 400/500/600/700. letter-spacing은 대부분 0이며, 큰 히어로 타이틀·가격 등에만 `-0.01em`, 대문자 eyebrow에 `0.04~0.08em`을 준다. 카운트다운 숫자만 monospace(`SFMono/Consolas/Menlo`)를 쓴다.
 
 ```yaml
-font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif
-
-weight-regular: 400
-weight-medium: 500
-weight-semibold: 600
-weight-bold: 700
-
-# token: size px / line-height px / weight
-display1: 40 / 50 / 700   # letter-spacing 0
-display2: 36 / 44 / 700   # letter-spacing -0.6px (only token with negative tracking)
-heading1: 26 / 36 / 700
-heading2: 24 / 34 / 700
-heading3: 22 / 30 / 700
-heading4: 20 / 28 / 700
-title1: 18 / 26 / 600
-title2: 16 / 24 / 600
-title3: 14 / 22 / 600
-title4: 13 / 20 / 600
-body1: 18 / 26 / 400
-body2: 16 / 24 / 400   # default body
-body3: 14 / 22 / 400
-body4: 13 / 20 / 400
-caption1: 12 / 18 / 600
-caption2: 12 / 18 / 500
-caption3: 10 / 16 / 600
-caption4: 10 / 16 / 400
+font-family: '"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif'
+weight-regular: 400   weight-medium: 500   weight-semibold: 600   weight-bold: 700
 ```
 
-위계 패턴은 명확하다 — Display·Heading은 bold(700), Title은 semibold(600), Body는 regular(400), Caption은 600/500/400을 섞는다 [src:8][src:5]. 본문 기본 텍스트 색은 `{colors.text-primary}`이며, 산문성 제목 맥락에서는 `{colors.text-strong}`을 쓴다 [src:4]. letter-spacing은 display2(−0.6px)를 제외하면 전부 0이다 [src:4][src:8]. 줄 높이는 1.22–1.6배로 잡혀 작동하는 앱처럼 빽빽하되 한글 렌더링을 수용한다 [src:8][src:5]. 가격·시간·거리 등 숫자는 title1/title2(semibold)로, 그 단위 라벨은 body weight로 분리하는 컨벤션이 반복된다 [src:5][src:8].
+**위계 규칙:** Display·Heading=700, Title=600, Body=400/500. 숫자(크레딧·가격·타이머)는 bold, 단위 라벨은 regular로 분리.
+
+**주의 — 정연한 토큰 스케일 아님.** `display1/heading1/...` 처럼 고정된 타입 토큰 세트는 **없다.** 실제 화면은 아래처럼 애드혹 px를 직접 쓴다(대표값):
+
+| px / line-height / weight | 쓰이는 곳 |
+|---|---|
+| 56·(768↑) / 40 · 1.2 · 700 | stellar-hero 타이틀 |
+| 44 · — · 700 | 오버레이 카드 대형 숫자, feature 아이콘 |
+| 38 · 1.25 · 700 | hero 타이틀 |
+| 32 · 1.3 · 700 | 프로모 배너 타이틀, 가격 |
+| 28 · 1.3 · 700 | 섹션 타이틀, 스튜디오/커버 타이핑 |
+| 22 · — · 700 | **드로어 nav·그룹 트리거**(모바일 메뉴) |
+| 20 · — · 700 | 프로필 이름, 통계 숫자, info-row strong |
+| 18 · 1.55 · 700/500 | edit 타이틀, 챗버블, 탭바 |
+| 17 · 1.6 · 500 | step 카드 타이틀, hero desc |
+| 16 · 1.5 · 400~700 | 본문, CTA 버튼, footer 브랜드 |
+| 15 · 1.6 | 섹션 desc, 프로모 desc |
+| 14 · 1.5~1.6 · 400/500 | 대부분 본문/라벨/버튼/nav |
+| 13 · 1.5 · 400/500/600 | 서브타이틀, 칩, ghost 버튼 |
+| 12 · 1.5 · 400/500/600 | 캡션, 태그, 힌트, 위자드 스텝 라벨 |
+| 11 · — / 10 · — | 리본·배지 / 타이머 단위 |
+
+향후 이 값들을 타입 토큰으로 승격하는 것을 검토할 것(현재는 미승격).
 
 ## Spacing
 
-간격 체계는 4px 기본 단위에 기반한다 — Spacing 페이지는 "1 unit = 4px"를 명시하고, 스케일은 `spacing-{n}` 토큰 램프로 `n ÷ 25 = px` 규칙을 따른다 [src:6][src:4]. Tailwind 유틸리티(`tw-p-spacing-{n}`, `tw-gap-spacing-{n}`)로 적용된다 [src:4].
+간격은 `--space-*` 토큰(4px 기본단위)을 쓴다.
 
 ```yaml
-# spacing-{n} : px  (n / 25 = px)
-spacing-0: 0
-spacing-25: 1
-spacing-50: 2
-spacing-100: 4
-spacing-125: 5
-spacing-150: 6
-spacing-200: 8
-spacing-250: 10
-spacing-300: 12
-spacing-350: 14
-spacing-400: 16
-spacing-450: 18
-spacing-500: 20
-spacing-550: 22
-spacing-600: 24
-spacing-650: 26
-spacing-700: 28
-spacing-750: 30
-spacing-800: 32
-spacing-900: 36
-spacing-1000: 40
+space-4:4  space-6:6  space-8:8  space-10:10  space-12:12  space-16:16
+space-20:20  space-24:24  space-32:32  space-40:36(!)  space-48:40(!)  space-64:64  space-96:96
 ```
 
-스케일은 작은 크기 구간(1/2/4/5/6px)에서 촘촘해 타이트한 컴포넌트 패딩을 다루고, 그 위로는 4px 케이던스로 정착한다 [src:6][src:4]. 컨테이너 패딩은 대부분 12 / 16 / 18px, 스택 간격은 대부분 8 / 12px이며, 화면 단위 간격은 `{spacing.spacing-400}` 이상을 기준으로 삼는 구성이 시스템 의도에 맞는다 [src:6][src:5].
+**주의 — 이름 ≠ 값:** `--space-40`은 **36px**, `--space-48`은 **40px**로 리매핑되어 있다(tokens.css 115-116행). 이름만 보고 값을 가정하지 말 것. 컨테이너 좌우 패딩은 대부분 20px, 스택 간격은 8/12px, 섹션 간격은 24px 이상.
 
 ## Rounded
 
-코너 반경은 넉넉하게 둥근 토큰 램프이며, spacing과 동일한 `n ÷ 25 = px` 규칙을 따른다 — `radius-{n}` 토큰이 `tw-rounded-radius-{n}`로 적용된다 [src:4]. 부분 적용(`tw-rounded-t-radius-{n}` 상단, `tw-rounded-s/e-radius-{n}` start/end)도 지원한다 [src:6].
-
 ```yaml
-# radius-{n} : px
-radius-100: 4
-radius-150: 6
-radius-200: 8
-radius-250: 10
-radius-300: 12
-radius-350: 14
-radius-400: 16
-radius-500: 20
-radius-600: 24
-radius-circle: 9999   # full pill / circle
+radius-4:4  radius-6:6  radius-8:8
+radius-12:16(!)   # 카드
+radius-16:14(!)   # 버튼·인풋
+radius-20:24(!)   # 바텀시트 상단 코너
+radius-32:24  radius-full:9999  radius-pill:9999   # 칩/배지/원형 전용
 ```
 
-관찰된 사용처는 명확하며, 시스템은 작은 집합으로만 커밋한다 — 2px/3px 같은 미세 라운딩은 없다 [src:5]. 버튼은 크기에 따라 8–14px(xSmall 8px → large 14px), 카드와 스켈레톤 카드는 16px(`{rounded.radius-400}`), 바텀시트 상단 코너는 24px(`{rounded.radius-600}`)를 쓴다 [src:6][src:14]. 칩은 완전한 pill(고정 50px), 입력 필드·SelectionBox 카드는 14px(`{rounded.radius-350}`), 탭 인디케이터 바·TimePicker 세그먼트는 8–10px(`{rounded.radius-200}`/`{rounded.radius-250}`)다 [src:6][src:4]. 전반적으로 기하적이되 모서리는 일관되게 부드럽다 [src:4][src:6].
+**주의 — 이름 ≠ 값:** `--radius-12`=16px, `--radius-16`=14px, `--radius-20`=24px로 리매핑됨(tokens.css 123-131행). 실사용: **버튼·인풋 계열 = `--radius-16`(14px) 평탄**(크기별 8~14px 스케일 안 함), **카드 = `--radius-12`(16px)**, **바텀시트 상단 = `--radius-20`(24px)**, **칩·배지·아바타·핸들 = `--radius-pill`(9999)**. 인풋만 예외적으로 `--radius-8`(8px)을 쓰는 폼 필드가 있음(`.mypage-form-input`).
 
 ## Elevation & Depth
 
-SOCAR Frame 2.0의 깊이 언어는 절제되어 있다 — 표면 분리는 드롭섀도가 아니라 1px 디바이더(`{colors.divider-regular}`)와 `{colors.background-regular}` 배경 워시가 담당하며, 흰 카드가 밝은 회색 필드 위에 간격과 헤어라인으로 구분된다 [src:1][src:4][src:screenshot:home.jpg]. 그림자는 사실상 두 레시피로 희소하다 — 카드는 그림자 대신 디바이더를 받는다 [src:1][src:5].
+깊이는 절제됨 — 표면 분리는 1px 헤어라인(`--border-neutral`)이 먼저, 그림자는 보조. 모든 그림자 토큰이 미세하다.
 
 ```yaml
-shadow-sm: 0 1px 2px oklch(0.211 0.026 261 / 0.04)
-shadow-tip: 0 2px 4px oklch(0.000 0.000 0 / 0.12)
-shadow-sheet: 0 0 20px oklch(0.000 0.000 0 / 0.25)
+ev-2:      "0 1px 2px rgba(22,23,28,.04)"   # info-group, 아바타, 탭바 active
+ev-3:      "0 2px 4px rgba(0,0,0,.08)"      # 대부분 카드/드롭다운/버블/갤러리
+ev-gray-3: "0 0 20px rgba(0,0,0,.14)"       # 모달/시트/드로어, info 툴팁, 포트폴리오 hover
+ev-gray-2: "0 1px 2px rgba(22,23,28,.04)"   # ev-2 별칭
 ```
 
-그림자 토큰은 존재하지만 모두 미세하다 [src:1][src:4]. `shadow-sm`은 스켈레톤 카드 변형이라는 유일한 카드 예외에, `shadow-tip`은 툴팁 버블(AccentTip·InfoTip)에, `shadow-sheet`는 부양된 바텀시트에 쓰는 강도다 [src:1][src:5]. inner shadow도, elevation 토큰 시스템도 없다 [src:1]. **모든 그림자 토큰은 라이트 모드 값이다** — 다크 모드 대응 elevation은 공개되지 않았으므로, 다크 표면이 필요하면 별도 근거 위에서 정의해야 한다 [src:1][src:4].
+유일한 강한 그림자 예외: `.studio-showcase__all` 라임 pill의 하드코딩 `0 8px 24px rgba(0,0,0,.4)`. inner shadow·elevation 토큰 시스템은 없다.
 
-## Shapes
+## Shapes & Motion
 
-형태 언어는 정돈된 기하 구조 위에 넉넉한 반경을 얹는 방식이다 [src:4][src:6]. 칩은 완전한 pill, 카드와 시트는 12–24px 반경을 일관되게 써서 접근하기 쉽되 질서 있는 인상을 만든다 — 유기적이라기보다 기하적이다 [src:4][src:6]. 그라데이션은 없고 모든 표면은 플랫 필이며, 차량·위치 썸네일 이미지는 항상 radius-300/400 카드 안에 마스킹되어 앱 크롬 안에서 full-bleed로 깔리지 않는다 [src:1][src:5].
+플랫 필 + 넉넉한 라운드. 곡선은 코너 반경으로만, 표면 구분은 1px 헤어라인 + 배경 워시로.
 
-시각적 절제는 표면 처리에서도 드러난다 — 곡선은 모서리 반경으로만 표현되고, 표면 구분은 곡면이나 그림자가 아니라 1px 헤어라인과 배경 워시로 처리된다 [src:1]. 시그니처 인터랙션은 press feedback이다 — 인터랙티브 표면이 `:active`에서 92%로 축소되고 `::after` 리플 오버레이가 함께 뜬다(`active:tw-scale-[92%]` + `active:after:tw-bg-pressed-dark-regular`, 리플 radius는 컴포넌트 radius에 클리핑) [src:1]. 텍스트 인접 행(chip / checkbox / radio)은 94–96%로 더 약하게 축소한다 [src:1]. 모션은 짧고 표준적이다 — `duration-100`(100ms), `duration-150`(150ms), `ease-standard`(`cubic-bezier(0.42, 0, 0.58, 1)`)이며, spring/bounce나 화면 전환 페이드는 없다 [src:1]. hover 상태는 사실상 존재하지 않고 press가 모든 피드백을 담당한다 [src:1].
+**시그니처 인터랙션 = press feedback.** 인터랙티브 표면은 `:active`에서 `--press-scale`(0.92)로 축소, 텍스트 인접 행(칩/체크박스/텍스트 액션)은 `--press-scale-weak`(0.96)로 약하게. press가 주 피드백이다.
+
+**hover 정책 — 확정 필요(현재 모순).** 헤더 nav 링크·헤더 버튼·햄버거는 `transition: opacity`에 `:hover { opacity: var(--opacity-hover) }`를 걸어 두었고 주석은 "Hover 70%" 의도라고 적혀 있으나, **`--opacity-hover:1`이라 실제로는 hover 피드백이 전혀 없다.** 즉 "hover 70%" 관례와 "hover 없음, press가 전부" 원칙이 코드에 반쯤 섞여 있다. 신규 작업 전 둘 중 하나로 확정할 것 — (a) `--opacity-hover`를 0.7로 낮춰 데스크톱 hover를 살리거나, (b) opacity-hover 규칙 자체를 제거하고 press-scale로 일원화. 현재 상태는 헤더 상호작용에 시각 피드백이 사실상 없음(→ Known Gaps).
+
+```yaml
+motion-fast:      "150ms cubic-bezier(0.42,0,0.58,1)"   # 표준 트랜지션
+press-scale: 0.92   press-scale-weak: 0.96
+opacity-disabled: 0.4
+```
+
+기타 지속시간: 스크롤 리빌 300ms, 드로어 260ms, 라이트박스 320ms, warp 코어 640ms. keyframe: 로고 마퀴 20~28s, hero grid drift 18s, 포트폴리오 마퀴 24s, 챗 타이핑, shimmer wave, 커서 blink 800ms. **모든 애니메이션은 `@media (prefers-reduced-motion: reduce)`로 비활성 가드**되어 있다(신규 애니메이션도 반드시 가드 추가).
+
+## Layering (z-index)
+
+레이어 순서는 아래 4단으로 고정한다. 현재 하드코딩 정수라 **토큰화 권장**(`--z-header`/`--z-drawer`/`--z-overlay` 등).
+
+```yaml
+header:          30    # .site-header (fixed)
+drawer-backdrop: 40    # .drawer-backdrop
+drawer:          50    # .drawer (모바일 사이드 드로어)
+overlay/modal:  100    # 모든 .*-overlay / info-modal (최상위)
+```
+
+규칙: 새 오버레이·팝업은 `z-index:100`(모달 층)에 둔다. 헤더보다 위여야 하는 상시 UI는 30~50 사이를 쓰되 드로어(50)를 넘지 않는다.
+
+## Focus (접근성 파운데이션)
+
+전역 포커스 링은 `common.css`에서 한 번만 정의한다 — 컴포넌트별로 재정의하지 않는다.
+
+```css
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--border-active);  /* 브랜드 레드 #E81411 */
+  outline-offset: 2px;
+  border-radius: var(--radius-4);
+}
+```
+
+폼 인풋은 예외적으로 `outline: 2px solid var(--border-active); outline-offset: 1px`(마이페이지 폼)로 살짝 다르다. 신규 인터랙티브 요소는 이 전역 규칙을 상속받게 두고, `outline:none`으로 지우지 않는다.
 
 ## Components
 
-SOCAR Frame 2.0은 React 18 + Tailwind v3(커스텀 `tw-` 프리픽스) + framer-motion 라이브러리이며, `@socar-inc/socar-frame-components`로 배포되고 `@socar-inc/socar-frame-foundation`을 peer dependency로 둔다 [src:5]. 코퍼스는 24개 컴포넌트(비시각 Haptic 포함 25번째)를 문서화하며, 각 컴포넌트는 base 클래스 + size 축 + variant 축 + state로 분해된다 [src:5]. 아래는 시스템의 시그니처 패턴이다.
+상인월드는 **순수 HTML + CSS + JS**로 구현된다(React·Tailwind·framer-motion 없음). 클래스는 BEM 계열(`block__element--modifier`). 아이콘은 Lucide. 아래는 실제 화면에 존재하는 컴포넌트다 — 코드 예시는 HTML/CSS 스니펫으로 준다.
 
-### action-button-fill-primary
+> CSS 레이어 규칙(`화면/CLAUDE.md`): tokens → common → {group}-common → {page} 순. 공통은 `common.css`, 마이페이지군 공용은 `mypage-common.css`, 페이지 전용은 `{page}.css`.
 
-ActionButton의 1차 fill/primary variant다 — 페이지의 주 행동을 담당하며 배경은 `{colors.primary-regular}`, 텍스트는 흰색이다 [src:1][src:14]. 4개 크기(large 56px → xSmall 32px height)를 지원하고, radius는 크기에 따라 8–14px(xSmall 8 → small 10 → medium 12 → large 14)로 스케일하며 타이포는 caption2→title2로 함께 오른다 [src:1][src:14]. `hapticConfig` prop으로 웹뷰 햅틱을 연결할 수 있다 [src:1][src:14].
+### header (fixed)
+`.site-header` — height 68px(`z-index:30`), 하단 1px 보더, bg는 랜딩=페이지색 / 마이페이지·에딧=#fff. 로고(`image/logo.svg`) 높이 24px. 좌우 `.site-header__logo`/`.site-header__actions`가 **각각 width 288px 고정**으로 nav를 가운데 밀어냄. 데스크톱은 nav + 액션 버튼, **≤860px는 nav·actions 숨기고 햄버거만**(container `space-between`).
+- **주의(→Known Gaps):** 로고 컨테이너 288px가 모바일에서도 고정이라 아주 좁은 폭에서 오버플로 위험(`overflow-x:hidden`으로 클립됨). `max-width` 반응형 검토 권장.
+- **버튼 피드백 비대칭:** `.btn-header-primary`는 `:active` press-scale(0.92) 있음, `.btn-header-outline`·`.hamburger`는 opacity hover뿐이라(→ `--opacity-hover:1`) 실질 피드백 없음. hover 정책 확정 시 함께 정리.
 
-```tsx
-<ActionButton styleType="fill" variant="primary" size="large">
-  예약하기
-</ActionButton>
+### nav-dropdown (desktop)
+`.nav-item` hover/focus-within 시 `.nav-dropdown`(width 260px, `--radius-12`=16px, `--ev-3`, 항목 `--radius-8`) 페이드+translate로 노출. 셰브론 아이콘 180° 회전.
+
+### hamburger + drawer
+`.hamburger`(36×36, `--radius-8`) 클릭 → `.drawer`(**우측 풀스크린 `width:100vw`**, `translateX(100%)→0`, 260ms ease-out, `z-index:50`) + `.drawer-backdrop`(black-40, `z-index:40`).
+- 드로어 nav 항목 = **22px/700**(`.drawer__nav`, `.drawer__group-trigger`), 서브메뉴 = 14px. 서브메뉴 `.drawer__submenu`가 `grid-template-rows: 0fr→1fr` 아코디언으로 펼침(셰브론 180° 회전).
+- 하단 `.drawer__actions`는 `margin-top:auto`로 바닥 고정, 버튼은 풀와이드 세로 스택(padding 18/22, 16px/700 — 헤더 버튼보다 큼).
+- 닫기: `.drawer__close`(40×40) `aria-label` 필수 + `Escape`(common.js `initDrawer`) + 백드롭 클릭.
+
+### buttons
+크기·색만 다르고 모두 press-scale·`--radius-16`(boxed 기준) 공유.
+
+| 클래스 | height | bg / border | 텍스트 | 용도 |
+|---|---|---|---|---|
+| `.btn-header-primary` | 36 | bg `--ink-primary`(레드) | 흰 | 헤더 CTA |
+| `.btn-header-outline` | 36 | 투명 + 1px 보더 | 본문색 | 헤더 보조 |
+| `.btn-cta` | 52 | bg 레드 | 흰 | 페이지 주 CTA |
+| `.btn-warp` | 52 | surface + 보더 | — | 특수 액션 |
+| `.btn-outline` | 40 | 투명 + 1px 보더 | — | 보조 |
+| `.btn-loadmore` | 46 | surface | — | 더보기 |
+| `.mypage-btn-primary` | 48 | **bg #000(검정)** | 흰 | 마이페이지 주 액션 |
+| `.mypage-btn-danger-pill` | 52 | **bg #000** | 흰 | 파괴적 확정 |
+| `.mypage-btn-outline` | 48 | surface + 보더 | — | 보조 |
+| `.mypage-btn-ghost` | 32 | 투명 | — | 약한 액션 |
+| `.mypage-action` | — | 없음 | 레드 링크 | 텍스트 액션 |
+| `.mypage-link-danger` | — | 없음 | underline | 위험 텍스트 링크 |
+
+> **주의:** 마이페이지 primary/danger 버튼은 브랜드 레드가 아니라 **검정(#000)** 이다. 랜딩 CTA만 레드. 신규 버튼은 이 관례를 따를 것.
+
+```html
+<button class="btn-cta">무료로 시작하기</button>
+<button class="mypage-btn-primary">저장</button>
 ```
 
-### action-button-fill-secondary
+### badge / eyebrow / pill-tag
+pill(`--radius-pill`) 계열 라벨류. `.eyebrow`/`.studio-showcase__eyebrow`(grey-100 배경, 대문자), `.pill-tag`, `.stellar-hero__badge`(h32 보더 pill), `.price-card__ribbon`(`--radius-4` 리본), `.mypage-profile-bar__tag`(grey-100 pill), `.mypage-payment-default-label`(green 틴트 "기본" 라벨). 비인터랙티브.
 
-fill/secondary variant는 1차 행동보다 낮은 우선순위의 확정 행동에 쓴다 [src:1][src:14]. 배경은 `{colors.blue-100}`(연한 파랑), 텍스트는 `{colors.primary-strong}`로, `{component.action-button-fill-primary}`와 구조를 공유하되 색 위계를 낮춘다 [src:1][src:14].
+### tabs — underline (`.pricing-toggle`)
+2px 하단 인디케이터 바 + opacity 상태. 요금제 월/연 토글 등.
 
-```tsx
-<ActionButton styleType="fill" variant="secondary" size="large">
-  다음에
-</ActionButton>
+### tabs — segmented (`.stellar-tabbar`)
+grey-100 트랙 위 세그먼트, active = 흰 배경 + `--ev-2`, `--radius-8` pill, 세그먼트 사이 divider.
+
+### cards
+`.step-card` / `.price-card`(+`--featured`) / `.feature-highlight-item` / `.gallery-card` / `.mypage-info-group`. surface 배경, `--radius-12`(16px), `--ev-3`(info-group은 `--ev-2` + 1px 보더). 이미지 썸네일은 항상 카드 radius 안에 마스킹.
+
+### shader-feature-card (랜딩 전용, 표현적)
+`.shader-feature-card--wine/teal/olive/purple` — 다크 배경 + 블러된 radial-gradient blob, `--radius-20`. 마케팅 연출용. 서비스 내부 화면엔 쓰지 않음.
+
+### stellar-hero + mesh gradient
+`.stellar-hero` 배경에 WebGL 메시 그라디언트 캔버스(`.mesh-gradient-canvas`, common.js 셰이더). `__title-gradient`는 text-clip 그라디언트. 캔버스 미지원 시 `#5869f7` 폴백. 높이 340/480/620px(반응형).
+
+### overlay status card
+`.stellar-overlay-card` — 진행 바(`__bar`, 8px, `--radius-full`) + 체크리스트, scale(.94)→1 등장. AI 생성 진행 표현.
+
+### inputs / forms (`mypage-common`)
+`.mypage-form-input` — height 44px, `--radius-8`(8px), 1px 보더, focus 시 2px outline. `__label`, 카드번호 4분할 박스, 만료월/CVC, `--sm`(max 120px). 유효성 `.is-valid`/`.is-invalid` + `.mypage-form-error`.
+
+```html
+<label class="mypage-form-label">이메일</label>
+<input class="mypage-form-input" type="email">
+<p class="mypage-form-error">올바른 이메일을 입력하세요</p>
 ```
 
-### action-button-fill-tertiary
+### password field + toggle (`edit`)
+`.mypage-form-password-wrap` + `.mypage-form-password-toggle`(eye/eye-off Lucide, `.is-visible` 토글). 규칙 체크리스트 `.mypage-pw-rules li`(`.is-met`→green): 조합/길이/일치 실시간 검증.
 
-fill/tertiary variant는 가장 낮은 위계의 보조 행동용이다 [src:1][src:14]. 배경은 `{colors.gray-100}`(= `{colors.background-regular}` 톤), 텍스트는 `{colors.text-primary}`를 써서 중립 표면처럼 읽히게 한다 [src:1][src:14].
+### checkbox — 동의 (원형)
+`.mypage-consent__row input` — **18×18 원형**(`--radius-full`), checked = 레드 배경 + 흰 ✓ pseudo. 약관 동의행에 원형 단일 체크로 쓴다.
 
-```tsx
-<ActionButton styleType="fill" variant="tertiary" size="medium">
-  취소
-</ActionButton>
-```
+### modal / overlay / bottom-sheet (다운스트림 확립 패턴)
+마이페이지·에딧의 모든 팝업이 공유하는 핵심 패턴. **모바일/태블릿(<1024px) = 하단 고정 바텀시트, PC(≥1024px) = 화면 중앙 카드.**
 
-### action-button-outlined
-
-styleType outlined는 흰 배경 + 1px `{colors.divider-regular}` 보더로 구성되며 높이가 fill보다 2px 크다 [src:14]. variant는 primary(`{colors.primary-regular}` 텍스트)·secondary(`{colors.text-primary}` 텍스트)만 지원하고, tertiary 요청 시 primary로 폴백한다 [src:14].
-
-```tsx
-<ActionButton styleType="outlined" variant="primary" size="medium">
-  자세히 보기
-</ActionButton>
-```
-
-### action-button-pressed
-
-ActionButton의 눌림 상태는 별도 시각 상태로 다룬다 — 시그니처 press feedback에 따라 표면이 `:active`에서 92%로 축소되고, 진한 fill 위에서는 `{colors.pressed-dark-regular}` 리플 오버레이가 크기별 radius에 클리핑되어 함께 뜬다 [src:1][src:14]. loading은 `{colors.gray-100}` 필 + Lottie 로더로 전환하며 클릭을 막고, disabled는 불투명도 변화 없이 `{colors.gray-100}` 배경 / `{colors.text-disabled}` 텍스트로 재색칠한다 [src:14].
-
-```tsx
-<ActionButton styleType="fill" variant="primary" loading />
-```
-
-### icon-button
-
-완전 원형(`{rounded.radius-circle}`) 정사각 비율의 아이콘 전용 버튼이며, xSmall→xLarge 5개 크기를 지원한다(측정 표본 large 약 46px, xSmall 약 28px) [src:1][src:15]. 배경·보더 색은 자유 커스텀이고, 모빌리티 아이콘 세트(`icon-car`, `icon-charging`, `icon-bolt` 등)를 `-fill`/`-line` 스타일로 담으며, press 리플은 원형으로 클리핑된다 [src:7][src:15].
-
-```tsx
-<IconButton size="medium" icon={<IconCarLine />} aria-label="차량" />
-```
-
-### text-button
-
-배경 없는 텍스트 버튼으로 반경은 4px(`{rounded.radius-100}`) 고정, padding 4/2px 고정이며, 색은 variant로 정해진다 — primary `{colors.primary-regular}`, secondary `{colors.text-primary}`, tertiary `{colors.text-secondary}` [src:1][src:16]. 4개 크기는 타이포·높이만 바꾸고(22→28px), 옵션으로 underline을 가진다 [src:16].
-
-```tsx
-<TextButton variant="primary" size="large">전체 보기</TextButton>
-```
-
-### accordion
-
-펼침/접힘 패널 컨테이너다 — `useAccordion` 훅으로 `single`/`multiple`/`manual` 모드를 제어하며(`openValues`/`onOpenChange`), 컨테이너는 `{rounded.radius-150}`(6px)에 1px `{colors.gray-100}` 보더와 `gap-2`를 두고, 각 항목은 질문 + 셰브론의 trigger 행과 답변 panel로 구성된다 [src:17][src:screenshot:accordion.png].
-
-```tsx
-<Accordion type="single" defaultValue="q1">
-  <Accordion.Item value="q1" trigger="결제는 언제 되나요?">
-    예약 확정 시점에 결제됩니다.
-  </Accordion.Item>
-</Accordion>
-```
-
-### badge
-
-`content`(숫자/텍스트 pill)와 `dot` 두 variant를 가지며, 기본 배경은 `{colors.notification-red}`, 옵션으로 1px 흰 보더(`hasBorder`)를 둔다 [src:1][src:4]. content는 높이 20px·min-width 20px·radius 17px pill에 `{typography.caption1}` 흰 텍스트, dot은 6×6px이며, 대상 위 우상단에 absolute로 오프셋된다 [src:4]. 색은 `backgroundColor`/`textColor`/`borderColor` prop으로 커스텀한다 [src:4].
-
-```tsx
-<Badge variant="content" size="medium">9+</Badge>
-<Badge variant="dot" />
-```
-
-### chip
-
-선택 가능한 pill이며 반경은 50px 고정, padding 8/12px·gap 6px다 [src:1][src:19]. 크기는 medium/small/xSmall(높이 36–40px, 타이포 body2/3/4)이며, 선택 상태는 `{colors.blue-50}` 배경 + 1px `{colors.primary-regular}` 보더 + `{colors.primary-regular}` 텍스트, 비선택은 흰 배경 + 1px `{colors.border-regular}` + `{colors.text-secondary}` 텍스트로 표시한다 [src:19]. press 시 `scale(0.95)` + `{colors.pressed-regular}` 리플, focus-visible 시 2px `{colors.primary-regular}` 링이 뜬다 [src:19]. 홈 화면의 필터 행("전체 · 경/소형 · 중형 · SUV · 전기 · 수입")이 이 컴포넌트다 [src:screenshot:home.jpg].
-
-```tsx
-<Chip selected onClick={onFilter}>SUV</Chip>
-```
-
-### checkbox
-
-복수 선택 행 + 그룹이다 — 행 `<label>`은 48px 높이(padding 12/16, gap 8)에 **20×20 원형** 컨트롤(2px `{colors.gray-500}` 보더)을 두고, 그룹 `<fieldset>`은 `{rounded.radius-150}`·`{colors.gray-100}` 배경·max-width 520px다 [src:20][src:screenshot:checkbox.png]. press 시 `scale(0.96)` + `{rounded.radius-150}` + `{colors.pressed-regular}` 배경이 적용되고, 라벨 텍스트는 `{typography.body2}`/`{colors.text-primary}`다 [src:20].
-
-```tsx
-<Checkbox.Group legend="옵션 선택">
-  <Checkbox value="hipass">하이패스</Checkbox>
-</Checkbox.Group>
-```
-
-### checkbox-checked
-
-체크 상태의 20×20 컨트롤은 배경·보더가 `{colors.primary-strong}`로 채워지고 안에 흰 체크 path가 그려진다 [src:20]. disabled+checked 조합에서는 컨트롤이 `{colors.gray-300}`으로 강등된다 — 불투명도가 아니라 색 토큰 교체로 비활성을 표현한다 [src:20].
-
-```tsx
-<Checkbox value="hipass" checked />
-```
-
-### radio
-
-단일 선택 행 + 그룹이며 구조는 `{component.checkbox}`와 동형이다 — 같은 48px 행(padding 12/16, gap 8), 같은 20×20 원형 2px 컨트롤, 같은 `{colors.gray-100}` 그룹을 쓴다 [src:21][src:screenshot:radio.png]. 차이는 체크 표시 방식뿐이다 — 선택 시 흰 체크 대신 안쪽 dot(`{colors.primary-strong}`)을 표시하며, 그룹 단위로 버튼·텍스트 색을 커스텀할 수 있다 [src:21].
-
-```tsx
-<Radio.Group legend="차종" defaultValue="suv">
-  <Radio value="suv">SUV</Radio>
-  <Radio value="compact">경/소형</Radio>
-</Radio.Group>
-```
-
-### selection-box
-
-큰 선택 카드 + 그룹(단일 선택)이다 — 카드 `<label>`은 `{rounded.radius-350}`(14px), 가로 full, 약 82px 높이(타이틀 + 서브텍스트, 선택적 좌측 컨트롤/아이콘)이며 press 시 `scale(0.96)` + `{colors.pressed-regular}` 배경이 적용된다 [src:22][src:screenshot:selectionbox.png]. 선택 상태는 강조 보더·배경을 입히며(선택색은 `{colors.primary-regular}` 계열), 그룹은 `<fieldset>` + `<legend>`(`{typography.body2}`)로 묶는다 [src:22]. 부분 스펙 컴포넌트라 정확한 선택 보더 토큰은 doc 페이지·스크린샷과 함께 확인해야 한다 [src:22].
-
-```tsx
-<SelectionBox.Group legend="보험 선택" defaultValue="basic">
-  <SelectionBox value="basic" title="기본 자기부담금" subText="면책 30만원" />
-</SelectionBox.Group>
-```
-
-### tag
-
-비인터랙티브 라벨이며 `<div>` `cursor-default`, 반경 6px(`{rounded.radius-150}`), padding 4/8px·gap 4px다 [src:1][src:5]. 크기는 타이포만 바꾸고(title4 / caption1 / caption3, 약 28–30px 높이), 배경·텍스트 색은 커스텀이다(예: `{colors.gray-100}` 또는 `{colors.blue-50}` 표면에 `{colors.primary-regular}` 텍스트) [src:5].
-
-```tsx
-<Tag>전기차</Tag>
-```
-
-### skeleton
-
-로딩 플레이스홀더로 `{colors.gray-100}` 베이스에 웨이브 시머 애니메이션을 얹는다 [src:23][src:screenshot:skeleton.png]. 모양은 세 가지다 — 사각(기본 `{rounded.radius-300}` 12px), 원형(`{rounded.radius-circle}`), 카드(`{rounded.radius-400}` 16px + 1px `{colors.border-regular}` 보더 + `shadow-sm`) [src:23]. 카드 변형은 시스템에서 유일하게 그림자를 갖는 카드 케이스이며, width/height/radius를 prop으로 받는다 [src:23][src:1].
-
-```tsx
-<Skeleton shape="card" width={320} height={120} />
-```
-
-### input
-
-단일 행 텍스트 입력이다 — `<label>`(`{typography.body2}`/`{colors.text-secondary}`) + 필드 래퍼(gap 10px, py 7px, 약 48px 높이) + 도움말 `<p>`(`{typography.body3}`/`{colors.text-tertiary}`)로 구성된다 [src:24][src:screenshot:input.png]. 전화·금액·날짜·시퀀스 빌트인 포매터와 React-Hook-Form을 지원한다 [src:24]. 세 variant 모두 focus 시 보더가 `{colors.blue-200}`로 바뀐다 [src:24].
-
-```tsx
-<Input variant="filled" label="휴대폰 번호" formatter="phone"
-  helperText="숫자만 입력하면 자동으로 하이픈이 추가됩니다." />
-```
-
-### input-filled
-
-filled variant는 `{rounded.radius-350}`(14px) + `{colors.gray-100}` 배경 + 1px 투명 보더이며, focus-within 시 보더가 `{colors.blue-200}`로 나타난다 [src:24].
-
-```tsx
-<Input variant="filled" label="이름" />
-```
-
-### input-outlined
-
-outlined variant는 흰 배경 + 1px `{colors.divider-regular}` 보더이며, focus-within 시 `{colors.blue-200}`로 강조된다 — filled와 radius·padding(L12/R8)을 공유하되 표면만 다르다 [src:24].
-
-```tsx
-<Input variant="outlined" label="이메일" />
-```
-
-### input-underline
-
-underline variant는 하단 보더만 두고 평소 opacity 0, focus-within 시 opacity 100 + `{colors.blue-200}`로 드러난다 [src:24]. 좌우 padding과 라운딩이 없어 가장 가벼운 표면이다 [src:24].
-
-```tsx
-<Input variant="underline" label="쿠폰 코드" />
-```
-
-### text-area
-
-멀티라인 입력이다 — 필드 `<div>`가 `flex-col`로 textarea + 글자수 카운터를 수직 배치하며, 최소 높이 64px(내용 따라 auto-grow), `{rounded.radius-350}`, `{colors.gray-100}` 배경, 1px `{colors.divider-regular}` 보더, 내부 gap 12px다 [src:25][src:screenshot:textarea.png]. 카운터 `<p>`는 `{typography.body3}`/`{colors.text-tertiary}`로 "0/200" 형식이며, 커스텀 포매터를 지원한다 [src:25].
-
-```tsx
-<TextArea label="요청 사항" maxLength={200} />
-```
-
-### top-app-bar
-
-상단 앱 바이며 최소 높이 52px, 흰 배경이다 [src:1][src:27]. 컴파운드 파트는 `BasicBackButton`, `Title`(general/scroll 타입), `TrailingButtonSlot`(액션 최대 3개), 그리고 `fetch` URL의 진행도를 추적하는 헤드리스 `LoadingBar`로 구성된다 [src:1]. 홈 화면 상단의 뒤로가기 화살표·타이틀·오버플로 메뉴가 이 패턴이며, `BasicBackButton`은 네이티브 `window.onClickNavigation` 브리지를 호출한다 [src:1][src:screenshot:home.jpg].
-
-```tsx
-<TopAppBar>
-  <TopAppBar.BasicBackButton />
-  <TopAppBar.Title type="general">SOCAR</TopAppBar.Title>
-  <TopAppBar.TrailingButtonSlot>{/* max 3 */}</TopAppBar.TrailingButtonSlot>
-</TopAppBar>
-```
-
-### bottom-sheet
-
-바텀시트는 4개 detent(tip / half / full / max)를 가지며 — freeform 높이는 허용하지 않는다 — 드래그로 열고 닫는다 [src:1][src:30]. 패널 상단 코너는 `{rounded.radius-600}`(24px), 딤 오버레이는 `{colors.dimmed-regular}`, 부양 변형은 `shadow-sheet`를 더한다 [src:30]. 푸터의 ActionButton은 `flex-1 min-w-[120px]`로 가로 분할된다 [src:30].
-
-```tsx
-<BottomSheet detent="half">{/* content */}</BottomSheet>
-```
-
-### date-time-picker
-
-캘린더 기반 날짜·기간 피커(DatePicker)와 드래그 휠 시간 피커(TimePicker, 46px 세그먼트)다 [src:1][src:28][src:29]. DatePicker는 흰 컨테이너에 `{typography.heading2}` 월 헤더 + 요일 행 + 32px 일자 셀(focus-visible 2px `{colors.gray-800}` 링)을 두고, 기간 하이라이트는 `{colors.gray-200}` 밴드로 시작은 좌측 24px·끝은 우측 24px 라운딩(`{rounded.radius-600}`)된다 [src:28]. TimePicker 세그먼트는 `{colors.gray-100}` 배경에 좌/우 `{rounded.radius-250}`(10px) 라운딩이다 [src:29]. 홈 화면의 대여/반납 날짜 카드("대여 / 반납", "최대 범위 10일")가 이 패턴을 입력으로 받는다 [src:screenshot:home.jpg].
-
-```tsx
-<DatePicker mode="range" maxRange={10} />
-<TimePicker step={10} />
-```
-
-### alert
-
-명령형으로 여는 모달 다이얼로그다 — `Alert.open()`이 Promise를 반환하며, variant는 Default / Dialog / Basic / Sequence / Portal이다 [src:1][src:3]. 딤 오버레이는 `{colors.dimmed-regular}`, 중앙 패널은 둥근 흰 표면에 drop shadow + 타이틀(최대 2줄) + ActionButton으로 구성된다 [src:3]. 부분 스펙 컴포넌트라 variant별 정확한 동작은 doc 페이지와 함께 확인해야 한다 [src:3].
-
-```tsx
-const ok = await Alert.open({ variant: "dialog", title: "예약을 취소할까요?" });
-```
-
-### snackbar
-
-화면 하단에 뜨는 일시적 토스트이며 어두운 둥근 컨테이너에 텍스트 + 선택적 액션/아이콘을 담고 일정 시간 후 자동으로 사라진다 [src:1][src:31]. 성공 상태는 느낌표가 아니라 체크 아이콘으로 표시한다 — 차분한 확신을 유지하는 규칙이다 [src:31][src:1].
-
-```tsx
-<Snackbar>예약이 취소되었습니다</Snackbar>
-```
-
-### segmented-control
-
-탭형 토글이며 컨테이너는 `{rounded.radius-150}`~`{rounded.radius-200}`(6–8px) 계열, 세그먼트가 배지/카운트(`9+`)를 가질 수 있고 5개까지 관찰된다 [src:18]. 부분 스펙 컴포넌트라 세그먼트 단위 정밀 값은 doc 페이지·스크린샷과 함께 확인해야 한다 [src:18].
-
-```tsx
-<SegmentedControl value={tab} onChange={setTab} />
-```
-
-### tab
-
-상단 고정 탭 내비게이션이며 sticky 바는 1px 하단 보더(`{colors.border-regular}`) + `{colors.gray-100}` 배경 + padding-x 16px다 [src:26]. 탭 항목 `<a>`는 30px 높이·`{typography.title2}`이며 active 텍스트 `{colors.text-primary}` / inactive `{colors.text-secondary}`, press 시 `scale(0.94)`다 [src:26]. 2px 슬라이딩 인디케이터 바는 `{rounded.radius-200}`에 `{colors.gray-800}` 색으로 선택 탭을 따라 슬라이드한다 [src:26].
-
-```tsx
-<Tab activeKey="share">{/* tab items */}</Tab>
-```
-
-### carousel
-
-슬라이드 캐러셀이며 트랙 + 원형 nav 버튼(32px, IconButton 동형, press 리플 포함) + 페이지 인디케이터로 구성된다 [src:32]. 인디케이터 도트는 5×12px pill이며 활성은 `{colors.primary-regular}`(blue-500), 비활성은 `{colors.border-regular}`(gray-200)다 — 또는 "n / m" `{typography.body2}` 카운터로 대체할 수 있다 [src:32]. `loop`·자동재생·`onIndexChange` 옵션을 가진다 [src:32].
-
-```tsx
-<Carousel loop>{/* slides */}</Carousel>
-```
-
-### accent-tip
-
-강조 툴팁(컨텍스트 안내 말풍선)이다 — portal로 렌더되는 버블이 `{rounded.radius-250}`(10px), padding 6/12px, 흰 `{typography.body3}` 텍스트(짧으면 `{typography.body4}`), `shadow-tip`(`0 2px 4px`)을 가진다 [src:33][src:screenshot:tips-accenttip.png]. 배경색은 커스텀 가능하며(기본 `{colors.black}`, 옵션으로 purple/cyan 틴트), top/bottom/left/right 방향 배치와 `Always`/자동 소멸 모드, TextButton형 트리거를 지원한다 [src:33].
-
-```tsx
-<AccentTip placement="top" content="여기를 눌러 위치를 바꿀 수 있어요">
-  <TextButton variant="primary" size="small">위치 변경</TextButton>
-</AccentTip>
-```
-
-### info-tip
-
-정보 툴팁이며 구조는 `{component.accent-tip}`과 동형이다 — 같은 `{rounded.radius-250}`(10px), 같은 6/12px padding, 같은 흰 `{typography.body3}`/`{typography.body4}` 텍스트, 같은 `shadow-tip`을 쓴다 [src:34][src:screenshot:tips-infotip.png]. 차이는 트리거 카피 맥락으로, "무엇을 의미하나요?" 같은 24px 높이 TextButton 트리거가 정보 설명 버블을 연다 [src:34].
-
-```tsx
-<InfoTip content="면책금은 사고 시 본인 부담 한도입니다">
-  <TextButton variant="secondary" size="small">무엇을 의미하나요?</TextButton>
-</InfoTip>
-```
-
-### haptic
-
-비시각 유틸리티로, 웹뷰 햅틱 피드백을 구성한다 [src:1][src:35]. `HapticConfig` 객체(`disable` bool, `eventType` pointerdown/pointerup, `type`)를 받으며, 버튼류의 `hapticConfig` prop으로 연결된다(기본값 ActionButton `REGULAR`, IconButton/TextButton `WEAK`, Alert `ALERT_WARNING`) [src:35]. 햅틱은 1급 시민으로, 네이티브 iOS/Android 웹뷰 안에서 동작한다 [src:35][src:1].
-
-```tsx
-<ActionButton hapticConfig={{ type: "REGULAR" }} />
-```
-
-### modal-overlay (다운스트림 확장, 마이페이지에서 도입)
-
-원본 SOCAR 코퍼스엔 없는 컴포넌트지만, 이 프로젝트(마이페이지)에서 여러 팝업(프로필 사진 변경, 결제 수단 추가, 결제 수단 삭제 확인)에 반복 적용되며 확립된 패턴이라 하위 규격으로 문서화한다. 앞으로 이 프로젝트에 새 모달/팝업을 추가할 때는 아래 구조를 기본값으로 따른다.
-
-**오버레이 셸(공통)**
-
+**오버레이 셸 공통:**
 ```css
-.x-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--opacity-black-40);
-  z-index: 100;
-  display: none; /* JS가 .is-open 토글 */
-}
+.x-overlay { position: fixed; inset: 0; background: var(--opacity-black-40); z-index: 100; display: none; }
 .x-overlay.is-open { display: flex; }
 ```
+닫기 트리거 3종 항상 연결: 백드롭 클릭(`e.target === overlay`), `Escape` 키, 명시적 취소/닫기 버튼. 폼 모달은 열 때마다 `resetForm()`. 모달은 `role="dialog"` + `aria-modal="true"` + `aria-labelledby`, 열림 시 포커스 이동·Tab 트랩·닫힘 시 트리거 복귀(`common.js`의 `initModalA11y()`가 자동 처리).
 
-닫기 트리거는 항상 3종 다 연결한다: 백드롭 클릭(`e.target === overlay`), `Escape` 키, 명시적 취소/닫기 버튼. 폼이 있는 모달은 열 때마다 `resetForm()`으로 값을 초기화한다.
-
-**변형 A — 확인/경고 시트 (destructive 액션, 예: 결제 수단 삭제)**
-
-모바일/태블릿(<1024px)은 하단 고정 바텀시트, PC(≥1024px)는 화면 중앙 카드로 전환한다. 반응형 브레이크포인트는 이 프로젝트의 데스크톱 표준 `1024px`을 그대로 쓴다.
-
+**변형 A — 확인/경고 시트** (예: 결제수단 삭제 `.mypage-delete-overlay`)
 ```css
-.x-overlay { align-items: flex-end; }              /* 모바일: 하단 정렬 */
-.x-sheet {
-  width: 100%; max-width: 480px;
-  border-radius: var(--radius-20) var(--radius-20) 0 0;  /* 위쪽만 라운드 */
-  padding: var(--space-12) var(--space-24) var(--space-32);
-}
-.x-sheet__handle { width: 40px; height: 4px; background: var(--grey-300); border-radius: var(--radius-pill); margin: 0 auto var(--space-20); }
-
-@media (min-width: 1024px) {
-  .x-overlay { align-items: center; padding: var(--space-16); }
-  .x-sheet { max-width: 390px; border-radius: var(--radius-16); padding: var(--space-24); }
-  .x-sheet__handle { display: none; }
+.x-overlay { align-items: flex-end; }                                  /* 모바일: 하단 */
+.x-sheet { width:100%; max-width:480px; border-radius: var(--radius-20) var(--radius-20) 0 0;
+           padding: var(--space-12) var(--space-24) var(--space-32); }
+.x-sheet__handle { width:40px; height:4px; background:var(--grey-300);
+                   border-radius:var(--radius-pill); margin:0 auto var(--space-20); }
+@media (min-width:1024px){
+  .x-overlay{ align-items:center; padding:var(--space-16); }
+  .x-sheet{ max-width:390px; border-radius:var(--radius-16); padding:var(--space-24); }
+  .x-sheet__handle{ display:none; }
 }
 ```
+구성: 좌상단 원형 아이콘(파괴적 액션=negative 틴트) → 굵은 제목 → 보조 설명 → 풀와이드 기본 버튼(`--radius-16`) → plain 텍스트 취소 링크.
 
-콘텐츠는 좌측 상단에 원형 아이콘(파괴적 액션은 `{colors.negative}` 계열 틴트 배경 + 아이콘), 굵은 제목, 보조 설명(조건부 경고문은 상황에 따라 `.is-visible`로만 노출), 그 아래 풀와이드 기본 액션 버튼(`border-radius: var(--radius-16)`, SOCAR 표준 `{rounded.radius-350}` 그대로) + 그 아래 plain 텍스트 링크형 취소 버튼 순서로 쌓는다 — 처음엔 레퍼런스(토스 스마트패스)를 그대로 따라 pill로 넣었다가, 이후 요청으로 표준 버튼 라운드로 되돌림(이 시트류도 예외 없이 SOCAR 표준을 따름).
+**변형 B — 폼 모달** (단일 화면 다중 입력): 항상 중앙 카드(`max-width:390px`, `max-height:90vh; overflow-y:auto`). 하단 취소(outline)/확정(primary) 가로 배치 각 `flex:1`. 필수값 + 약관 동의 충족 전 primary `disabled`.
 
-**변형 B — 폼 모달 (다중 입력)**
+**색상 규칙 — 모달 하나당 색 3개 이하.** 톤 차이는 한 뭉치로 카운트하되(오렌지bg+오렌지txt=1), **흰/회색/검정도 각각 1개로 카운트**. white+grey+black+hue 합쳐 3 초과 금지. 새 모달마다 점검. 예: 삭제 확인 시트는 흰(bg)+회색(핸들/본문/아이콘)+검정(제목·버튼) = **3색**으로 맞춤 — 파괴 신호는 색이 아니라 제목·버튼·카피가 담당한다(레드 아이콘 제거).
 
-항상 화면 중앙 카드(바텀시트 전환 없음), `max-width: 390px`(PC 모달 공통 규격, 변형 A와 동일 값), `max-height: 90vh; overflow-y: auto`로 짧은 화면에서도 스크롤 가능하게 한다. 하단 액션은 취소(outline)/등록(primary) 두 버튼을 가로로 나란히 배치하고 각각 `flex:1`. 필수 입력값 + 약관 전체동의가 모두 충족되기 전엔 primary 버튼을 `disabled`로 막는다. 단순한 단일 화면 폼에 쓴다.
+### credit-card 3-step wizard (`mypage`)
+`.mypage-card-overlay` — 변형 A(반응형 시트) 구조의 3단계 위자드. 1단계 카드사 3×3 그리드(`.mypage-issuer-tile`, aspect-1, 선택 시 2px 레드 보더) → 2단계 카드정보 입력 → 3단계 약관 동의. 하단 좌/우 버튼이 단계별로 텍스트·동작 변경(좌: "취소"→"이전" / 우: "다음"→마지막 "등록하기"). 카드사 SVG 8종: 신한·KB국민·현대·롯데·우리·하나·NH농협·BC.
 
-**결제 수단 추가 위자드는 변형 A 패턴으로 재분류.** 원래는 변형 B(항상 중앙 카드)였는데, 이후 요청으로 삭제 확인 시트와 같은 반응형 바텀시트 구조로 바뀌었다 — 모바일/태블릿은 하단 고정 시트(핸들바 포함, `max-width:480px`, 위쪽만 라운드), PC(≥1024px)는 중앙 카드(`max-width:390px`, 전체 라운드, 핸들바 숨김). 3단계 위자드(카드사 3x3 그리드 선택 → 카드 정보 입력 → 약관 동의)로, 하단 액션은 좌/우 버튼 2개가 단계별로 텍스트·동작이 바뀌는 방식(좌: 1단계="취소" 이후="이전" / 우: "다음"→마지막 단계="등록하기")이다. 다중 입력 폼이 여러 단계로 나뉘고 각 단계를 순차 진행해야 할 때는 이 위자드형을, 한 화면짜리 단순 폼은 여전히 변형 B를 쓴다.
+### avatar + edit (`mypage-common`)
+`.mypage-hero__avatar` — 100px 원형, 4px 보더(#F3F4FA), 이니셜 텍스트 or 이미지, 커버를 -50px 오버랩. `.mypage-avatar-edit` — 32px 검정 원형 카메라 버튼.
 
-**색상 규칙 — 모달 하나당 색 3개 이하.** 톤/진하기 차이는 한 뭉치로 묶어서 센다(오렌지 배경+오렌지 텍스트=1개, 회색 5단계는 다 "회색" 1개). 단, **흰색·회색·검정도 각각 독립적인 색으로 1개씩 카운트에 포함**한다 — "뉴트럴이니까 무조건 공짜"는 아니다. 즉 white(1) + grey(1) + black(1) + hue별 1개씩을 다 합쳐 3개를 넘으면 안 된다. 예: 삭제 확인 시트는 흰(배경) + 회색(핸들/본문 텍스트) + 검정(제목/버튼) + 레드핑크(아이콘) 이렇게 4개였는데, 원래 있던 caution 경고박스(오렌지 배경+텍스트)를 색 없는 회색 일반 문구로 바꿔서 한도를 맞추려 했다 — 그래도 여전히 4개라 아직 1개를 더 줄여야 완전히 3개 이하가 된다. 새 모달을 만들 때마다 이 한도를 넘는지 먼저 점검한다.
+### profile image crop (`mypage-common`)
+`.mypage-crop-modal` + `.mypage-crop-stage`(280×280, pointer drag) + `.mypage-crop-zoom`(range 슬라이더, 4px 트랙 + 커스텀 레드 thumb 16px). canvas 280×280로 크롭 출력.
+
+### info tooltip (`mypage`)
+`.mypage-info-icon`(Lucide info) 트리거 → `.mypage-info-modal`(grey-900 배경, 흰 텍스트, `::before` 화살표, `--ev-gray-3`). 모바일 위치형 툴팁. `role="status"`.
+
+### logo marquee (랜딩)
+`.logo-marquee` / `.stellar-logos-slide` — `translateX(-50%)` 무한 루프 + 엣지 페이드. `.logo-marquee__blur` 4레이어 `backdrop-filter` progressive blur. 파트너 로고(`logo_slider01/02.png`).
+
+### gallery / carousel (랜딩)
+`.gallery-grid`·`.studio-showcase__grid` CSS multi-column masonry, `.hero-video-carousel`, `.portfolio-gallery__stack`(3D 부채꼴 카드 + hover lift, 모바일은 `__marquee`로 전환). 영상 샘플은 JS의 `SAMPLE_VIDEOS`로 주입(`.webm`/`.mp4`).
+
+### lightbox (랜딩)
+`.gallery-lightbox` / `__panel` — scale(.92)→1 등장, 드래그로 닫기. 영상 확대 뷰.
+
+### promo banner + countdown (랜딩)
+`.stellar-banner`·`.promo-banner__card` — 배경 영상 + 그라디언트 오버레이. 카운트다운 세그먼트(`__countdown-seg`, DD:HH:MM:SS, tabular-nums monospace).
+
+### hero chat bubbles (랜딩)
+`.hero-chat__bubble`(AI, 흰) / `--user`(검정), `__typing` 점 3개 bounce, 단어 스트림 fade-in(index.js 시퀀스). AI 대화 연출.
+
+### footer
+`.site-footer` — 검정 배경. 사업자 정보(상인월드 주식회사 등).
 
 ## Do's and Don'ts
 
-**Do** raw 색상 스케일을 표면에 직접 흩뿌리지 말고, `{colors.primary-regular}`, `{colors.text-primary}`, `{colors.background-regular}`, `{colors.notification-red}` 같은 시맨틱 토큰으로 의도를 먼저 표현한다 [src:4][src:1].
+**Do** 색은 raw 스케일을 흩뿌리지 말고 시맨틱 토큰(`--ink-primary`, `--txt-dark`, `--bg-page`, `--bg-surface`)으로 의도를 먼저 표현한다. 액션·강조는 브랜드 레드 `--ink-primary`(#E81411) 하나로 통일한다.
 
-**Do** 표면 분리는 그림자보다 1px 디바이더(`{colors.divider-regular}`)와 `{colors.background-regular}` 워시로 먼저 해결한다 — SOCAR Frame의 깊이 언어는 절제가 기본값이다 [src:1][src:5].
+**Do** 표면 분리는 강한 그림자보다 1px 헤어라인(`--border-neutral`) + 배경 워시로 먼저 해결한다.
 
-**Do** 단일 채도 블루(`{colors.primary-regular}`)와 단일 Pretendard Variable 패밀리만 쓰고, 그라데이션과 이모지를 배제한다 — 아이콘은 SOCAR 커스텀 아이콘 폰트(`icon-*-fill`/`icon-*-line`)를 1차로 쓰고 미공개 환경에서만 Lucide로 대체하며, `►`·`→`·`★` 같은 유니코드 의사 아이콘으로 대체하지 않는다 [src:9][src:7].
+**Do** Pretendard 단일 패밀리 + 브랜드 레드만 쓰고, 그라데이션 남용·이모지·유니코드 의사 아이콘을 배제한다. 아이콘은 Lucide.
 
-**Do** 숫자는 bold로, 그 단위 라벨은 regular로 분리해 가격·시간·거리를 한눈에 읽히게 한다 — 시스템 전반의 반복 컨벤션이다 [src:8][src:5].
+**Do** 숫자(크레딧·가격·타이머)는 bold, 단위 라벨은 regular로 분리한다.
 
-**Do** CTA 카피는 동사로 시작하고 마침표·느낌표 없이, 한국어 정중체(`-요`/`합니다`)로 주어를 생략해 쓴다(예: `예약하기`, `자세히 보기`, `다음에`, `취소`) [src:9][src:11].
+**Do** 모든 인터랙티브 표면에 press feedback을 건다 — `scale(0.92)` 표준, 텍스트 인접 행은 0.96. 애니메이션은 반드시 `prefers-reduced-motion` 가드.
 
-**Do** 모든 인터랙티브 표면에 press feedback을 건다 — `scale(0.92)` + `{colors.pressed-dark-regular}` 리플이 표준이며, 텍스트 인접 행(chip/checkbox/radio)은 94–96%로 약하게 둔다 [src:1].
+**Do** CSS/JS는 `화면/CLAUDE.md`의 4단 레이어(tokens→common→{group}-common→{page})로 분리한다. 페이지 전용 규칙을 공통에 넣지 않고, 2페이지+ 공용 규칙을 페이지 전용에 중복 정의하지 않는다.
 
-**Do** ActionButton은 `styleType`·`variant`·`size`를 명시해 구현하고, 한 화면의 primary slot은 하나만 둔다 [src:14][src:1].
+**Do** 모달/오버레이는 `role="dialog"`+`aria-modal="true"`, 포커스 이동·Tab 트랩·Esc 닫기·트리거 복귀를 갖춘다. 아이콘 전용 버튼은 `aria-label` 필수. 본문 대비 WCAG AA(≥4.5:1) — `--txt-faint`(#6E6E6E)는 작은 본문에 금지.
 
-**Do** 한 손·야외 조작을 전제로, 핵심 정보의 대비를 높게 유지하고 탭 타깃을 넉넉히 잡는다 — 릴리스 체크리스트의 "한 손 조작이 가능합니까?", "야외 환경에서도 핵심 정보가 식별됩니까?"가 설계 게이트다 [src:11][src:36].
+**Do** 마이페이지 primary/danger 버튼은 검정(#000), 랜딩 CTA는 레드 — 이 관례를 유지한다.
 
-**Do** 지도 UI에서 픽업과 반납 위치는 `{colors.location-rental}`과 `{colors.location-return}`로 구분한다 — 쏘카존 모델을 색으로 인코딩한 도메인 토큰이다 [src:4][src:2].
+**Do** 마케팅 화면(랜딩)은 표현적, 서비스 화면(마이페이지/에딧)은 절제 — 이중 톤을 지킨다.
 
-**Don't** 공개된 컴포넌트 목록에 없는 HeroBanner, PromoCard 같은 이름을 SOCAR Frame 컴포넌트처럼 만들지 않는다 [src:1][src:5].
+**Don't** 다크 모드 토큰을 추정 생성하지 않는다 — 라이트 전용이다(국소 검정 표면은 테마 아님).
 
-**Don't** 다크 모드 토큰을 추정해서 만들지 않는다 — SOCAR Frame 2.0은 라이트 모드 전용이며 공개된 다크 팔레트가 없다 [src:1][src:4].
+**Don't** tokens.css 밖 하드코딩 색(#d4ff3f·#F9FAFF·#F3F4FA·#5869f7)을 임의로 늘리지 않는다. 신규 색은 토큰 승격을 먼저 검토한다.
 
-**Don't** "혁신적", "차세대" 같은 마케팅 수사로 UI 카피를 채우지 않는다 — UX 원칙이 "쉬운 언어로 작성되어 있습니까?"와 3초 테스트를 게이트로 두며, 안전·가독성이 시각적 완성도보다 앞선다(우선순위 Safety > Essentials > Confidence > Quality > Consistency > Innovation) [src:11][src:37].
+**Don't** 강한 드롭섀도로 표면을 부양시키지 않는다 — 그림자 토큰은 전부 미세하다.
 
-**Don't** 강한 드롭섀도로 표면을 부양시키지 않는다 — 그림자 토큰은 모두 미세하며, 과한 elevation은 시스템 톤과 충돌한다 [src:1].
+**Don't** 사용자에게 `당신`·`저희`를 쓰지 않는다 — 사용자 소유물은 `내 …`, 브랜드는 `상인월드`로 칭한다. 성공 상태도 결과를 먼저 알리는 차분한 카피를 쓴다.
 
-**Don't** 사용자에게 `당신`·`저희`·`우리`를 쓰지 않는다 — 사용자 소유물은 `내 …`(`내 쿠폰`, `내 위치`)로, 브랜드는 3인칭 `쏘카`로 칭하며, 성공 상태도 `걱정하지 마세요!` 대신 결과를 먼저 알리는 차분한 카피(`취소 수수료 3,000원이 발생합니다.`)를 쓴다 [src:1].
+**Don't** 상인월드와 무관한 외부 서비스 이름·타 도메인 개념(예: 모빌리티의 대여/반납·지도 마커)을 제품 UI에 끌어들이지 않는다 — 제품 정체성은 상인월드(소상공인 AI 영상생성)로 통일한다.
 
-**Don't** 쏘카의 차량공유 도메인(대여·반납 예약 흐름, `{colors.location-rental}`/`{colors.location-return}`로 인코딩한 쏘카존 지도 모델, 대여/반납 날짜 범위 선택)을 성격이 다른 제품에 그대로 이식하지 않는다 — 차용할 것은 시각 언어(단일 채도 블루 primary·Pretendard Variable 위계·넉넉한 라운드와 pill 칩·미세 elevation + 1px 헤어라인·active 92% scale + ripple 피드백)이지 쏘카의 모빌리티 서비스 개념이 아니다 [src:4][src:2].
-
-**Don't** 디자인시스템 이름 자체(`SOCAR Frame` 워드마크·버전 표기)를 생성하는 제품 UI의 헤더·타이틀·버튼·라벨에 넣지 않는다 — 차용할 것은 시각 언어이지 시스템 이름이 아니다. UI 텍스트·네이밍은 자기 제품 브랜드로 재정의하고, 출처 표기가 필요하면 footer attribution에만 둔다.
+**Don't** 화면에 실제로 없는 컴포넌트(정식 date-picker, snackbar, skeleton, selection-box, radio 그룹 등)를 있는 것처럼 문서화·생성하지 않는다. 새 컴포넌트를 추가하면 이 문서와 `화면/CLAUDE.md` 참조 맵을 함께 갱신한다.
 
 ## Responsive Behavior
 
-| Context | Key Changes |
-| --- | --- |
-| Baseline viewport | 시스템은 375px 모바일 웹뷰를 기준 컨텍스트로 본다 — `webview-unselectable`/`webview-` 클래스가 반복되며, 컴포넌트 스펙의 computed px 값은 이 폭을 전제로 측정된다 [src:1][src:9]. |
-| Published breakpoint system | 공개 조사 범위에서 명시적 breakpoint 토큰 시스템은 surfaced되지 않았다 (no published breakpoint system surfaced); 제품 토큰은 미디어 쿼리 breakpoint를 갖지 않으며, 데스크톱↔모바일 collapse는 제품 구현 쪽에서 별도 정의해야 한다 [src:1]. |
-| Top navigation | `{component.top-app-bar}`는 최소 높이 52px로 고정되며 `TrailingButtonSlot`은 액션을 최대 3개로 제한한다 — 좁은 화면에서 상단 액션이 넘치지 않도록 슬롯 수가 강제된다 [src:1][src:27]. |
-| Touch target | UX 원칙이 한 손·야외 조작을 게이트로 두므로 탭 타깃은 넉넉히 확보해야 한다 — ActionButton 높이는 32/40/46/56px, Chip 36–40px, Checkbox/Radio 행 48px, TimePicker 세그먼트 46px이며, 핵심 행동 버튼은 large(56px)를 우선한다 [src:5][src:11]. |
-| Bottom-fixed action | 하단 고정 액션 영역이 표준 레이아웃이다 — 흰 가격 요약 plate 위에 단일 large ActionButton(fill/primary)을 두는 패턴이 반복된다 [src:1][src:5]. |
-| Sheet 기반 내비게이션 | `{component.bottom-sheet}`는 4개 detent(tip/half/full/max)와 드래그 제스처로 좁은 화면의 단계적 노출을 담당한다 — 상단 복합 메뉴보다 하단 시트를 우선 고려한다 [src:1][src:30]. |
-| Hover | hover 상태는 사실상 존재하지 않는다 — 모바일 우선 시스템이라 press가 모든 피드백을 담당한다 [src:1]. |
-| Imagery | 차량·위치 썸네일은 항상 radius-300/400 카드 안에 마스킹되며, 좁은 폭에서도 full-bleed로 깔지 않는다 [src:1]. |
-| Webview-hybrid 패턴 | 컴포넌트는 네이티브 iOS/Android 웹뷰에 임베드되며, `{component.haptic}`과 `BasicBackButton`의 `window.onClickNavigation` 브리지가 네이티브 동작을 연결한다 [src:1][src:35]. |
+기준 뷰포트는 모바일이며, 컨테이너 max-width는 1540px. 실제 미디어쿼리 breakpoint:
+
+| Breakpoint | 효과 |
+|---|---|
+| ≤480 / ≤479 | shader 그리드 1열, 탭바 divider 숨김, 결제 아이템 grid |
+| 640 | 갤러리/스튜디오 column-count 3↔2, 배너 스택, 프로모 컴팩트 |
+| 767 / 768 | info-group full-bleed, 커버 160↔280px, hero 타이틀 56px, 포트폴리오 stack↔marquee |
+| ≤860 | nav/액션 숨김 → 햄버거, hero-video-carousel 1열, step-grid 1열 |
+| 960 | 요금제 그리드 1열 |
+| **≥1024 (데스크톱 표준)** | 모달/오버레이 바텀시트 → 중앙 카드 전환, info-row 2열 |
+| ≥1280 | stellar-video 620px |
+
+터치 타깃은 넉넉히 — 버튼 높이 36/40/44/46/48/52px, 주 액션은 52px 우선. hover는 사실상 없음(press가 피드백).
 
 ## Known Gaps
 
-- **다크 모드 미공개.** SOCAR Frame 2.0은 라이트 모드 전용이며, 모든 표면·그림자 토큰의 다크 대응값이 공개되지 않았다 — 다크 테마가 필요하면 다운스트림에서 별도 정의해야 한다 [src:1][src:4].
-- **명시적 breakpoint 시스템 부재.** 375px 모바일 폭을 기준 컨텍스트로 두지만, 제품 토큰에 데스크톱 레이아웃 분기를 위한 미디어 쿼리 breakpoint는 surfaced되지 않았다 — 문서 사이트의 데스크톱 레이아웃은 제품 토큰 세트가 아니다 [src:1].
-- **부분 스펙 컴포넌트.** 코퍼스는 19개 컴포넌트를 완전 build-grade로, 5개(SelectionBox · SegmentedControl · TopAppBar · Alert · Snackbar)를 부분 스펙으로 문서화한다 — 데모 래퍼 중첩 또는 포털/트랜션트 렌더링 탓에 이들의 전체 variant·선택 보더·표시 시간 등 일부 computed 값은 doc 페이지·스크린샷과 함께 재구성해야 한다 [src:5][src:18][src:3].
-- **OKLCH 변환값.** 모든 색상은 공개 hex 토큰을 OKLCH로 변환한 것이며, 원본 시스템은 hex로 게시한다 — 미세한 변환 오차가 있을 수 있다 [src:4].
+- **토큰 이름 ≠ 값.** `--radius-12`=16px, `--radius-16`=14px, `--radius-20`=24px, `--space-40`=36px, `--space-48`=40px. 이름으로 값을 가정하면 안 됨. 향후 리네이밍 검토.
+- **토큰 밖 하드코딩 색 4종.** #d4ff3f(스튜디오 pill)·#F9FAFF(마이페이지 bg)·#F3F4FA(마이페이지 보더/아바타)·#5869f7(캔버스 폴백). 토큰 승격 검토 대상. (크레딧 숫자 #F93322는 --ink-primary로 통일 완료.)
+- **타입 토큰 스케일 부재.** 애드혹 px 직접 사용. 타입 토큰 승격 미완.
+- **누락 영상 자산.** JS가 참조하는 `*.webm`, `hero-vd*.mp4`, `hero-foot01.mp4`가 `image/` 디렉터리에 없음(git status상 삭제됨) — 개발자 전달 시 확인 필요.
+- **다크 모드 미지원.** 라이트 전용. 검정 표면은 국소 디자인 선택.
+- **hover 피드백 무효화.** `--opacity-hover:1`이라 헤더 nav·`.btn-header-outline`·`.hamburger`의 opacity hover가 전부 무효 — 데스크톱 헤더 상호작용에 시각 피드백이 사실상 없음. hover 정책 확정(0.7로 낮추거나 규칙 제거) 필요. 헤더 outline버튼·햄버거는 press-scale도 없어 "모든 인터랙티브 press feedback" 규칙과도 어긋남.
+- **헤더 로고 폭 고정.** `.site-header__logo` width 288px가 모바일에서도 고정 → 좁은 폭 오버플로 리스크(overflow-x:hidden 클립). max-width 반응형 검토.
+- **z-index·타입·포커스 토큰 미승격.** z-index(30/40/50/100)·타입 스케일·포커스 링이 하드코딩. 토큰화 검토.
+- **login/signup은 별도 CSS(`style.css`, `auth.css`) 사용 중** — 나머지 페이지의 tokens+common 체계와 역할 중복. auth를 tokens+common+auth로 이관 후 style.css 제거 예정(별도 작업, `화면/CLAUDE.md` 참조).
 
 ## References
 
-1. https://socarframe.socar.kr/
-2. https://socar.kr/
-3. https://socarframe.socar.kr/development/components/Alert
-4. https://socarframe.socar.kr/development/foundation/Colors
-5. https://socarframe.socar.kr/development/components
-6. https://socarframe.socar.kr/development/foundation/Spacing
-7. https://socarframe.socar.kr/development/foundation/Icons
-8. https://socarframe.socar.kr/development/foundation/Typography
-9. https://socarframe.socar.kr/development/principle
-10. https://socarframe.socar.kr/ux-principles/overview
-11. https://socarframe.socar.kr/ux-principles
-12. https://socarframe.socar.kr/ux-principles/wow-moment
-13. https://socarframe.socar.kr/development/foundation
-14. https://socarframe.socar.kr/development/components/Buttons/ActionButton
-15. https://socarframe.socar.kr/development/components/Buttons/IconButton
-16. https://socarframe.socar.kr/development/components/Buttons/TextButton
-17. https://socarframe.socar.kr/development/components/Accordion
-18. https://socarframe.socar.kr/development/components/SegmentedControl
-19. https://socarframe.socar.kr/development/components/Chip
-20. https://socarframe.socar.kr/development/components/Checkbox
-21. https://socarframe.socar.kr/development/components/Radio
-22. https://socarframe.socar.kr/development/components/SelectionBox
-23. https://socarframe.socar.kr/development/components/Skeleton
-24. https://socarframe.socar.kr/development/components/Input
-25. https://socarframe.socar.kr/development/components/TextArea
-26. https://socarframe.socar.kr/development/components/Tab
-27. https://socarframe.socar.kr/development/components/TopAppBar
-28. https://socarframe.socar.kr/development/components/DatePicker
-29. https://socarframe.socar.kr/development/components/TimePicker
-30. https://socarframe.socar.kr/development/components/BottomSheet
-31. https://socarframe.socar.kr/development/components/Snackbar
-32. https://socarframe.socar.kr/development/components/Pattern/Carousel
-33. https://socarframe.socar.kr/development/components/Tips/AccentTip
-34. https://socarframe.socar.kr/development/components/Tips/InfoTip
-35. https://socarframe.socar.kr/development/components/Haptic
-36. https://socarframe.socar.kr/ux-principles/release-checklist
-37. https://socarframe.socar.kr/ux-principles/trade-off-rules
+디자인 값 정본:
+- `../css/tokens.css` — 색·간격·라운드·그림자·모션 토큰(authoritative)
+- `css/common.css`, `css/index.css`, `css/mypage-common.css`, `css/mypage.css`, `css/edit.css`
+- `index.html`, `mypage.html`, `edit.html`
+- `화면/CLAUDE.md` — 파일 레이어링·접근성·참조 맵 규칙

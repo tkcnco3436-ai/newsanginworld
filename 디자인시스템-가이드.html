@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상인월드 디자인 시스템 가이드</title>
+<!-- 색·간격·라운드·그림자·모션 값의 정본: tokens.css를 직접 링크해 스와치가 실시간 동기화됨 -->
+<link rel="stylesheet" href="css/tokens.css">
+<!-- Pretendard 웹폰트(디자인 시스템 지정 서체) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+/* ============================================================
+   가이드 문서 전용 스타일 (styleguide chrome)
+   — 컴포넌트 스펙 값은 전부 tokens.css의 var()를 참조해 실측과 일치
+   ============================================================ */
+* , *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--txt-darkest);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+a { color: var(--txt-link); }
+code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: var(--grey-100);
+  padding: 2px 6px;
+  border-radius: var(--radius-4);
+  color: var(--grey-900);
+}
+
+/* ---- layout ---- */
+.wrap { display: flex; align-items: flex-start; }
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  width: 240px;
+  flex: none;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--space-24) var(--space-16);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-neutral);
+}
+.sidebar__brand { display: flex; align-items: center; gap: var(--space-8); margin-bottom: var(--space-24); }
+.sidebar__logo { width: 12px; height: 12px; border-radius: 3px; background: var(--ink-primary); }
+.sidebar__brand b { font-size: 15px; font-weight: 700; }
+.sidebar__brand span { display: block; font-size: 11px; color: var(--txt-lighter); font-weight: 400; }
+.sidebar nav a {
+  display: block;
+  padding: var(--space-6) var(--space-10);
+  font-size: 13px;
+  color: var(--txt-dark);
+  text-decoration: none;
+  border-radius: var(--radius-6);
+  transition: background 150ms;
+}
+.sidebar nav a:hover { background: var(--bg-page); }
+.sidebar nav .grp { margin: var(--space-16) 0 var(--space-4); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--txt-faint); padding: 0 var(--space-10); }
+
+.main { flex: 1; min-width: 0; padding: var(--space-48) clamp(20px, 5vw, 64px) 120px; max-width: 1100px; }
+.page-head { margin-bottom: var(--space-48); }
+.page-head h1 { font-size: 40px; font-weight: 700; margin: 0 0 var(--space-12); letter-spacing: -0.01em; }
+.page-head p { font-size: 15px; color: var(--txt-lighter); margin: 0; max-width: 640px; }
+.meta-row { display: flex; flex-wrap: wrap; gap: var(--space-8); margin-top: var(--space-20); }
+.meta-chip { font-size: 12px; font-weight: 500; color: var(--txt-dark); background: var(--bg-surface); border: 1px solid var(--border-neutral); border-radius: var(--radius-pill); padding: 5px 12px; }
+
+section { margin-bottom: var(--space-64); scroll-margin-top: var(--space-24); }
+section > h2 { font-size: 24px; font-weight: 700; margin: 0 0 var(--space-6); }
+section > .sub { font-size: 14px; color: var(--txt-lighter); margin: 0 0 var(--space-24); }
+h3.block { font-size: 14px; font-weight: 700; color: var(--txt-darkest); margin: var(--space-32) 0 var(--space-12); text-transform: uppercase; letter-spacing: 0.04em; }
+h3.block:first-of-type { margin-top: var(--space-20); }
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-neutral);
+  border-radius: var(--radius-12);
+  padding: var(--space-24);
+}
+.note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--txt-dark);
+  background: var(--fill-accent-orange);
+  border-radius: var(--radius-8);
+  padding: var(--space-12) var(--space-16);
+  margin: var(--space-16) 0;
+}
+.note b { color: var(--grey-900); }
+
+/* ---- swatches ---- */
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-12); }
+.sw { border: 1px solid var(--border-neutral); border-radius: var(--radius-8); overflow: hidden; background: var(--bg-surface); }
+.sw__chip { height: 68px; }
+.sw__meta { padding: var(--space-8) var(--space-10); }
+.sw__name { font-size: 12px; font-weight: 600; color: var(--txt-darkest); }
+.sw__val { font-size: 11px; color: var(--txt-lighter); font-family: "SFMono-Regular", Consolas, Menlo, monospace; }
+.sw__use { font-size: 11px; color: var(--txt-faint); margin-top: 2px; }
+.sw--border .sw__chip { box-shadow: inset 0 0 0 1px var(--border-neutral); }
+
+/* ---- type specimens ---- */
+.type-row { display: flex; align-items: baseline; gap: var(--space-20); padding: var(--space-12) 0; border-bottom: 1px solid var(--grey-100); }
+.type-row__spec { flex: none; width: 150px; font-size: 12px; color: var(--txt-lighter); font-family: "SFMono-Regular", Consolas, Menlo, monospace; }
+.type-row__demo { flex: 1; min-width: 0; color: var(--txt-darkest); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- spacing ---- */
+.space-row { display: flex; align-items: center; gap: var(--space-16); padding: var(--space-6) 0; }
+.space-row__label { flex: none; width: 190px; font-size: 12px; font-family: "SFMono-Regular", Consolas, Menlo, monospace; color: var(--txt-dark); }
+.space-row__bar { height: 16px; background: var(--ink-primary); border-radius: var(--radius-4); }
+
+/* ---- radius ---- */
+.radius-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: var(--space-16); }
+.radius-box { height: 80px; background: var(--fill-accent-blue); border: 1px solid var(--ink-primary); }
+.radius-cap { font-size: 12px; font-family: monospace; color: var(--txt-dark); margin-top: var(--space-6); }
+
+/* ---- elevation ---- */
+.elev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: var(--space-24); }
+.elev-box { height: 90px; background: var(--bg-surface); border-radius: var(--radius-12); display: flex; align-items: center; justify-content: center; font-size: 12px; font-family: monospace; color: var(--txt-lighter); }
+
+/* ---- component specimen frame ---- */
+.demo { display: flex; flex-wrap: wrap; gap: var(--space-16); align-items: center; padding: var(--space-24); background: var(--bg-surface); border: 1px solid var(--border-neutral); border-radius: var(--radius-12); }
+.demo--dark { background: var(--bg-dark); }
+.demo--page { background: var(--bg-page); }
+.demo__col { display: flex; flex-direction: column; gap: var(--space-12); }
+.spec-label { font-size: 11px; color: var(--txt-faint); font-family: monospace; margin-top: var(--space-6); width: 100%; }
+
+/* ============================================================
+   실제 컴포넌트 재현 (tokens.css var 기반, 실측값과 일치)
+   ============================================================ */
+.btn-header-primary { display:inline-flex; align-items:center; height:36px; padding:8px 14px; border-radius:var(--radius-16); background:var(--ink-primary); color:#fff; font-size:13px; font-weight:500; border:none; cursor:pointer; transition:transform var(--motion-fast); }
+.btn-header-primary:active { transform:scale(var(--press-scale)); }
+.btn-header-outline { display:inline-flex; align-items:center; height:36px; padding:8px 14px; border:1px solid var(--border-neutral); border-radius:var(--radius-16); background:transparent; color:var(--txt-dark); font-size:14px; font-weight:500; cursor:pointer; }
+.btn-cta { display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 24px; border-radius:var(--radius-16); background:var(--ink-primary); color:#fff; font-size:16px; font-weight:700; border:none; cursor:pointer; transition:transform var(--motion-fast); }
+.btn-cta:active { transform:scale(var(--press-scale)); }
+.g-btn-primary { display:inline-flex; align-items:center; justify-content:center; background:var(--black); color:#fff; border:none; border-radius:var(--radius-16); height:48px; padding:0 24px; font-size:14px; font-weight:600; cursor:pointer; transition:transform var(--motion-fast); }
+.g-btn-primary:active { transform:scale(var(--press-scale)); }
+.g-btn-primary:disabled { background:var(--disabled-gray); cursor:not-allowed; }
+.g-btn-outline { display:inline-flex; align-items:center; justify-content:center; background:var(--bg-surface); border:1px solid var(--border-neutral); border-radius:var(--radius-16); color:var(--txt-darkest); height:48px; padding:0 24px; font-size:14px; font-weight:600; cursor:pointer; transition:transform var(--motion-fast); }
+.g-btn-outline:active { transform:scale(var(--press-scale)); }
+.g-btn-ghost { background:transparent; border:1px solid var(--border-neutral); border-radius:var(--radius-8); color:var(--txt-lighter); font-size:13px; height:32px; padding:0 12px; cursor:pointer; }
+.g-btn-danger { display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 24px; border-radius:var(--radius-16); background:var(--black); color:#fff; border:none; font-size:15px; font-weight:600; cursor:pointer; transition:transform var(--motion-fast); }
+.g-btn-danger:active { transform:scale(var(--press-scale)); }
+.g-action { background:transparent; border:none; color:var(--txt-darkest); font-size:13px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:4px; }
+.g-link-danger { font-size:13px; color:var(--txt-faint); text-decoration:underline; background:none; border:none; cursor:pointer; }
+
+.g-eyebrow { display:inline-block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-lighter); background:var(--grey-100); border-radius:var(--radius-pill); padding:4px 10px; }
+.g-tag { display:inline-block; font-size:12px; font-weight:500; color:var(--txt-lighter); background:var(--grey-100); border-radius:var(--radius-pill); padding:4px 10px; }
+.g-tag-green { display:inline-block; font-size:12px; font-weight:600; color:var(--green-400); background:var(--fill-accent-green); border-radius:var(--radius-pill); padding:4px 10px; }
+.g-ribbon { display:inline-block; font-size:11px; font-weight:600; color:#fff; background:var(--ink-primary); border-radius:var(--radius-4); padding:3px 8px; }
+
+.g-input { width:100%; height:44px; border:1px solid var(--border-neutral); border-radius:var(--radius-8); padding:0 12px; font-size:14px; font-family:var(--font-sans); color:var(--txt-darkest); background:var(--bg-surface); }
+.g-input:focus { outline:2px solid var(--border-active); outline-offset:1px; }
+.g-input.is-invalid { border-color:var(--red-400); }
+.g-input.is-valid { border-color:var(--green-400); }
+.g-field-label { display:block; font-size:13px; color:var(--txt-lighter); margin-bottom:6px; }
+.g-error { font-size:12px; color:var(--red-400); margin:6px 0 0; }
+
+.g-check-row { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--txt-dark); padding:8px 0; cursor:pointer; }
+.g-check { -webkit-appearance:none; appearance:none; flex:none; width:18px; height:18px; border:1px solid var(--border-neutral); border-radius:var(--radius-full); background:#fff; position:relative; cursor:pointer; }
+.g-check:checked { background:var(--ink-primary); border-color:var(--ink-primary); }
+.g-check:checked::after { content:""; position:absolute; left:50%; top:46%; width:5px; height:9px; border:solid #fff; border-width:0 2px 2px 0; transform:translate(-50%,-50%) rotate(45deg); }
+
+.g-pw-rules { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+.g-pw-rules li { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--grey-300); }
+.g-pw-rules li.met { color:var(--green-400); }
+
+.g-avatar { width:100px; height:100px; border-radius:var(--radius-full); background:#fff; border:4px solid #F3F4FA; box-shadow:var(--ev-2); display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:700; color:#000; position:relative; }
+.g-avatar__edit { position:absolute; right:-2px; bottom:-2px; width:32px; height:32px; border-radius:var(--radius-full); background:var(--black); color:#fff; border:2px solid var(--bg-surface); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+
+.g-tabseg { display:inline-flex; background:var(--grey-100); border-radius:var(--radius-8); padding:4px; gap:4px; }
+.g-tabseg button { border:none; background:transparent; font-size:14px; font-weight:600; color:var(--txt-lighter); padding:8px 16px; border-radius:var(--radius-8); cursor:pointer; }
+.g-tabseg button.active { background:#fff; color:var(--txt-darkest); box-shadow:var(--ev-2); }
+.g-tabline { display:flex; gap:24px; border-bottom:1px solid var(--border-neutral); }
+.g-tabline button { border:none; background:none; font-size:14px; font-weight:600; color:var(--txt-lighter); padding:0 0 12px; cursor:pointer; position:relative; }
+.g-tabline button.active { color:var(--txt-darkest); }
+.g-tabline button.active::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--ink-primary); }
+
+.g-issuer { display:grid; grid-template-columns:repeat(3,80px); gap:10px; }
+.g-issuer button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; aspect-ratio:1; padding:8px; border:1px solid var(--border-neutral); border-radius:var(--radius-12); background:#fff; font-size:11px; color:var(--txt-dark); cursor:pointer; transition:transform var(--motion-fast),border-color var(--motion-fast); }
+.g-issuer button:active { transform:scale(var(--press-scale-weak)); }
+.g-issuer button.sel { border-color:var(--ink-primary); border-width:2px; }
+.g-issuer .dot { width:24px; height:24px; border-radius:6px; background:var(--grey-200); }
+
+.g-tooltip { display:inline-block; background:var(--grey-900); color:#fff; border-radius:var(--radius-8); box-shadow:var(--ev-gray-3); padding:10px 12px; font-size:12px; max-width:220px; position:relative; }
+.g-tooltip::before { content:""; position:absolute; top:-5px; left:16px; width:10px; height:10px; background:var(--grey-900); transform:translateX(-50%) rotate(45deg); }
+
+.g-handle { width:40px; height:4px; background:var(--grey-300); border-radius:var(--radius-pill); margin:0 auto 20px; }
+.g-sheet { width:100%; max-width:360px; background:#fff; border-radius:var(--radius-20) var(--radius-20) 0 0; box-shadow:var(--ev-gray-3); padding:12px 24px 32px; }
+.g-sheet__icon { width:40px; height:40px; border-radius:var(--radius-full); background:var(--grey-100); color:var(--grey-900); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.g-sheet h4 { font-size:19px; font-weight:700; color:#000; margin:0 0 12px; }
+.g-sheet p { font-size:12px; color:var(--txt-faint); margin:0 0 24px; }
+
+.g-infogroup { background:#fff; border:1px solid #F3F4FA; border-radius:var(--radius-12); box-shadow:var(--ev-2); overflow:hidden; max-width:380px; }
+.g-infogroup__head { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 10px; }
+.g-infogroup__head p { font-size:13px; font-weight:600; color:var(--txt-lighter); margin:0; }
+.g-inforow { display:flex; align-items:center; gap:12px; padding:20px; }
+.g-inforow + .g-inforow { border-top:1px solid #F3F4FA; }
+.g-inforow__ic { color:var(--txt-faint); flex:none; }
+.g-inforow__lb { width:70px; font-size:13px; color:var(--txt-lighter); flex:none; }
+.g-inforow__vl { font-size:14px; font-weight:500; color:var(--txt-darkest); display:flex; align-items:center; gap:8px; }
+.g-inforow__vl strong { font-size:20px; font-weight:700; color:var(--ink-primary); }
+.g-inforow__vl .unit { color:var(--ink-primary); }
+
+/* do / dont */
+.dd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--space-16); }
+.dd { border-radius:var(--radius-12); padding:var(--space-16) var(--space-20); font-size:13px; line-height:1.6; }
+.dd--do { background:var(--fill-accent-green); }
+.dd--dont { background:var(--fill-accent-pink); }
+.dd b { display:block; margin-bottom:var(--space-6); font-size:12px; text-transform:uppercase; letter-spacing:0.06em; }
+.dd--do b { color:var(--green-500); }
+.dd--dont b { color:#C0392B; }
+.dd ul { margin:0; padding-left:18px; } .dd li { margin-bottom:4px; }
+
+.gaps { list-style:none; margin:0; padding:0; }
+.gaps li { position:relative; padding:var(--space-10) 0 var(--space-10) var(--space-24); border-bottom:1px solid var(--grey-100); font-size:13px; color:var(--txt-dark); line-height:1.6; }
+.gaps li::before { content:"⚠"; position:absolute; left:0; top:var(--space-10); color:var(--orange-500); }
+
+/* responsive */
+@media (max-width: 860px) {
+  .wrap { flex-direction:column; }
+  .sidebar { position:static; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--border-neutral); }
+  .sidebar nav { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:2px; }
+  .sidebar nav .grp { grid-column:1/-1; }
+  .main { padding:var(--space-32) 20px 80px; }
+  .page-head h1 { font-size:30px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__logo"></span>
+      <div><b>상인월드</b><span>디자인 시스템</span></div>
+    </div>
+    <nav>
+      <div class="grp">파운데이션</div>
+      <a href="#colors">색상</a>
+      <a href="#typography">타이포그래피</a>
+      <a href="#spacing">간격</a>
+      <a href="#radius">라운드</a>
+      <a href="#elevation">그림자</a>
+      <a href="#motion">모션 · 인터랙션</a>
+      <a href="#layering">레이어(z-index)</a>
+      <a href="#focus">포커스</a>
+      <div class="grp">컴포넌트</div>
+      <a href="#buttons">버튼</a>
+      <a href="#badges">배지 · 태그</a>
+      <a href="#tabs">탭</a>
+      <a href="#inputs">인풋 · 폼</a>
+      <a href="#checkbox">체크박스 · 규칙</a>
+      <a href="#cards">카드</a>
+      <a href="#avatar">아바타</a>
+      <a href="#modals">모달 · 시트</a>
+      <a href="#issuer">카드사 그리드</a>
+      <a href="#tooltip">툴팁</a>
+      <div class="grp">가이드</div>
+      <a href="#dosdonts">Do / Don't</a>
+      <a href="#gaps">Known Gaps</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>상인월드 디자인 시스템</h1>
+      <p>소상공인용 AI 영상생성 SaaS의 시각 언어 레퍼런스. 색·간격·라운드·모션 값의 정본은 <code>css/tokens.css</code>이며 이 문서의 스와치는 해당 토큰을 실시간으로 렌더한다. 컴포넌트 스펙은 vanilla HTML/CSS/JS 구현 기준.</p>
+      <div class="meta-row">
+        <span class="meta-chip">순수 HTML · CSS · JS</span>
+        <span class="meta-chip">Pretendard</span>
+        <span class="meta-chip">Lucide 아이콘</span>
+        <span class="meta-chip">라이트 모드 전용</span>
+        <span class="meta-chip">브랜드 레드 #E81411</span>
+      </div>
+    </div>
+
+    <!-- ============ COLORS ============ -->
+    <section id="colors">
+      <h2>색상</h2>
+      <p class="sub">브랜드 레드는 <code>--ink-primary</code> 하나. 위계는 색이 아니라 크기·굵기로 만든다.</p>
+
+      <h3 class="block">브랜드</h3>
+      <div class="swatch-grid">
+        <div class="sw"><div class="sw__chip" style="background:var(--ink-primary)"></div><div class="sw__meta"><div class="sw__name">--ink-primary</div><div class="sw__val">#E81411</div><div class="sw__use">메인 · 액션 · 링크 · 포커스</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--blue-500)"></div><div class="sw__meta"><div class="sw__name">primary-strong</div><div class="sw__val">#A31009</div><div class="sw__use">중간 스텝</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--ink-primary-active)"></div><div class="sw__meta"><div class="sw__name">--ink-primary-active</div><div class="sw__val">#490B00</div><div class="sw__use">press · 강조</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--black)"></div><div class="sw__meta"><div class="sw__name">--black</div><div class="sw__val">#000000</div><div class="sw__use">마이페이지 primary/danger 버튼 · footer</div></div></div>
+      </div>
+
+      <h3 class="block">뉴트럴 그레이 램프</h3>
+      <div class="swatch-grid">
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--grey-25)"></div><div class="sw__meta"><div class="sw__name">grey-25</div><div class="sw__val">#FCFCFC</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-50)"></div><div class="sw__meta"><div class="sw__name">grey-50</div><div class="sw__val">#F2F2F2</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-100)"></div><div class="sw__meta"><div class="sw__name">grey-100</div><div class="sw__val">#E6E6E6</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-200)"></div><div class="sw__meta"><div class="sw__name">grey-200</div><div class="sw__val">#D8D8D8</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-300)"></div><div class="sw__meta"><div class="sw__name">grey-300</div><div class="sw__val">#CFCFCF</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-400)"></div><div class="sw__meta"><div class="sw__name">grey-400</div><div class="sw__val">#B0B0B0</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-500)"></div><div class="sw__meta"><div class="sw__name">grey-500</div><div class="sw__val">#8F8F8F</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-600)"></div><div class="sw__meta"><div class="sw__name">grey-600</div><div class="sw__val">#737373</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-700)"></div><div class="sw__meta"><div class="sw__name">grey-700</div><div class="sw__val">#595959</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-800)"></div><div class="sw__meta"><div class="sw__name">grey-800</div><div class="sw__val">#4A4A4A</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--grey-900)"></div><div class="sw__meta"><div class="sw__name">grey-900</div><div class="sw__val">#3F3E3E</div><div class="sw__use">text-strong</div></div></div>
+      </div>
+
+      <h3 class="block">시맨틱 — 텍스트</h3>
+      <div class="swatch-grid">
+        <div class="sw"><div class="sw__chip" style="background:var(--txt-darkest)"></div><div class="sw__meta"><div class="sw__name">--txt-darkest</div><div class="sw__val">#3F3E3E</div><div class="sw__use">제목 · 강한 본문</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--txt-dark)"></div><div class="sw__meta"><div class="sw__name">--txt-dark</div><div class="sw__val">#595959</div><div class="sw__use">본문 기본</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--txt-lighter)"></div><div class="sw__meta"><div class="sw__name">--txt-lighter</div><div class="sw__val">#737373</div><div class="sw__use">보조</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--txt-faint)"></div><div class="sw__meta"><div class="sw__name">--txt-faint</div><div class="sw__val">#6E6E6E</div><div class="sw__use">3차 (작은 본문 금지)</div></div></div>
+      </div>
+
+      <h3 class="block">시맨틱 — 표면 · 보더</h3>
+      <div class="swatch-grid">
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--bg-page)"></div><div class="sw__meta"><div class="sw__name">--bg-page</div><div class="sw__val">#F2F2F2</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--bg-surface)"></div><div class="sw__meta"><div class="sw__name">--bg-surface</div><div class="sw__val">#FFFFFF</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--bg-subtle)"></div><div class="sw__meta"><div class="sw__name">--bg-subtle</div><div class="sw__val">#FCFCFC</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--bg-dark)"></div><div class="sw__meta"><div class="sw__name">--bg-dark</div><div class="sw__val">#3F3E3E</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--border-neutral)"></div><div class="sw__meta"><div class="sw__name">--border-neutral</div><div class="sw__val">#D8D8D8</div><div class="sw__use">마이페이지 스코프 #F3F4FA</div></div></div>
+      </div>
+
+      <h3 class="block">시맨틱 — 상태</h3>
+      <div class="swatch-grid">
+        <div class="sw"><div class="sw__chip" style="background:var(--green-400)"></div><div class="sw__meta"><div class="sw__name">green-400</div><div class="sw__val">#3DAA5C</div><div class="sw__use">positive</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--green-300)"></div><div class="sw__meta"><div class="sw__name">green-300</div><div class="sw__val">#A6E3BC</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--orange-400)"></div><div class="sw__meta"><div class="sw__name">orange-400</div><div class="sw__val">#EFC22A</div><div class="sw__use">caution</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--orange-500)"></div><div class="sw__meta"><div class="sw__name">orange-500</div><div class="sw__val">#D9A600</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--red-400)"></div><div class="sw__meta"><div class="sw__name">red-400</div><div class="sw__val">#F49992</div><div class="sw__use">negative</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--red-300)"></div><div class="sw__meta"><div class="sw__name">red-300</div><div class="sw__val">#F8B9B4</div></div></div>
+      </div>
+
+      <h3 class="block">틴트 필 · 그라디언트 오브</h3>
+      <div class="swatch-grid">
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--fill-accent-blue)"></div><div class="sw__meta"><div class="sw__name">fill-accent-blue</div><div class="sw__val">#FBE1E0</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--fill-accent-green)"></div><div class="sw__meta"><div class="sw__name">fill-accent-green</div><div class="sw__val">#E4F5EA</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--fill-accent-orange)"></div><div class="sw__meta"><div class="sw__name">fill-accent-orange</div><div class="sw__val">#FCF3D9</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--fill-accent-purple)"></div><div class="sw__meta"><div class="sw__name">fill-accent-purple</div><div class="sw__val">#EDECFE</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:var(--fill-accent-pink)"></div><div class="sw__meta"><div class="sw__name">fill-accent-pink</div><div class="sw__val">#FDEBEA</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--gradient-sky)"></div><div class="sw__meta"><div class="sw__name">gradient-sky</div><div class="sw__val">#3D57FF</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--gradient-lavender)"></div><div class="sw__meta"><div class="sw__name">gradient-lavender</div><div class="sw__val">#A9A4FA</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:var(--gradient-mint)"></div><div class="sw__meta"><div class="sw__name">gradient-mint</div><div class="sw__val">#3DAA5C</div></div></div>
+      </div>
+
+      <h3 class="block">토큰 밖 하드코딩 색 (Known Gaps · 늘리지 말 것)</h3>
+      <div class="swatch-grid">
+        <div class="sw sw--border"><div class="sw__chip" style="background:#F9FAFF"></div><div class="sw__meta"><div class="sw__name">(off-token)</div><div class="sw__val">#F9FAFF</div><div class="sw__use">마이페이지 bg</div></div></div>
+        <div class="sw sw--border"><div class="sw__chip" style="background:#F3F4FA"></div><div class="sw__meta"><div class="sw__name">(off-token)</div><div class="sw__val">#F3F4FA</div><div class="sw__use">마이페이지 보더 · 아바타</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:#d4ff3f"></div><div class="sw__meta"><div class="sw__name">(off-token)</div><div class="sw__val">#d4ff3f</div><div class="sw__use">스튜디오 pill</div></div></div>
+        <div class="sw"><div class="sw__chip" style="background:#5869f7"></div><div class="sw__meta"><div class="sw__name">(off-token)</div><div class="sw__val">#5869f7</div><div class="sw__use">캔버스 폴백</div></div></div>
+      </div>
+    </section>
+
+    <!-- ============ TYPOGRAPHY ============ -->
+    <section id="typography">
+      <h2>타이포그래피</h2>
+      <p class="sub">Pretendard 단일 패밀리. Display·Heading 700 / Title 600 / Body 400·500. 숫자는 bold, 단위 라벨은 regular로 분리.</p>
+      <div class="card" style="padding:var(--space-16) var(--space-24)">
+        <div class="type-row"><span class="type-row__spec">56 / 40 · 700</span><span class="type-row__demo" style="font-size:40px;line-height:1.1;font-weight:700;letter-spacing:-0.01em">히어로 타이틀</span></div>
+        <div class="type-row"><span class="type-row__spec">38 / 1.25 · 700</span><span class="type-row__demo" style="font-size:34px;font-weight:700">랜딩 hero 타이틀</span></div>
+        <div class="type-row"><span class="type-row__spec">32 · 700</span><span class="type-row__demo" style="font-size:30px;font-weight:700">배너 타이틀 · 가격</span></div>
+        <div class="type-row"><span class="type-row__spec">28 · 700</span><span class="type-row__demo" style="font-size:26px;font-weight:700">섹션 타이틀</span></div>
+        <div class="type-row"><span class="type-row__spec">22 · 700</span><span class="type-row__demo" style="font-size:22px;font-weight:700">드로어 nav · 그룹 트리거</span></div>
+        <div class="type-row"><span class="type-row__spec">20 · 700</span><span class="type-row__demo" style="font-size:20px;font-weight:700">프로필 이름 · 통계 숫자</span></div>
+        <div class="type-row"><span class="type-row__spec">18 / 1.55 · 700</span><span class="type-row__demo" style="font-size:18px;font-weight:700">edit 타이틀 · 챗버블 · 탭바</span></div>
+        <div class="type-row"><span class="type-row__spec">16 · 400~700</span><span class="type-row__demo" style="font-size:16px;font-weight:500">본문 · CTA 버튼 · footer 브랜드</span></div>
+        <div class="type-row"><span class="type-row__spec">14 · 400/500</span><span class="type-row__demo" style="font-size:14px">대부분 본문 · 라벨 · 버튼 · nav</span></div>
+        <div class="type-row"><span class="type-row__spec">13 · 400/500/600</span><span class="type-row__demo" style="font-size:13px;color:var(--txt-lighter)">서브타이틀 · 칩 · ghost 버튼</span></div>
+        <div class="type-row"><span class="type-row__spec">12 · 400/500/600</span><span class="type-row__demo" style="font-size:12px;color:var(--txt-faint)">캡션 · 태그 · 힌트 · 위자드 스텝</span></div>
+      </div>
+      <div class="note"><b>숫자+단위 컨벤션:</b> <span style="font-size:20px;font-weight:700;color:var(--ink-primary)">10,908</span> <span style="color:var(--ink-primary)">크레딧</span> — 숫자는 bold, 단위 라벨은 regular. <b>주의:</b> 정연한 타입 토큰 스케일은 없고 애드혹 px를 직접 쓴다.</div>
+    </section>
+
+    <!-- ============ SPACING ============ -->
+    <section id="spacing">
+      <h2>간격</h2>
+      <p class="sub"><code>--space-*</code> 토큰 (4px 기본단위). <b>이름 ≠ 값:</b> <code>--space-40</code>=36px, <code>--space-48</code>=40px로 리매핑됨.</p>
+      <div class="card">
+        <div class="space-row"><span class="space-row__label">--space-4 · 4px</span><span class="space-row__bar" style="width:4px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-8 · 8px</span><span class="space-row__bar" style="width:8px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-12 · 12px</span><span class="space-row__bar" style="width:12px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-16 · 16px</span><span class="space-row__bar" style="width:16px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-20 · 20px</span><span class="space-row__bar" style="width:20px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-24 · 24px</span><span class="space-row__bar" style="width:24px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-32 · 32px</span><span class="space-row__bar" style="width:32px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-40 · 36px ⚠</span><span class="space-row__bar" style="width:36px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-48 · 40px ⚠</span><span class="space-row__bar" style="width:40px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-64 · 64px</span><span class="space-row__bar" style="width:64px"></span></div>
+        <div class="space-row"><span class="space-row__label">--space-96 · 96px</span><span class="space-row__bar" style="width:96px"></span></div>
+      </div>
+    </section>
+
+    <!-- ============ RADIUS ============ -->
+    <section id="radius">
+      <h2>라운드</h2>
+      <p class="sub"><b>이름 ≠ 값:</b> <code>--radius-12</code>=16px(카드), <code>--radius-16</code>=14px(버튼·인풋), <code>--radius-20</code>=24px(바텀시트).</p>
+      <div class="radius-grid">
+        <div><div class="radius-box" style="border-radius:var(--radius-4)"></div><div class="radius-cap">--radius-4 · 4px</div></div>
+        <div><div class="radius-box" style="border-radius:var(--radius-8)"></div><div class="radius-cap">--radius-8 · 8px 인풋</div></div>
+        <div><div class="radius-box" style="border-radius:var(--radius-16)"></div><div class="radius-cap">--radius-16 · 14px 버튼</div></div>
+        <div><div class="radius-box" style="border-radius:var(--radius-12)"></div><div class="radius-cap">--radius-12 · 16px 카드</div></div>
+        <div><div class="radius-box" style="border-radius:var(--radius-20)"></div><div class="radius-cap">--radius-20 · 24px 시트</div></div>
+        <div><div class="radius-box" style="border-radius:var(--radius-pill)"></div><div class="radius-cap">--radius-pill · 칩/배지</div></div>
+      </div>
+    </section>
+
+    <!-- ============ ELEVATION ============ -->
+    <section id="elevation">
+      <h2>그림자</h2>
+      <p class="sub">전부 미세함. 표면 분리는 그림자보다 1px 헤어라인이 먼저.</p>
+      <div class="elev-grid">
+        <div><div class="elev-box" style="box-shadow:var(--ev-2)">--ev-2</div></div>
+        <div><div class="elev-box" style="box-shadow:var(--ev-3)">--ev-3</div></div>
+        <div><div class="elev-box" style="box-shadow:var(--ev-gray-3)">--ev-gray-3</div></div>
+      </div>
+    </section>
+
+    <!-- ============ MOTION ============ -->
+    <section id="motion">
+      <h2>모션 · 인터랙션</h2>
+      <p class="sub">시그니처 = press feedback. <code>--motion-fast</code> 150ms. <b>hover 정책 미확정</b>(<code>--opacity-hover:1</code>이라 헤더 hover 무효 → Known Gaps).</p>
+      <div class="demo">
+        <div class="demo__col"><button class="btn-cta">눌러보세요 (scale 0.92)</button><span class="spec-label">--press-scale · 0.92</span></div>
+        <div class="demo__col"><button class="g-btn-ghost">약한 press (0.96)</button><span class="spec-label">--press-scale-weak · 0.96</span></div>
+      </div>
+    </section>
+
+    <!-- ============ LAYERING ============ -->
+    <section id="layering">
+      <h2>레이어 (z-index)</h2>
+      <p class="sub">4단 고정. 신규 오버레이·팝업은 100. 하드코딩 정수 → 토큰화 권장.</p>
+      <div class="card">
+        <div class="space-row"><span class="space-row__label">header · 30</span><span class="space-row__bar" style="width:60px;background:var(--grey-400)"></span></div>
+        <div class="space-row"><span class="space-row__label">drawer-backdrop · 40</span><span class="space-row__bar" style="width:80px;background:var(--grey-600)"></span></div>
+        <div class="space-row"><span class="space-row__label">drawer · 50</span><span class="space-row__bar" style="width:100px;background:var(--grey-800)"></span></div>
+        <div class="space-row"><span class="space-row__label">overlay / modal · 100</span><span class="space-row__bar" style="width:200px;background:var(--ink-primary)"></span></div>
+      </div>
+    </section>
+
+    <!-- ============ FOCUS ============ -->
+    <section id="focus">
+      <h2>포커스</h2>
+      <p class="sub">전역 focus-visible = 2px 브랜드 레드 링 + offset 2px. 컴포넌트별 재정의·<code>outline:none</code> 금지.</p>
+      <div class="demo">
+        <button class="g-btn-outline" style="outline:2px solid var(--border-active);outline-offset:2px;border-radius:var(--radius-4)">focus-visible 예시</button>
+        <input class="g-input" style="max-width:200px;outline:2px solid var(--border-active);outline-offset:1px" value="인풋 focus" readonly>
+      </div>
+    </section>
+
+    <!-- ============ BUTTONS ============ -->
+    <section id="buttons">
+      <h2>버튼</h2>
+      <p class="sub">모두 press-scale + <code>--radius-16</code>(14px) 공유. <b>랜딩 CTA=레드, 마이페이지 primary/danger=검정.</b></p>
+
+      <h3 class="block">헤더 버튼 (36px)</h3>
+      <div class="demo demo--page"><button class="btn-header-primary">무료로 시작하기</button><button class="btn-header-outline">로그인</button></div>
+
+      <h3 class="block">랜딩 CTA (레드 · 52px)</h3>
+      <div class="demo"><button class="btn-cta">무료로 시작하기</button></div>
+
+      <h3 class="block">마이페이지 버튼 (검정 primary · 48px)</h3>
+      <div class="demo">
+        <button class="g-btn-primary">저장</button>
+        <button class="g-btn-primary" disabled>비활성</button>
+        <button class="g-btn-outline">보조</button>
+        <button class="g-btn-ghost">삭제</button>
+      </div>
+
+      <h3 class="block">파괴적 · 텍스트 액션</h3>
+      <div class="demo">
+        <button class="g-btn-danger" style="max-width:200px">삭제하기</button>
+        <button class="g-action">변경하기</button>
+        <button class="g-link-danger">회원탈퇴</button>
+      </div>
+    </section>
+
+    <!-- ============ BADGES ============ -->
+    <section id="badges">
+      <h2>배지 · 태그</h2>
+      <p class="sub">pill(<code>--radius-pill</code>) 계열 비인터랙티브 라벨.</p>
+      <div class="demo">
+        <span class="g-eyebrow">STUDIO</span>
+        <span class="g-tag">미구독</span>
+        <span class="g-tag-green">기본</span>
+        <span class="g-ribbon">36크레딧 무료</span>
+      </div>
+    </section>
+
+    <!-- ============ TABS ============ -->
+    <section id="tabs">
+      <h2>탭</h2>
+      <p class="sub">underline 탭 + segmented 탭 두 종.</p>
+      <h3 class="block">Segmented</h3>
+      <div class="demo">
+        <div class="g-tabseg" data-tabseg>
+          <button class="active">월간</button>
+          <button>연간</button>
+        </div>
+      </div>
+      <h3 class="block">Underline</h3>
+      <div class="demo">
+        <div class="g-tabline" data-tabline>
+          <button class="active">기능</button>
+          <button>요금안내</button>
+          <button>갤러리</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INPUTS ============ -->
+    <section id="inputs">
+      <h2>인풋 · 폼</h2>
+      <p class="sub">height 44px, <code>--radius-8</code>, focus 시 2px 레드 아웃라인.</p>
+      <div class="demo" style="display:block;max-width:420px">
+        <label class="g-field-label">이메일</label>
+        <input class="g-input" placeholder="name@sanginworld.com">
+        <div style="height:16px"></div>
+        <label class="g-field-label">유효 상태</label>
+        <input class="g-input is-valid" value="tktest03@gmail.com" readonly>
+        <div style="height:16px"></div>
+        <label class="g-field-label">에러 상태</label>
+        <input class="g-input is-invalid" value="틀린 값" readonly>
+        <p class="g-error">올바른 이메일을 입력하세요</p>
+      </div>
+    </section>
+
+    <!-- ============ CHECKBOX ============ -->
+    <section id="checkbox">
+      <h2>체크박스 · 규칙 리스트</h2>
+      <p class="sub">약관 동의 = 18×18 원형 레드 체크. 비밀번호 규칙 체크리스트는 충족 시 green.</p>
+      <div class="demo" style="display:block;max-width:420px">
+        <label class="g-check-row"><input type="checkbox" class="g-check" checked><span>전체 동의</span></label>
+        <label class="g-check-row"><input type="checkbox" class="g-check" checked><span>개인(신용)정보 수집 이용동의</span></label>
+        <label class="g-check-row"><input type="checkbox" class="g-check"><span>고유식별정보 처리 동의</span></label>
+        <div style="height:16px"></div>
+        <ul class="g-pw-rules">
+          <li class="met"><i data-lucide="check" width="14" height="14"></i>영문 + 숫자 + !@# 조합</li>
+          <li class="met"><i data-lucide="check" width="14" height="14"></i>최소 8자 이상</li>
+          <li><i data-lucide="check" width="14" height="14"></i>비밀번호 일치</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ CARDS ============ -->
+    <section id="cards">
+      <h2>카드</h2>
+      <p class="sub">surface + <code>--radius-12</code>(16px) + 미세 그림자. info-group은 <code>--ev-2</code> + 1px 보더.</p>
+      <div class="demo demo--page" style="align-items:flex-start">
+        <div class="g-infogroup">
+          <div class="g-infogroup__head"><p>잔여 크레딧</p><button class="g-action">충전하기</button></div>
+          <div class="g-inforow"><span class="g-inforow__ic"><i data-lucide="coins" width="16" height="16"></i></span><span class="g-inforow__lb">전체</span><span class="g-inforow__vl"><strong>10,908</strong><span class="unit">크레딧</span></span></div>
+          <div class="g-inforow"><span class="g-inforow__ic"><i data-lucide="layers" width="16" height="16"></i></span><span class="g-inforow__lb">구독</span><span class="g-inforow__vl">0 크레딧</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AVATAR ============ -->
+    <section id="avatar">
+      <h2>아바타</h2>
+      <p class="sub">100px 원형 · 4px #F3F4FA 테두리 · 32px 검정 편집 배지.</p>
+      <div class="demo demo--page">
+        <div class="g-avatar">준<button class="g-avatar__edit"><i data-lucide="camera" width="14" height="14"></i></button></div>
+      </div>
+    </section>
+
+    <!-- ============ MODALS ============ -->
+    <section id="modals">
+      <h2>모달 · 시트</h2>
+      <p class="sub">모바일 &lt;1024px = 하단 바텀시트 / PC ≥1024px = 중앙 카드. 핸들 40×4. <b>모달 하나당 색 ≤3</b>(흰·회색·검정 각 1개 카운트).</p>
+      <div class="demo demo--page" style="align-items:flex-start">
+        <div class="g-sheet">
+          <span class="g-handle"></span>
+          <span class="g-sheet__icon"><i data-lucide="trash-2" width="20" height="20"></i></span>
+          <h4>카드를 삭제하시겠습니까?</h4>
+          <p>삭제 후에는 복구할 수 없습니다.</p>
+          <button class="g-btn-danger" style="width:100%">삭제하기</button>
+          <button class="g-link-danger" style="display:block;width:100%;text-align:center;padding:16px 0 0">취소하기</button>
+        </div>
+      </div>
+      <div class="note"><b>변형 A</b> 확인/경고 시트(반응형) · <b>변형 B</b> 폼 모달(중앙 카드 max 390px). 닫기 3종: 백드롭·Esc·취소버튼. <code>role="dialog"</code>+<code>aria-modal</code>+포커스 트랩(common.js).</div>
+    </section>
+
+    <!-- ============ ISSUER ============ -->
+    <section id="issuer">
+      <h2>카드사 그리드</h2>
+      <p class="sub">3열 정사각 타일, 선택 시 2px 레드 보더. 결제수단 추가 위자드 1단계.</p>
+      <div class="demo demo--page">
+        <div class="g-issuer">
+          <button class="sel"><span class="dot"></span>신한</button>
+          <button><span class="dot"></span>KB국민</button>
+          <button><span class="dot"></span>현대</button>
+          <button><span class="dot"></span>롯데</button>
+          <button><span class="dot"></span>우리</button>
+          <button><span class="dot"></span>하나</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOOLTIP ============ -->
+    <section id="tooltip">
+      <h2>툴팁</h2>
+      <p class="sub">grey-900 배경 · 흰 텍스트 · 화살표. 모바일 info 아이콘 트리거, <code>role="status"</code>.</p>
+      <div class="demo demo--page">
+        <div class="g-tooltip">구독을 시작하고 매월 300 크레딧과 멤버십 전용 혜택을 받아보세요.</div>
+      </div>
+    </section>
+
+    <!-- ============ DO / DONT ============ -->
+    <section id="dosdonts">
+      <h2>Do / Don't</h2>
+      <div class="dd-grid">
+        <div class="dd dd--do"><b>Do</b><ul>
+          <li>액션·강조는 브랜드 레드 <code>--ink-primary</code> 하나로 통일</li>
+          <li>표면 분리는 1px 헤어라인 + 배경 워시가 먼저</li>
+          <li>숫자 bold · 단위 라벨 regular</li>
+          <li>모든 인터랙티브에 press-scale, 애니메이션은 reduced-motion 가드</li>
+          <li>모달은 role=dialog + 포커스 트랩 + Esc·백드롭 닫기</li>
+        </ul></div>
+        <div class="dd dd--dont"><b>Don't</b><ul>
+          <li>다크 모드 토큰 추정 생성 (라이트 전용)</li>
+          <li>토큰 밖 하드코딩 색 임의 확장</li>
+          <li>강한 드롭섀도로 표면 부양</li>
+          <li>사용자에게 "당신 · 저희" 사용 (→ "내 …", 브랜드는 "상인월드")</li>
+          <li>화면에 없는 컴포넌트를 있는 것처럼 문서화</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <!-- ============ GAPS ============ -->
+    <section id="gaps">
+      <h2>Known Gaps</h2>
+      <ul class="gaps">
+        <li><b>토큰 이름 ≠ 값</b> — radius-12=16px, radius-16=14px, space-40=36px 등. 향후 리네이밍 검토.</li>
+        <li><b>토큰 밖 하드코딩 색 4종</b> — #d4ff3f · #F9FAFF · #F3F4FA · #5869f7. 토큰 승격 검토.</li>
+        <li><b>타입 토큰 스케일 부재</b> — 애드혹 px 직접 사용.</li>
+        <li><b>hover 피드백 무효화</b> — <code>--opacity-hover:1</code>로 헤더 hover 무효. 헤더 outline버튼·햄버거는 press-scale도 없음.</li>
+        <li><b>헤더 로고 폭 288px 고정</b> — 좁은 화면 오버플로 리스크.</li>
+        <li><b>z-index·타입·포커스 토큰 미승격</b> — 하드코딩. 토큰화 검토.</li>
+        <li><b>다크 모드 미지원</b> — 라이트 전용. 검정 표면은 국소 선택.</li>
+      </ul>
+    </section>
+
+    <p style="font-size:12px;color:var(--txt-faint);border-top:1px solid var(--border-neutral);padding-top:var(--space-20)">정본: <code>css/tokens.css</code> · <code>sw-design.md</code> · 이 문서는 가이드(제품 아님)로 개발자 전달 번들에서 제외.</p>
+  </main>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (window.lucide) window.lucide.createIcons();
+
+  // 세그먼트 / 언더라인 탭 데모 토글
+  document.querySelectorAll('[data-tabseg],[data-tabline]').forEach(function (grp) {
+    grp.querySelectorAll('button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        grp.querySelectorAll('button').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+  });
+
+  // 사이드바 현재 섹션 하이라이트
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar nav a'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting && map[e.target.id]) {
+        links.forEach(function (l) { l.style.background = ''; l.style.color = ''; l.style.fontWeight = ''; });
+        map[e.target.id].style.background = 'var(--fill-accent-blue)';
+        map[e.target.id].style.color = 'var(--ink-primary)';
+        map[e.target.id].style.fontWeight = '600';
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  document.querySelectorAll('section[id]').forEach(function (s) { obs.observe(s); });
+</script>
+</body>
+</html>
