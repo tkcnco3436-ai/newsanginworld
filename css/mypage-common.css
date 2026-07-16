@@ -26,10 +26,8 @@
   justify-content: center;
   font-size: 30px;
   font-weight: var(--weight-bold);
-  border: 4px solid transparent;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    conic-gradient(from 0deg, #FF6560, #fff 35%, #fff 65%, #FF6560) border-box;
+  border: 4px solid var(--grey-300);
+  background: #fff;
   box-shadow: var(--ev-2);
 }
 .mypage-avatar-edit {
