@@ -192,7 +192,6 @@ main { padding-top: 68px; }
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-12);
 }
 .drawer__close {
   display: inline-flex;
@@ -443,11 +442,11 @@ main { padding-top: 68px; }
 
 /* 모바일 드로어 로그인 프로필 요약 */
 .drawer__profile {
-  flex: 1;
-  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--space-12);
+  padding: var(--space-12) var(--space-4);
+  border-bottom: 1px solid var(--border-neutral);
 }
 .drawer__profile-avatar {
   width: 44px;
@@ -464,14 +463,21 @@ main { padding-top: 68px; }
   overflow: hidden;
 }
 .drawer__profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.drawer__profile > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.drawer__profile-name { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 700; color: var(--txt-darkest); }
-.drawer__profile-email { margin: 0; font-size: 13px; line-height: 1.3; color: var(--txt-lighter); }
+.drawer__profile-name { font-size: 16px; font-weight: 700; color: var(--txt-darkest); }
+.drawer__profile-email { font-size: 13px; color: var(--txt-lighter); }
+.drawer__profile-link {
+  margin-left: auto;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-8);
+  color: var(--txt-darkest);
+  transition: background var(--motion-fast);
+}
+.drawer__profile-link:hover { background: var(--bg-page); }
 .drawer__actions .btn-header-video { justify-content: center; height: 44px; }
-/* 드로어 반반 버튼 행: 영상생성 | 마이페이지 */
-.drawer__btn-row { display: flex; gap: var(--space-8); }
-.drawer__btn-row > * { flex: 1 1 0; min-width: 0; justify-content: center; height: 44px; }
-/* 드로어 크레딧: 기능 메뉴 위, 화면 전체 폭(내용은 좌측정렬), 폰트/아이콘 확대 */
-.drawer__credit { align-self: stretch; width: 100%; justify-content: flex-start; height: 52px; font-size: 18px; font-weight: 700; }
-.drawer__credit svg { width: 22px; height: 22px; }
-.drawer__credit .header-credit__unit { font-weight: 700; }
+/* 드로어 크레딧: 기능 메뉴 위, 화면 전체 폭(내용은 좌측정렬) */
+.drawer__credit { align-self: stretch; width: 100%; justify-content: flex-start; height: 44px; }

@@ -240,18 +240,44 @@ fallback:  "#5869f7"   # WebGL 미지원 시 단색 폴백
 > CSS 레이어 규칙(`화면/CLAUDE.md`): tokens → common → {group}-common → {page} 순. 공통은 `common.css`, 마이페이지군 공용은 `mypage-common.css`, 페이지 전용은 `{page}.css`.
 
 ### header (fixed)
-`.site-header` — height 68px(`z-index:30`), 하단 1px 보더, bg는 랜딩=페이지색 / 마이페이지·에딧=#fff. 로고(`image/logo.svg`) 높이 24px. 좌우 `.site-header__logo`/`.site-header__actions`가 **각각 width 288px 고정**으로 nav를 가운데 밀어냄. 데스크톱은 nav + 액션 버튼, **≤860px는 nav·actions 숨기고 햄버거만**(container `space-between`).
-- **주의(→Known Gaps):** 로고 컨테이너 288px가 모바일에서도 고정이라 아주 좁은 폭에서 오버플로 위험(`overflow-x:hidden`으로 클립됨). `max-width` 반응형 검토 권장.
-- **버튼 피드백 비대칭:** `.btn-header-primary`는 `:active` press-scale(0.92) 있음, `.btn-header-outline`·`.hamburger`는 opacity hover뿐이라(→ `--opacity-hover:1`) 실질 피드백 없음. hover 정책 확정 시 함께 정리.
+`.site-header` — height 68px(`z-index:30`), 하단 1px 보더, bg는 랜딩=페이지색 / 마이페이지·에딧=#fff. 로고(`image/logo.svg`) 높이 24px. 좌우 `.site-header__logo`/`.site-header__actions`가 **각각 width 288px 고정**으로 nav를 가운데 밀어냄(단 모바일 ≤860px에서는 로고 폭 `auto`). 데스크톱은 nav + 액션 버튼, **≤860px는 nav·actions 숨기고 햄버거만**(container `space-between`).
+- **로그아웃(기본) 상태:** 우측 `.site-header__actions`에 `.btn-header-outline`(로그인) + `.btn-header-primary`(무료로 시작하기).
+- **로그인 상태(`mypage-login.html`):** 우측 `.site-header__actions--user`(width auto)에 **영상생성 + 크레딧 + 프로필 드롭다운**. ≤860px에서는 actions를 숨기는 대신 `.site-header__mobile`(우측 그룹)에 **영상생성 버튼 + 햄버거**를 붙여 노출하고, 크레딧/프로필/마이페이지는 드로어로 내린다. → 아래 "logged-in header" 컴포넌트 참조.
+- **버튼 피드백:** `.btn-header-primary`·`.btn-header-video`·`.header-credit`·`.header-profile__btn`은 `:active` press-scale(0.92) 있음. `.btn-header-outline`·`.hamburger`는 opacity hover뿐이라(→ `--opacity-hover:1`) 실질 피드백 없음. hover 정책 확정 시 함께 정리.
 
 ### nav-dropdown (desktop)
 `.nav-item` hover/focus-within 시 `.nav-dropdown`(width 260px, `--radius-12`=16px, `--ev-3`, 항목 `--radius-8`) 페이드+translate로 노출. 셰브론 아이콘 180° 회전.
+
+### logged-in header — 영상생성 / 크레딧 / 프로필 (common)
+로그인 상태 헤더 우측 클러스터(`mypage-login.html`). **common 레이어**에 있어 로그인한 모든 페이지가 재사용한다. 동작은 `common.js`의 `initHeaderProfile()`(클릭 토글·바깥클릭·`Esc` 닫기, `aria-expanded` 갱신).
+
+- **`.btn-header-video`** — 영상생성 주 CTA. h36, `--radius-16`, **bg `--black`(검정)** + 흰 텍스트 + Lucide `video` 아이콘, press-scale. (마이페이지 primary=검정 관례와 일치.)
+- **`.header-credit`** — 크레딧 pill. h36, `--radius-16`, surface + 1px 보더, Lucide `coins` **아이콘만 레드(`--linegreen`)**, 숫자 semibold + `.header-credit__unit`(단위 "크레딧") regular. press-scale.
+- **`.header-profile`**(`position:relative`) — 아바타 버튼 `.header-profile__btn`(36 원형, **흰 배경 + 검정 글자 + 1px 보더** = 기본 프로필) 클릭 시 `.header-profile__menu`(width 240, `--radius-12`, `--ev-3`, 우측정렬 드롭다운) 페이드+translate. 메뉴 상단 `.header-profile__info`(아바타 40 + 이름/이메일, 이름 옆 `.header-profile__tag` "미구독" pill) 하단 구분선, 그 아래 항목(마이페이지/크레딧 충전/로그아웃) `--radius-8`.
+
+```html
+<div class="site-header__actions site-header__actions--user">
+  <a class="btn-header-video" href="#"><i data-lucide="video"></i>영상생성</a>
+  <a class="header-credit" href="#"><i data-lucide="coins"></i>10,908<span class="header-credit__unit">크레딧</span></a>
+  <div class="header-profile" data-header-profile>
+    <button class="header-profile__btn" data-header-profile-btn aria-haspopup="true" aria-expanded="false">준</button>
+    <div class="header-profile__menu" role="menu"> …info + 메뉴 항목… </div>
+  </div>
+</div>
+```
 
 ### hamburger + drawer
 `.hamburger`(36×36, `--radius-8`) 클릭 → `.drawer`(**우측 풀스크린 `width:100vw`**, `translateX(100%)→0`, 260ms ease-out, `z-index:50`) + `.drawer-backdrop`(black-40, `z-index:40`).
 - 드로어 nav 항목 = **22px/700**(`.drawer__nav`, `.drawer__group-trigger`), 서브메뉴 = 14px. 서브메뉴 `.drawer__submenu`가 `grid-template-rows: 0fr→1fr` 아코디언으로 펼침(셰브론 180° 회전).
 - 하단 `.drawer__actions`는 `margin-top:auto`로 바닥 고정, 버튼은 풀와이드 세로 스택(padding 18/22, 16px/700 — 헤더 버튼보다 큼).
 - 닫기: `.drawer__close`(40×40) `aria-label` 필수 + `Escape`(common.js `initDrawer`) + 백드롭 클릭.
+
+**로그인 상태 드로어(`mypage-login.html`)** — 위→아래 순서:
+1. `.drawer__head` — **프로필 요약(`.drawer__profile`, flex:1)** 을 닫기 버튼과 같은 행에 배치(좌 프로필 / 우 클로즈). 프로필 = 아바타(흰 배경+검정+보더) + 이름/이메일(`<p>` margin 0 + line-height 1.3 + 컨테이너 gap 2px).
+2. `.drawer__credit`(`.header-credit` 변형) — 기능 메뉴 위, **화면 전체 폭**(`align-self:stretch; width:100%`), 내용 좌측정렬, **18px/700 + 아이콘 22px + 단위도 700**.
+3. `.drawer__btn-row` — **영상생성 | 마이페이지 반반 1행**(`flex:1 1 0` 각, h44). 영상생성=`.btn-header-video`(검정), 마이페이지=`.btn-header-outline`.
+4. `.drawer__nav` — 기능/요금안내/갤러리/공지.
+5. `.drawer__actions` — 로그아웃(`.btn-header-outline`).
 
 ### buttons
 크기·색만 다르고 모두 press-scale·`--radius-16`(boxed 기준) 공유.
@@ -260,6 +286,8 @@ fallback:  "#5869f7"   # WebGL 미지원 시 단색 폴백
 |---|---|---|---|---|
 | `.btn-header-primary` | 36 | bg `--ink-primary`(레드) | 흰 | 헤더 CTA |
 | `.btn-header-outline` | 36 | 투명 + 1px 보더 | 본문색 | 헤더 보조 |
+| `.btn-header-video` | 36 | **bg `--black`(검정)** | 흰 | 로그인 헤더 영상생성 CTA |
+| `.header-credit` | 36 | surface + 1px 보더 | 본문색(아이콘 레드) | 로그인 헤더 크레딧 pill |
 | `.btn-cta` | 52 | bg 레드 | 흰 | 페이지 주 CTA |
 | `.btn-warp` | 52 | surface + 보더 | — | 특수 액션 |
 | `.btn-outline` | 40 | 투명 + 1px 보더 | — | 보조 |
@@ -430,7 +458,7 @@ grey-100 트랙 위 세그먼트, active = 흰 배경 + `--ev-2`, `--radius-8` p
 - **다크 모드 미지원.** 라이트 전용. 검정 표면은 국소 디자인 선택.
 - **메시 그라디언트 reduced-motion 미가드.** `initStellarMesh`의 rAF 루프가 `prefers-reduced-motion`을 무시하고 항상 애니메이션 — 히어로·커버 모두 해당. 정지 프레임 처리 검토.
 - **hover 피드백 무효화.** `--opacity-hover:1`이라 헤더 nav·`.btn-header-outline`·`.hamburger`의 opacity hover가 전부 무효 — 데스크톱 헤더 상호작용에 시각 피드백이 사실상 없음. hover 정책 확정(0.7로 낮추거나 규칙 제거) 필요. 헤더 outline버튼·햄버거는 press-scale도 없어 "모든 인터랙티브 press feedback" 규칙과도 어긋남.
-- **헤더 로고 폭 고정.** `.site-header__logo` width 288px가 모바일에서도 고정 → 좁은 폭 오버플로 리스크(overflow-x:hidden 클립). max-width 반응형 검토.
+- **헤더 로고 폭.** `.site-header__logo` width 288px는 데스크톱만 — 모바일 ≤860px에서는 `width:auto`로 완화됨(오버플로 리스크 해소). 데스크톱 288px 고정은 유지.
 - **z-index·타입·포커스 토큰 미승격.** z-index(30/40/50/100)·타입 스케일·포커스 링이 하드코딩. 토큰화 검토.
 - **login/signup은 별도 CSS(`style.css`, `auth.css`) 사용 중** — 나머지 페이지의 tokens+common 체계와 역할 중복. auth를 tokens+common+auth로 이관 후 style.css 제거 예정(별도 작업, `화면/CLAUDE.md` 참조).
 
@@ -439,5 +467,5 @@ grey-100 트랙 위 세그먼트, active = 흰 배경 + `--ev-2`, `--radius-8` p
 디자인 값 정본:
 - `../css/tokens.css` — 색·간격·라운드·그림자·모션 토큰(authoritative)
 - `css/common.css`, `css/index.css`, `css/mypage-common.css`, `css/mypage.css`, `css/edit.css`
-- `index.html`, `mypage.html`, `edit.html`
+- `index.html`, `mypage.html`, `mypage-login.html`(로그인 상태 헤더/드로어), `edit.html`
 - `화면/CLAUDE.md` — 파일 레이어링·접근성·참조 맵 규칙

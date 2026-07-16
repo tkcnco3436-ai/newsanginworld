@@ -134,6 +134,22 @@ h3.block:first-of-type { margin-top: var(--space-20); }
 .btn-header-primary { display:inline-flex; align-items:center; height:36px; padding:8px 14px; border-radius:var(--radius-16); background:var(--ink-primary); color:#fff; font-size:13px; font-weight:500; border:none; cursor:pointer; transition:transform var(--motion-fast); }
 .btn-header-primary:active { transform:scale(var(--press-scale)); }
 .btn-header-outline { display:inline-flex; align-items:center; height:36px; padding:8px 14px; border:1px solid var(--border-neutral); border-radius:var(--radius-16); background:transparent; color:var(--txt-dark); font-size:14px; font-weight:500; cursor:pointer; }
+/* 로그인 헤더 컴포넌트 */
+.g-btn-video { display:inline-flex; align-items:center; gap:6px; height:36px; padding:8px 14px; border-radius:var(--radius-16); background:var(--black); color:#fff; font-size:13px; font-weight:600; border:none; cursor:pointer; transition:transform var(--motion-fast); }
+.g-btn-video:active { transform:scale(var(--press-scale)); }
+.g-credit { display:inline-flex; align-items:center; gap:6px; height:36px; padding:8px 12px; border-radius:var(--radius-16); border:1px solid var(--border-neutral); background:var(--bg-surface); color:var(--txt-darkest); font-size:13px; font-weight:600; cursor:pointer; }
+.g-credit svg { color:var(--ink-primary); }
+.g-credit .unit { color:var(--txt-lighter); font-weight:400; }
+.g-hprofile { position:relative; }
+.g-hprofile__btn { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-full); border:1px solid var(--border-neutral); background:var(--bg-surface); color:var(--black); font-size:14px; font-weight:700; cursor:pointer; }
+.g-hprofile__menu { width:240px; padding:8px; background:var(--bg-surface); border:1px solid var(--border-neutral); border-radius:var(--radius-12); box-shadow:var(--ev-3); }
+.g-hprofile__info { display:flex; align-items:center; gap:10px; padding:10px; border-bottom:1px solid var(--border-neutral); margin-bottom:6px; }
+.g-hprofile__ava { width:40px; height:40px; flex:none; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-full); border:1px solid var(--border-neutral); background:var(--bg-surface); color:var(--black); font-weight:700; }
+.g-hprofile__name { margin:0; font-size:14px; font-weight:600; color:var(--txt-darkest); display:inline-flex; align-items:center; gap:6px; }
+.g-hprofile__tag { font-size:11px; font-weight:500; color:var(--txt-lighter); background:var(--grey-100); padding:2px 8px; border-radius:var(--radius-pill); }
+.g-hprofile__email { margin:0; font-size:12px; color:var(--txt-lighter); }
+.g-hprofile__menu a { display:flex; align-items:center; gap:10px; padding:10px; border-radius:var(--radius-8); font-size:14px; color:var(--txt-dark); text-decoration:none; }
+.g-hprofile__menu a svg { color:var(--txt-lighter); }
 .btn-cta { display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 24px; border-radius:var(--radius-16); background:var(--ink-primary); color:#fff; font-size:16px; font-weight:700; border:none; cursor:pointer; transition:transform var(--motion-fast); }
 .btn-cta:active { transform:scale(var(--press-scale)); }
 .g-btn-primary { display:inline-flex; align-items:center; justify-content:center; background:var(--black); color:#fff; border:none; border-radius:var(--radius-16); height:48px; padding:0 24px; font-size:14px; font-weight:600; cursor:pointer; transition:transform var(--motion-fast); }
@@ -251,6 +267,7 @@ h3.block:first-of-type { margin-top: var(--space-20); }
       <a href="#mesh">메시 그라디언트</a>
       <div class="grp">컴포넌트</div>
       <a href="#buttons">버튼</a>
+      <a href="#login-header">로그인 헤더</a>
       <a href="#badges">배지 · 태그</a>
       <a href="#tabs">탭</a>
       <a href="#inputs">인풋 · 폼</a>
@@ -494,6 +511,37 @@ h3.block:first-of-type { margin-top: var(--space-20); }
         <button class="g-action">변경하기</button>
         <button class="g-link-danger">회원탈퇴</button>
       </div>
+    </section>
+
+    <!-- ============ LOGIN HEADER ============ -->
+    <section id="login-header">
+      <h2>로그인 헤더 (영상생성 · 크레딧 · 프로필)</h2>
+      <p class="sub">로그인 상태(<code>mypage-login.html</code>) 헤더 우측 클러스터. <b>common 레이어</b>라 로그인한 모든 페이지가 재사용. 드롭다운 동작 = <code>common.js</code> <code>initHeaderProfile()</code>(클릭 토글·바깥클릭·Esc).</p>
+
+      <h3 class="block">우측 액션 (데스크톱)</h3>
+      <div class="demo demo--page" style="align-items:center;gap:12px">
+        <a class="g-btn-video"><i data-lucide="video" width="16" height="16"></i>영상생성</a>
+        <a class="g-credit"><i data-lucide="coins" width="16" height="16"></i>10,908<span class="unit">크레딧</span></a>
+        <span class="g-hprofile__btn">준</span>
+      </div>
+
+      <h3 class="block">프로필 드롭다운</h3>
+      <div class="demo">
+        <div class="g-hprofile__menu">
+          <div class="g-hprofile__info">
+            <span class="g-hprofile__ava">준</span>
+            <div>
+              <p class="g-hprofile__name">준호<span class="g-hprofile__tag">미구독</span></p>
+              <p class="g-hprofile__email">tktest03@gmail.com</p>
+            </div>
+          </div>
+          <a><i data-lucide="user" width="16" height="16"></i>마이페이지</a>
+          <a><i data-lucide="coins" width="16" height="16"></i>크레딧 충전</a>
+          <a><i data-lucide="log-out" width="16" height="16"></i>로그아웃</a>
+        </div>
+      </div>
+
+      <p class="sub"><b>모바일(≤860px):</b> 우측에 <b>영상생성 버튼 + 햄버거</b>만 노출. 크레딧/프로필/마이페이지는 드로어로 이동 — 드로어는 위→아래로 <b>프로필+클로즈(같은 행) → 크레딧(전체폭·18px/700) → 영상생성|마이페이지 반반 1행 → 기능 nav → 로그아웃</b>. 기본 프로필 아바타 = 흰 배경 + 검정 글자 + 1px 보더.</p>
     </section>
 
     <!-- ============ BADGES ============ -->
