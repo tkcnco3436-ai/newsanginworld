@@ -257,7 +257,9 @@ main { padding-top: 68px; }
 .drawer__actions .btn-header-outline,
 .drawer__actions .btn-header-primary {
   justify-content: center;
-  height: 44px;
+  height: auto;
+  padding: 24px 28px;
+  font-size: 18px;
 }
 
 /* ---------- action-button: outlined(로그인 텍스트형 변형) / contained(회원가입) ---------- */
