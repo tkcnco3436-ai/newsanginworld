@@ -131,9 +131,70 @@
     requestAnimationFrame(frame);
   }
 
+  // ---------- 모달 접근성: 열릴 때 포커스 이동/트랩, 닫힐 때 트리거로 복귀 ----------
+  // [role="dialog"] 요소를 대상으로, 페이지별 열기/닫기 로직(class·style 무엇이든)을 건드리지 않고
+  // 표시 상태 변화(class/style 변경)를 MutationObserver로 감지해 포커스만 관리한다.
+  function initModalA11y() {
+    var dialogs = document.querySelectorAll('[role="dialog"]');
+    if (!dialogs.length) return;
+
+    var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    var openDialog = null;
+    var lastTrigger = null;
+
+    function isVisible(el) {
+      return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    }
+    function focusables(dialog) {
+      return Array.prototype.filter.call(dialog.querySelectorAll(FOCUSABLE), isVisible);
+    }
+
+    function onOpen(dialog) {
+      if (openDialog === dialog) return;
+      openDialog = dialog;
+      lastTrigger = document.activeElement;
+      var items = focusables(dialog);
+      if (items.length) {
+        items[0].focus();
+      } else {
+        dialog.setAttribute("tabindex", "-1");
+        dialog.focus();
+      }
+    }
+    function onClose(dialog) {
+      if (openDialog !== dialog) return;
+      openDialog = null;
+      if (lastTrigger && typeof lastTrigger.focus === "function") lastTrigger.focus();
+      lastTrigger = null;
+    }
+
+    dialogs.forEach(function (dialog) {
+      var wasOpen = isVisible(dialog);
+      new MutationObserver(function () {
+        var nowOpen = isVisible(dialog);
+        if (nowOpen === wasOpen) return;
+        wasOpen = nowOpen;
+        if (nowOpen) onOpen(dialog); else onClose(dialog);
+      }).observe(dialog, { attributes: true, attributeFilter: ["class", "style"] });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab" || !openDialog) return;
+      var items = focusables(openDialog);
+      if (!items.length) { e.preventDefault(); return; }
+      var first = items[0];
+      var last = items[items.length - 1];
+      var active = document.activeElement;
+      if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
+      else if (!openDialog.contains(active)) { e.preventDefault(); first.focus(); }
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     if (window.lucide) window.lucide.createIcons();
     initDrawer();
     document.querySelectorAll(".mesh-gradient-canvas").forEach(initStellarMesh);
+    initModalA11y();
   });
 })();

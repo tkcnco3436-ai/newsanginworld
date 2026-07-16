@@ -167,15 +167,15 @@
   </div>
 </main>
 
-<div class="mypage-info-modal" data-mypage-info-modal>
+<div class="mypage-info-modal" data-mypage-info-modal role="status" aria-live="polite">
   <p class="mypage-info-modal__text" data-mypage-info-modal-text></p>
 </div>
 
-<div class="mypage-delete-overlay" data-mypage-delete-overlay>
+<div class="mypage-delete-overlay" data-mypage-delete-overlay role="dialog" aria-modal="true" aria-labelledby="mypageDeleteTitle">
   <div class="mypage-delete-sheet">
     <span class="mypage-delete-sheet__handle"></span>
     <span class="mypage-delete-sheet__icon"><i data-lucide="trash-2" width="20" height="20"></i></span>
-    <p class="mypage-delete-overlay__title">카드를 삭제하시겠습니까?</p>
+    <p class="mypage-delete-overlay__title" id="mypageDeleteTitle">카드를 삭제하시겠습니까?</p>
     <p class="mypage-delete-overlay__card" data-mypage-delete-card-label>신한카드 **** 1231</p>
     <p class="mypage-delete-overlay__desc"><span class="mypage-delete-overlay__warning" data-mypage-delete-last-warning>마지막 카드입니다. 삭제하면 자동결제가 불가능합니다. </span>삭제 후에는 복구할 수 없습니다.</p>
     <button type="button" class="mypage-btn-danger-pill" data-mypage-delete-confirm>삭제하기</button>
@@ -183,11 +183,11 @@
   </div>
 </div>
 
-<div class="mypage-card-overlay" data-mypage-card-overlay>
+<div class="mypage-card-overlay" data-mypage-card-overlay role="dialog" aria-modal="true" aria-labelledby="mypageCardTitle">
   <div class="mypage-card-overlay__modal">
     <span class="mypage-card-overlay__handle"></span>
     <p class="mypage-wizard-step-label" data-mypage-wizard-step-label>1 / 3</p>
-    <p class="mypage-card-overlay__title" data-mypage-wizard-title>카드사를 선택하세요</p>
+    <p class="mypage-card-overlay__title" id="mypageCardTitle" data-mypage-wizard-title>카드사를 선택하세요</p>
 
     <div class="mypage-wizard-step is-active" data-mypage-wizard-step="1">
       <div class="mypage-issuer-grid">
@@ -262,9 +262,9 @@
   </div>
 </div>
 
-<div class="mypage-avatar-overlay" data-mypage-avatar-menu>
+<div class="mypage-avatar-overlay" data-mypage-avatar-menu role="dialog" aria-modal="true" aria-labelledby="mypageAvatarTitle">
   <div class="mypage-avatar-overlay__modal">
-    <p class="mypage-avatar-overlay__title">프로필 사진</p>
+    <p class="mypage-avatar-overlay__title" id="mypageAvatarTitle">프로필 사진</p>
     <button type="button" class="mypage-avatar-overlay__option" data-mypage-avatar-change>
       <i data-lucide="image" width="18" height="18"></i>사진 변경
     </button>
@@ -275,9 +275,9 @@
   </div>
 </div>
 
-<div class="mypage-crop-overlay" data-mypage-crop-overlay>
+<div class="mypage-crop-overlay" data-mypage-crop-overlay role="dialog" aria-modal="true" aria-labelledby="mypageCropTitle">
   <div class="mypage-crop-modal">
-    <p class="mypage-crop-modal__title">프로필 사진 편집</p>
+    <p class="mypage-crop-modal__title" id="mypageCropTitle">프로필 사진 편집</p>
     <p class="mypage-crop-modal__hint">권장 이미지 크기 256×256px 이상의 정사각형 사진을 사용하면 가장 선명하게 보여요.</p>
     <div class="mypage-crop-stage" data-mypage-crop-stage>
       <canvas data-mypage-crop-canvas width="280" height="280"></canvas>

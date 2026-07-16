@@ -67,7 +67,7 @@
   --txt-darkest: var(--grey-900);     /* Dark Grey — colors.text-strong */
   --txt-dark: #595959;                /* colors.text-primary(본문 기본) */
   --txt-lighter: #737373;             /* colors.text-secondary */
-  --txt-faint: #8F8F8F;               /* colors.text-tertiary */
+  --txt-faint: #6E6E6E;               /* colors.text-tertiary — 흰 배경 대비 ≥4.5:1(WCAG AA). 위계는 색이 아니라 크기·굵기로 */
   --txt-link: var(--ink-primary);
   --txt-on-dark: #ffffff;
   --txt-on-dark-lighter: #B0B0B0;

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로필 이미지 설정 · 유저플로우 가이드 | 상인월드</title>
+<style>
+  :root{
+    --red:#E81411; --red-strong:#A31009; --red-press:#490B00;
+    --red-tint:#FDEBEA; --red-tint2:#FBE1E0;
+    --g25:#FCFCFC; --g50:#F2F2F2; --g100:#E6E6E6; --g200:#D8D8D8; --g300:#CFCFCF;
+    --g400:#B0B0B0; --g500:#8F8F8F; --g600:#737373; --g700:#595959; --g900:#3F3E3E;
+    --green:#3DAA5C; --green-tint:#E4F5EA; --amber:#D9A600; --amber-tint:#FCF3D9;
+    --purple:#A9A4FA; --purple-tint:#EDECFE;
+    --font:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+    --r8:8px; --r12:12px; --r16:14px; --r20:20px;
+    --ev:0 1px 2px rgba(22,23,28,.05); --ev2:0 2px 8px rgba(0,0,0,.06); --ev3:0 8px 28px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:var(--font); color:var(--g900); background:var(--g50);
+    line-height:1.55; -webkit-font-smoothing:antialiased; letter-spacing:0;
+    padding:0 0 96px;
+  }
+
+  /* ---------- header ---------- */
+  .hero{
+    background:linear-gradient(135deg,#2b2a2a 0%,#3F3E3E 55%,#490B00 140%);
+    color:#fff; padding:56px 24px 120px; position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-80px; top:-80px; width:320px; height:320px;
+    background:radial-gradient(circle,rgba(232,20,17,.55),transparent 68%); filter:blur(6px);
+  }
+  .hero__wrap{max-width:920px; margin:0 auto; position:relative; z-index:1;}
+  .hero__eyebrow{
+    display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600;
+    letter-spacing:.04em; text-transform:uppercase; color:#fff;
+    background:rgba(255,255,255,.12); padding:6px 12px; border-radius:9999px; margin-bottom:18px;
+  }
+  .hero__eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--red); box-shadow:0 0 0 4px rgba(232,20,17,.28);}
+  .hero h1{font-size:32px; font-weight:700; line-height:1.25; letter-spacing:-.01em;}
+  .hero h1 b{color:var(--red); font-weight:700;}
+  .hero p{margin-top:14px; font-size:15px; color:rgba(255,255,255,.72); max-width:600px;}
+  .hero__meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+  .hero__meta span{
+    font-size:12.5px; color:rgba(255,255,255,.82); background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.14); padding:6px 11px; border-radius:var(--r8);
+  }
+  .hero__meta code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px; color:#fff;}
+
+  /* ---------- shell ---------- */
+  .shell{max-width:920px; margin:-84px auto 0; padding:0 24px; position:relative; z-index:2;}
+
+  /* ---------- legend ---------- */
+  .legend{
+    background:#fff; border:1px solid var(--g100); border-radius:var(--r16); box-shadow:var(--ev2);
+    padding:20px 22px; margin-bottom:36px;
+  }
+  .legend h2{font-size:13px; font-weight:700; color:var(--g600); letter-spacing:.02em; margin-bottom:14px; text-transform:uppercase;}
+  .legend__grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px 20px;}
+  .legend__item{display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--g700);}
+  .legend__item b{display:block; color:var(--g900); font-weight:600; margin-bottom:1px;}
+  .swatch{width:16px; height:16px; border-radius:5px; flex:0 0 auto; margin-top:2px;}
+  .sw-action{background:var(--red);}
+  .sw-branch{background:#fff; border:2px solid var(--amber);}
+  .sw-end{background:var(--green);}
+  .sw-endn{background:var(--g300);}
+  .sw-screen{background:var(--g900);}
+
+  /* ---------- depth ribbon ---------- */
+  .depth-tag{
+    display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700;
+    color:var(--red); background:var(--red-tint); border-radius:9999px; padding:5px 13px;
+    margin:36px 0 4px; letter-spacing:.02em;
+  }
+  .depth-tag .n{
+    display:inline-grid; place-items:center; width:19px; height:19px; border-radius:50%;
+    background:var(--red); color:#fff; font-size:11px;
+  }
+
+  /* ---------- timeline ---------- */
+  .tl{position:relative; padding-left:38px;}
+  .tl::before{
+    content:""; position:absolute; left:13px; top:8px; bottom:8px; width:2px;
+    background:linear-gradient(var(--g200),var(--g200)); border-radius:2px;
+  }
+  .node{position:relative; margin-bottom:20px;}
+  .node__dot{
+    position:absolute; left:-31px; top:20px; width:16px; height:16px; border-radius:50%;
+    background:#fff; border:3px solid var(--red); z-index:1;
+    box-shadow:0 0 0 4px #fff;
+  }
+  .node--branch .node__dot{border-color:var(--amber);}
+  .node--end .node__dot{border-color:var(--green); background:var(--green);}
+  .node--endn .node__dot{border-color:var(--g400); background:var(--g300);}
+  .node--screen .node__dot{border-color:var(--g900); background:var(--g900);}
+
+  .card{
+    background:#fff; border:1px solid var(--g100); border-radius:var(--r16); box-shadow:var(--ev);
+    padding:16px 18px; transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover{box-shadow:var(--ev2);}
+  .card__top{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+  .chip{
+    font-size:11px; font-weight:700; letter-spacing:.02em; padding:3px 9px; border-radius:9999px;
+    background:var(--g50); color:var(--g600); border:1px solid var(--g100);
+  }
+  .chip--action{background:var(--red-tint2); color:var(--red-strong); border-color:transparent;}
+  .chip--branch{background:var(--amber-tint); color:#8a6d00; border-color:transparent;}
+  .chip--end{background:var(--green-tint); color:#1f7a3d; border-color:transparent;}
+  .chip--endn{background:var(--g50); color:var(--g600);}
+  .chip--screen{background:var(--g900); color:#fff; border-color:transparent;}
+  .card__title{font-size:15.5px; font-weight:700; color:var(--g900); flex:1 1 auto; min-width:140px;}
+  .card p{font-size:13.5px; color:var(--g700); margin-top:8px;}
+  .card p + p{margin-top:5px;}
+  .card code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px;
+    background:var(--g50); border:1px solid var(--g100); border-radius:5px; padding:1px 6px; color:var(--red-strong);
+  }
+  .note{
+    margin-top:11px; font-size:12.5px; color:var(--g600); background:var(--g25);
+    border:1px dashed var(--g200); border-radius:var(--r8); padding:9px 12px; display:flex; gap:8px;
+  }
+  .note b{color:var(--g900); font-weight:600;}
+
+  /* ---------- branch split ---------- */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:2px;}
+  .branch{
+    position:relative; background:#fff; border:1px solid var(--g100); border-left:3px solid var(--red);
+    border-radius:var(--r12); padding:14px 16px; box-shadow:var(--ev);
+  }
+  .branch--yes{border-left-color:var(--green);}
+  .branch--no{border-left-color:var(--amber);}
+  .branch__cond{font-size:11.5px; font-weight:700; letter-spacing:.02em; color:var(--g500); text-transform:uppercase;}
+  .branch h4{font-size:14.5px; font-weight:700; color:var(--g900); margin:5px 0 4px;}
+  .branch p{font-size:13px; color:var(--g700);}
+  .branch code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px; background:var(--g50); border-radius:4px; padding:1px 5px; color:var(--red-strong);}
+
+  /* ---------- mini avatar preview ---------- */
+  .preview-row{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px;}
+  .pv{display:flex; flex-direction:column; align-items:center; gap:8px; font-size:11.5px; color:var(--g600);}
+  .pv__ava{
+    position:relative; width:72px; height:72px; border-radius:50%; display:grid; place-items:center;
+    background:linear-gradient(135deg,#f4f5fb,#e9eaf5); border:1px solid #F3F4FA;
+    font-size:26px; font-weight:700; color:var(--g500); overflow:hidden;
+  }
+  .pv__ava--photo{background:linear-gradient(135deg,var(--red),var(--red-press)); color:#fff; font-size:12px; text-align:center; line-height:1.3;}
+  .pv__ava .cam{
+    position:absolute; right:-2px; bottom:-2px; width:26px; height:26px; border-radius:50%;
+    background:var(--red); border:3px solid #fff; display:grid; place-items:center; color:#fff; font-size:13px;
+  }
+
+  /* ---------- section heading ---------- */
+  .sec-head{margin:44px 0 8px; padding-top:8px;}
+  .sec-head h2{font-size:20px; font-weight:700; color:var(--g900); letter-spacing:-.01em;}
+  .sec-head p{font-size:13.5px; color:var(--g600); margin-top:4px;}
+
+  /* ---------- footer strip ---------- */
+  .foot{
+    max-width:920px; margin:48px auto 0; padding:0 24px;
+  }
+  .foot__inner{
+    background:var(--g900); color:#fff; border-radius:var(--r16); padding:22px 24px;
+    display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap;
+  }
+  .foot__inner h3{font-size:15px; font-weight:700; margin-bottom:6px;}
+  .foot__inner p{font-size:13px; color:rgba(255,255,255,.7); max-width:640px;}
+  .foot__inner code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#fff; background:rgba(255,255,255,.12); border-radius:4px; padding:1px 6px;}
+
+  @media (max-width:640px){
+    .hero{padding:40px 20px 108px;}
+    .hero h1{font-size:25px;}
+    .shell,.foot{padding:0 16px;}
+    .split{grid-template-columns:1fr;}
+    .card__top{align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__wrap">
+    <span class="hero__eyebrow"><span class="dot"></span>User Flow Guide</span>
+    <h1>프로필 이미지 설정<br><b>전체 유저플로우 &amp; 뎁스</b></h1>
+    <p>마이페이지와 기본정보 수정 화면에서 프로필 사진을 변경·크롭·초기화하는 모든 경로를 뎁스 단위 타임라인으로 정리했습니다. 분기·종료 조건과 실제 DOM 훅까지 포함합니다.</p>
+    <div class="hero__meta">
+      <span>진입 화면 · <code>mypage.html</code> · <code>edit.html</code></span>
+      <span>공통 로직 · <code>js/mypage-common.js</code></span>
+      <span>스타일 · <code>css/mypage-common.css</code></span>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <h2>범례</h2>
+    <div class="legend__grid">
+      <div class="legend__item"><span class="swatch sw-screen"></span><span><b>화면 / 상태</b>진입점·최종 표시 상태</span></div>
+      <div class="legend__item"><span class="swatch sw-action"></span><span><b>사용자 액션</b>탭·드래그·입력 등</span></div>
+      <div class="legend__item"><span class="swatch sw-branch"></span><span><b>분기</b>조건에 따라 경로 갈림</span></div>
+      <div class="legend__item"><span class="swatch sw-end"></span><span><b>완료(변경됨)</b>사진 적용 성공</span></div>
+      <div class="legend__item"><span class="swatch sw-endn"></span><span><b>종료(변경없음)</b>취소·초기화</span></div>
+    </div>
+  </div>
+
+  <!-- SECTION: 상태 미리보기 -->
+  <div class="sec-head">
+    <h2>아바타 상태 3종</h2>
+    <p>플로우 전체에서 아바타는 아래 세 상태 사이를 오갑니다.</p>
+  </div>
+  <div class="card">
+    <div class="preview-row">
+      <div class="pv">
+        <div class="pv__ava">준<span class="cam">📷</span></div>
+        기본 (이니셜)
+      </div>
+      <div class="pv">
+        <div class="pv__ava pv__ava--photo">편집<br>중<span class="cam">📷</span></div>
+        크롭 편집 중
+      </div>
+      <div class="pv">
+        <div class="pv__ava pv__ava--photo"> <span class="cam">📷</span></div>
+        사진 적용됨
+      </div>
+    </div>
+    <p style="margin-top:14px">기본 상태는 이름 첫 글자(<code>data-mypage-avatar-initial</code>)를 원형 배경에 표시하고, 사진이 있으면 <code>&lt;img data-mypage-avatar-img&gt;</code>로 교체합니다. 전환은 JS <code>setPhoto(applied)</code>가 담당 — <code>img.style.display</code>과 이니셜 <code>display</code>를 토글.</p>
+  </div>
+
+  <!-- ============ 뎁스 0 ============ -->
+  <div class="depth-tag"><span class="n">0</span>진입점 (Depth 0)</div>
+  <div class="tl">
+    <div class="node node--screen">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--screen">화면</span>
+          <span class="card__title">마이페이지 / 기본정보 수정 진입</span>
+        </div>
+        <p>두 화면 모두 동일한 아바타 마크업(<code>[data-mypage-avatar-wrap]</code>)과 동일한 스크립트(<code>initMypageAvatarCrop</code>)를 공유합니다. 카메라 버튼(<code>[data-mypage-avatar-edit]</code>)이 유일한 시작 트리거.</p>
+        <div class="note">📍 <span><b>초기 상태</b> — 로드 시 사진 없음(<code>hasPhoto = false</code>). 이니셜 “준” 표시.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 뎁스 1 ============ -->
+  <div class="depth-tag"><span class="n">1</span>카메라 버튼 탭 → 사진 유무 분기 (Depth 1)</div>
+  <div class="tl">
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">액션</span>
+          <span class="card__title">카메라 아이콘 탭</span>
+        </div>
+        <p><code>editBtn.click</code> → 현재 <code>hasPhoto</code> 값으로 즉시 두 갈래.</p>
+      </div>
+    </div>
+    <div class="node node--branch">
+      <span class="node__dot"></span>
+      <div class="split">
+        <div class="branch branch--no">
+          <span class="branch__cond">IF · 사진 없음</span>
+          <h4>파일 선택기 바로 열기</h4>
+          <p><code>fileInput.click()</code> 호출 → 메뉴 건너뜀. → <b>Depth 3</b>으로 점프.</p>
+        </div>
+        <div class="branch branch--yes">
+          <span class="branch__cond">IF · 사진 있음</span>
+          <h4>액션 메뉴 오버레이 열기</h4>
+          <p><code>toggleMenu()</code> → <b>Depth 2</b> (변경 / 기본으로 / 취소).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 뎁스 2 ============ -->
+  <div class="depth-tag"><span class="n">2</span>액션 메뉴 (사진 있을 때만) (Depth 2)</div>
+  <div class="tl">
+    <div class="node node--screen">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--screen">오버레이</span>
+          <span class="card__title">프로필 사진 메뉴 <code>[data-mypage-avatar-menu]</code></span>
+        </div>
+        <p>3개 선택지. 바깥 탭·<code>Esc</code>로도 닫힘(변경 없음).</p>
+      </div>
+    </div>
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">선택 A</span>
+          <span class="card__title">사진 변경</span>
+        </div>
+        <p><code>closeMenu()</code> 후 <code>fileInput.click()</code> → <b>Depth 3</b>.</p>
+      </div>
+    </div>
+    <div class="node node--endn">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--endn">선택 B · 종료</span>
+          <span class="card__title">기본 사진으로</span>
+        </div>
+        <p><code>setPhoto(false)</code> + <code>img.src = ""</code> → 이니셜 “준” 복귀. <b>플로우 종료 (사진 제거됨)</b>.</p>
+      </div>
+    </div>
+    <div class="node node--endn">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--endn">선택 C · 종료</span>
+          <span class="card__title">취소</span>
+        </div>
+        <p><code>closeMenu()</code> — 아무 변경 없이 메뉴만 닫힘.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 뎁스 3 ============ -->
+  <div class="depth-tag"><span class="n">3</span>파일 선택 → 이미지 로드 (Depth 3)</div>
+  <div class="tl">
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">액션</span>
+          <span class="card__title">OS 파일 선택기에서 이미지 선택</span>
+        </div>
+        <p><code>&lt;input type="file" accept="image/*"&gt;</code>. 선택 시 <code>openModal(file)</code> 호출, 이후 <code>fileInput.value = ""</code>로 같은 파일 재선택 허용.</p>
+        <div class="note">↩︎ <span><b>파일 선택 취소</b> — 선택기를 닫으면 <code>change</code> 미발생, 아무 일도 없음(이전 상태 유지).</span></div>
+      </div>
+    </div>
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">처리</span>
+          <span class="card__title">FileReader → Image 로드 → 크롭 모달 오픈</span>
+        </div>
+        <p><code>readAsDataURL</code> → <code>new Image()</code> onload 시 초기 배율 계산:</p>
+        <p><code>baseScale = max(280/w, 280/h)</code> (캔버스 꽉 채움), <code>scale = 1</code>, offset 0, 줌 슬라이더 1 리셋 후 오버레이 표시.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 뎁스 4 ============ -->
+  <div class="depth-tag"><span class="n">4</span>원형 크롭 편집 (Depth 4)</div>
+  <div class="tl">
+    <div class="node node--screen">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--screen">모달</span>
+          <span class="card__title">프로필 사진 편집 <code>[data-mypage-crop-overlay]</code></span>
+        </div>
+        <p>280×280 캔버스, 원형 클립 미리보기. 권장 256×256px↑ 정사각형 안내.</p>
+      </div>
+    </div>
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">조작 1</span>
+          <span class="card__title">드래그로 위치 이동 (팬)</span>
+        </div>
+        <p>마우스·터치 드래그로 <code>offsetX/Y</code> 변경. <code>clampOffset()</code>이 이미지가 원 밖으로 빠지지 않게 경계 제한.</p>
+      </div>
+    </div>
+    <div class="node node--action">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--action">조작 2</span>
+          <span class="card__title">슬라이더로 확대/축소 (줌)</span>
+        </div>
+        <p><code>[data-mypage-crop-zoom]</code> 범위 <code>1 ~ 3</code>, step 0.01. 값 변경 시 <code>scale</code> 갱신 → clamp → 재렌더.</p>
+      </div>
+    </div>
+    <div class="node node--branch">
+      <span class="node__dot"></span>
+      <div class="split">
+        <div class="branch branch--no">
+          <span class="branch__cond">취소 · 종료</span>
+          <h4>취소 / 바깥 탭 / Esc</h4>
+          <p><code>closeModal()</code> — <code>source = null</code>, 사진 미적용. 이전 상태 그대로.</p>
+        </div>
+        <div class="branch branch--yes">
+          <span class="branch__cond">적용</span>
+          <h4>적용 → 렌더 &amp; 저장</h4>
+          <p>256×256 출력 캔버스에 원형 클립 후 <code>toDataURL("image/png")</code> → <code>img.src</code> 세팅.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 뎁스 5 완료 ============ -->
+  <div class="depth-tag"><span class="n">5</span>완료 (Depth 5)</div>
+  <div class="tl">
+    <div class="node node--end">
+      <span class="node__dot"></span>
+      <div class="card">
+        <div class="card__top">
+          <span class="chip chip--end">완료 · 변경됨</span>
+          <span class="card__title">프로필 사진 적용 완료</span>
+        </div>
+        <p><code>setPhoto(true)</code> → 이니셜 숨김·사진 표시, <code>closeModal()</code>. 이후 카메라 탭 시 이제 <b>Depth 2 메뉴</b>가 열림(사진 보유 상태).</p>
+        <div class="note">🔁 <span><b>루프</b> — 사진 보유 후에는 “사진 변경”으로 Depth 3~4 재진입, “기본 사진으로”로 초기 상태 복귀 가능.</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  <div class="foot__inner">
+    <div style="font-size:24px">🧭</div>
+    <div>
+      <h3>구현 참고</h3>
+      <p>이 플로우 전체는 <code>initMypageAvatarCrop()</code> 하나에 담겨 있고 <code>mypage.html</code>·<code>edit.html</code>이 동일 마크업으로 재사용합니다. 아이콘은 <code>lucide</code>(CDN), 크롭은 순수 Canvas 2D로 외부 라이브러리 없이 구현됨. 현재는 클라이언트 미리보기 전용이며 서버 업로드 단계는 미포함.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
