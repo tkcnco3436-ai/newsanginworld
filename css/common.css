@@ -192,8 +192,8 @@ main { padding-top: 68px; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-8);
   color: var(--txt-darkest);
   transition: opacity var(--motion-fast);
