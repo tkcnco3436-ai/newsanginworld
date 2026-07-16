@@ -203,7 +203,7 @@ main { padding-top: 68px; }
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: #000;
 }
@@ -224,7 +224,7 @@ main { padding-top: 68px; }
   width: 100%;
   padding: var(--space-10) var(--space-4);
   border-radius: var(--radius-8);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--txt-darkest);
 }
