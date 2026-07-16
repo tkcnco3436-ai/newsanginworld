@@ -260,6 +260,7 @@ main { padding-top: 68px; }
   height: auto;
   padding: 18px 22px;
   font-size: 16px;
+  font-weight: 700;
 }
 
 /* ---------- action-button: outlined(로그인 텍스트형 변형) / contained(회원가입) ---------- */
