@@ -199,7 +199,7 @@
 
   // ---------- 마이페이지: 모바일에서 긴 문장을 4단어씩 끊어 줄바꿈 ----------
   function initMypageWordWrap() {
-    var targets = document.querySelectorAll(".mypage-crop-modal__hint, .mypage-subscribe__desc, .mypage-info-row__desc");
+    var targets = document.querySelectorAll(".mypage-crop-modal__hint, .mypage-subscribe__desc, .mypage-info-row__desc, .withdraw-card__lead, .withdraw-card__warn");
     if (!targets.length) return;
     var mq = window.matchMedia("(max-width: 767px)");
 
@@ -223,8 +223,39 @@
     else mq.addListener(apply);
   }
 
+  // ---------- 로그아웃 확인 팝업 (mypage/mypage-login/withdraw 공용) ----------
+  function initMypageLogout() {
+    var overlay = document.querySelector("[data-logout-overlay]");
+    if (!overlay) return;
+    var openers = document.querySelectorAll("[data-logout-open]");
+    var cancelBtn = overlay.querySelector("[data-logout-cancel]");
+    var confirmBtn = overlay.querySelector("[data-logout-confirm]");
+
+    function open() { overlay.classList.add("is-open"); }
+    function close() { overlay.classList.remove("is-open"); }
+
+    openers.forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        open();
+      });
+    });
+    if (cancelBtn) cancelBtn.addEventListener("click", close);
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") close();
+    });
+    if (confirmBtn) confirmBtn.addEventListener("click", function () {
+      // 실제 로그아웃 처리 연결 지점(현재는 팝업만 닫음)
+      close();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initMypageAvatarCrop();
     initMypageWordWrap();
+    initMypageLogout();
   });
 })();

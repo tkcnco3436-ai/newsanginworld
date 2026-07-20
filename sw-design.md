@@ -383,6 +383,18 @@ grey-100 트랙 위 세그먼트, active = 흰 배경 + `--ev-2`, `--radius-8` p
 ### info tooltip (`mypage`)
 `.mypage-info-icon`(Lucide info) 트리거 → `.mypage-info-modal`(grey-900 배경, 흰 텍스트, `::before` 화살표, `--ev-gray-3`). 모바일 위치형 툴팁. `role="status"`.
 
+### logout confirm (`mypage-common`)
+`.mypage-logout-overlay` — 변형 A(바텀시트↔중앙카드 반응형) 구조의 로그아웃 확인 모달. **mypage/mypage-login/withdraw 3페이지 공용**이라 `mypage-common` 레이어에 둔다(CSS·JS 모두). 트리거 `[data-logout-open]`(푸터·드로어·프로필 드롭다운 어디든), 모달 `[data-logout-overlay]`. 구성: 핸들 → 제목 "로그아웃하시겠습니까?" → 설명 → 하단 **[취소 | 로그아웃] 반반**(`.mypage-logout-actions`, 각 `flex:1 1 0` h52). 취소=`.mypage-btn-outline`, 로그아웃=`.mypage-btn-primary`(검정). 열기/닫기(백드롭·Esc·취소)·확인은 `mypage-common.js` `initMypageLogout()`, 포커스 트랩은 `common.js` `initModalA11y()`. 확인 버튼에 실제 세션 종료 연결(현재는 닫기만).
+
+### withdraw — 회원탈퇴 확인 페이지 (`withdraw.html` + `withdraw.css`/`withdraw.js`)
+로그인 헤더/드로어/로그아웃 모달을 재사용하는 독립 페이지. 본문은 단일 `.withdraw-card`(surface, `--radius-12`, `--ev-2`, `max-width:560px` 중앙).
+- 상단 경고 아이콘 `.withdraw-card__icon`(48 원형, grey-100 배경 + grey-900 — 중립) → 제목 `.withdraw-card__title`(22/700, **브랜드 레드 `--ink-primary`** — 위험 강조) → 리드(14).
+- `.withdraw-notice` 리스트 2블록(생성된 비디오·프로젝트 / 잔여 크레딧 소멸): 각 `.withdraw-notice__item`(bg-page, `--radius-8`) = 아이콘칩(`clapperboard`/`coins`) + 제목(15/600)·설명(13).
+- `.withdraw-card__warn`(grey-100 박스) 복구 불가 경고 → `.withdraw-field` 확인 문구 입력(`.mypage-form-input`) + 힌트.
+- 하단 `.withdraw-actions`([취소 | 회원탈퇴] 반반, 각 h52): 취소=`.mypage-btn-outline`(→ mypage-login.html), 회원탈퇴=`.mypage-btn-primary`(검정).
+- **동작:** `withdraw.js`가 입력값이 정확히 `탈퇴하겠습니다`일 때만 회원탈퇴 버튼 활성화(그 전 `disabled`), 확인 시 `index.html`로 이동(실제 탈퇴 처리 연결 지점). mypage/mypage-login 푸터 `회원탈퇴`(`a.mypage-link-danger`)가 이 페이지로 진입.
+- **색 구성:** 흰(카드)+회색(아이콘·안내·경고 bg/텍스트)+검정(버튼)+**레드 제목**. 페이지 단위라 모달 ≤3색 규칙은 비적용 — 위험 강조를 제목 레드로만 국소 사용하고, 버튼/파괴 신호는 검정·카피·확인 문구 게이트가 담당.
+
 ### logo marquee (랜딩)
 `.logo-marquee` / `.stellar-logos-slide` — `translateX(-50%)` 무한 루프 + 엣지 페이드. `.logo-marquee__blur` 4레이어 `backdrop-filter` progressive blur. 파트너 로고(`logo_slider01/02.png`).
 
@@ -466,6 +478,6 @@ grey-100 트랙 위 세그먼트, active = 흰 배경 + `--ev-2`, `--radius-8` p
 
 디자인 값 정본:
 - `../css/tokens.css` — 색·간격·라운드·그림자·모션 토큰(authoritative)
-- `css/common.css`, `css/index.css`, `css/mypage-common.css`, `css/mypage.css`, `css/edit.css`
-- `index.html`, `mypage.html`, `mypage-login.html`(로그인 상태 헤더/드로어), `edit.html`
+- `css/common.css`, `css/index.css`, `css/mypage-common.css`, `css/mypage.css`, `css/edit.css`, `css/withdraw.css`
+- `index.html`, `mypage.html`, `mypage-login.html`(로그인 상태 헤더/드로어), `edit.html`, `withdraw.html`(회원탈퇴)
 - `화면/CLAUDE.md` — 파일 레이어링·접근성·참조 맵 규칙

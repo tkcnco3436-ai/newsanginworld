@@ -167,6 +167,42 @@
 .mypage-card-overlay__actions { display: flex; flex-wrap: nowrap; gap: var(--space-8); margin-top: var(--space-32); }
 .mypage-card-overlay__actions .mypage-btn-outline,
 .mypage-card-overlay__actions .mypage-btn-primary { flex: 1 1 0; min-width: 0; width: auto; max-width: none; height: 44px; }
+
+/* ---------- 로그아웃 확인 팝업: 바텀시트/중앙카드, 버튼 취소/로그아웃 반반 (mypage/mypage-login/withdraw 공용) ---------- */
+.mypage-logout-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--opacity-black-40);
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+.mypage-logout-overlay.is-open { display: flex; }
+.mypage-logout-sheet {
+  background: var(--bg-surface);
+  width: 100%;
+  border-radius: var(--radius-20) var(--radius-20) 0 0;
+  box-shadow: var(--ev-gray-3);
+  padding: var(--space-12) var(--space-24) var(--space-32);
+}
+.mypage-logout-sheet__handle {
+  display: block;
+  width: 40px;
+  height: 4px;
+  background: var(--grey-300);
+  border-radius: var(--radius-pill);
+  margin: 0 auto var(--space-20);
+}
+.mypage-logout-overlay__title { font-size: 19px; font-weight: var(--weight-bold); color: #000; line-height: 1.35; margin: 0 0 var(--space-12); }
+.mypage-logout-overlay__desc { font-size: 13px; color: var(--txt-faint); line-height: 1.5; margin: 0 0 var(--space-24); }
+.mypage-logout-actions { display: flex; gap: var(--space-8); }
+.mypage-logout-actions > * { flex: 1 1 0; min-width: 0; height: 52px; }
+@media (min-width: 1024px) {
+  .mypage-logout-overlay { align-items: center; padding: var(--space-16); }
+  .mypage-logout-sheet { max-width: 390px; border-radius: var(--radius-16); padding: var(--space-24); }
+  .mypage-logout-sheet__handle { display: none; }
+}
 .mypage-btn-primary {
   display: inline-flex;
   align-items: center;

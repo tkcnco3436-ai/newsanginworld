@@ -34,7 +34,7 @@
           </div>
           <a href="mypage-login.html" role="menuitem"><i data-lucide="user" width="16" height="16"></i>마이페이지</a>
           <a href="#" role="menuitem"><i data-lucide="coins" width="16" height="16"></i>크레딧 충전</a>
-          <button type="button" role="menuitem"><i data-lucide="log-out" width="16" height="16"></i>로그아웃</button>
+          <button type="button" role="menuitem" data-logout-open><i data-lucide="log-out" width="16" height="16"></i>로그아웃</button>
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@
     <a href="index.html#notice">공지사항</a>
   </nav>
   <div class="drawer__actions">
-    <button class="btn-header-outline" type="button">로그아웃</button>
+    <button class="btn-header-outline" type="button" data-logout-open>로그아웃</button>
   </div>
 </aside>
 
@@ -190,8 +190,8 @@
       </div>
 
     <div class="mypage-footer-actions">
-      <button class="mypage-btn-outline" type="button">로그아웃</button>
-      <button class="mypage-link-danger" type="button">회원탈퇴</button>
+      <button class="mypage-btn-outline" type="button" data-logout-open>로그아웃</button>
+      <a class="mypage-link-danger" href="withdraw.html">회원탈퇴</a>
     </div>
   </div>
 </main>
@@ -287,6 +287,18 @@
     <div class="mypage-card-overlay__actions">
       <button type="button" class="mypage-btn-outline" data-mypage-wizard-left>취소</button>
       <button type="button" class="mypage-btn-primary" data-mypage-wizard-right disabled>다음</button>
+    </div>
+  </div>
+</div>
+
+<div class="mypage-logout-overlay" data-logout-overlay role="dialog" aria-modal="true" aria-labelledby="mypageLogoutTitle">
+  <div class="mypage-logout-sheet">
+    <span class="mypage-logout-sheet__handle"></span>
+    <p class="mypage-logout-overlay__title" id="mypageLogoutTitle">로그아웃하시겠습니까?</p>
+    <p class="mypage-logout-overlay__desc">다시 로그인할 때까지 서비스 이용이 제한됩니다.</p>
+    <div class="mypage-logout-actions">
+      <button type="button" class="mypage-btn-outline" data-logout-cancel>취소</button>
+      <button type="button" class="mypage-btn-primary" data-logout-confirm>로그아웃</button>
     </div>
   </div>
 </div>

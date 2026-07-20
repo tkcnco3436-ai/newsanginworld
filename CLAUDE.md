@@ -52,10 +52,13 @@ CSS·JS 모두 아래 4단 레이어로만 나눈다. 상위 레이어는 하위
 | `mypage.html` | tokens, common, mypage-common, mypage | common, mypage-common, mypage | logo.svg + 카드사 8종 |
 | `mypage-login.html` | tokens, common, mypage-common, mypage | common, mypage-common, mypage | logo.svg + 카드사 8종 |
 | `edit.html` | tokens, common, mypage-common, edit | common, mypage-common, edit | logo.svg |
+| `withdraw.html` | tokens, common, mypage-common, withdraw | common, mypage-common, withdraw | logo.svg |
 | `login/`, `signup/` | tokens, **style**, auth | auth | logo.svg, 영상 |
 
 - **로그인 상태 헤더**(우측 영상생성/크레딧/프로필 드롭다운)는 common 레이어에 있다: `common.css`의 `.btn-header-video`/`.header-credit`/`.header-profile*`, 동작은 `common.js`의 `initHeaderProfile()`. 로그인한 모든 페이지가 재사용.
-- ⚠️ `css/mypage.css`·`js/mypage.js`는 이제 `mypage.html`+`mypage-login.html` 2개가 공유 → 엄밀히는 mypage-common(③)으로 승격 대상. 현재는 page 레이어에 두고 공유(별도 리팩터 작업으로 이관 검토).
+- **로그아웃 확인 모달**(`.mypage-logout-*` + `initMypageLogout()`)은 `mypage-common.css`/`mypage-common.js`에 있다(mypage/mypage-login/withdraw 3페이지 공용). 트리거 = `[data-logout-open]`, 모달 = `[data-logout-overlay]`.
+- **회원탈퇴 페이지**(`withdraw.html`): 확인 문구 "탈퇴하겠습니다" 입력 시 회원탈퇴 버튼 활성(`withdraw.js`), 확인 시 `index.html`로 이동. mypage/mypage-login 푸터 `회원탈퇴`(`a.mypage-link-danger`)가 이 페이지로 링크.
+- ⚠️ `css/mypage.css`·`js/mypage.js`는 `mypage.html`+`mypage-login.html` 2개가 공유 → 엄밀히는 mypage-common(③)으로 승격 대상. 현재는 page 레이어에 두고 공유(별도 리팩터 작업으로 이관 검토).
 
 ### 정리 이력 / 남은 항목
 - ✅ `js/main.js` (1542줄) — 참조 HTML 없음 → **삭제 완료**.
